@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "IntelliFactory.WebSharper.CodeMirror", "if-ws-codemirror\IntelliFactory.WebSharper.CodeMirror.fsproj", "{00F701B3-EA11-4458-A7A1-D5EF9CFF5ADA}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Website", "IntelliFactory.WebSharper.CodeMirror.Test\Website\Website.fsproj", "{5AF91A9C-1603-4383-A09A-C32EED957066}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "IntelliFactory.WebSharper.CodeMirror.Test\Web\Web.csproj", "{0725F0C8-08E6-426B-80F9-94B3FDFE5AD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00F701B3-EA11-4458-A7A1-D5EF9CFF5ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00F701B3-EA11-4458-A7A1-D5EF9CFF5ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00F701B3-EA11-4458-A7A1-D5EF9CFF5ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00F701B3-EA11-4458-A7A1-D5EF9CFF5ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF91A9C-1603-4383-A09A-C32EED957066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF91A9C-1603-4383-A09A-C32EED957066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF91A9C-1603-4383-A09A-C32EED957066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF91A9C-1603-4383-A09A-C32EED957066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0725F0C8-08E6-426B-80F9-94B3FDFE5AD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0725F0C8-08E6-426B-80F9-94B3FDFE5AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0725F0C8-08E6-426B-80F9-94B3FDFE5AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0725F0C8-08E6-426B-80F9-94B3FDFE5AD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
