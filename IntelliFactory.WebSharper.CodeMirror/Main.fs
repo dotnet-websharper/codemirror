@@ -3,6 +3,7 @@
 module Definition =
     open IntelliFactory.WebSharper.InterfaceGenerator
     open IntelliFactory.WebSharper.Dom
+    open IntelliFactory.WebSharper.EcmaScript
 
     let CharCoords =
         Pattern.Config "CharCoords" {
@@ -77,6 +78,12 @@ module Definition =
             "dragDrop", T<bool>
             "onDragEvent", CodeMirror_t * T<Event> ^-> T<bool>
             "onKeyEvent", CodeMirror_t * T<Event> ^-> T<bool>
+
+            //// Add-ons
+
+            // closetag.js
+            "closeTagEnabled", T<bool>
+            "closeTagIndent", T<string[]>
         ]
 
     let CodeMirror_Options =
@@ -146,12 +153,52 @@ module Definition =
                 "getTextArea" => T<unit> ^-> T<Node>
             ]
 
+    let SearchCursor =
+        Class "SearchCursor"
+        |+> Protocol [
+                "findNext" => T<unit> ^-> T<bool>
+                "findPrevious" => T<unit> ^-> T<bool>
+                "from" => T<unit> ^-> CharCoords
+                "to" => T<unit> ^-> CharCoords
+                "replace" => T<string> ^-> T<unit>
+            ]
+
+    let Hint =
+        Class "Hint"
+        |+> Protocol [
+                "list" =? T<string[]>
+                "from" =? CharCoords
+                "to" =? CharCoords
+            ]
+
     let CodeMirror =
         Class "CodeMirror"
         |=> CodeMirror_t
         |+> [
                 Constructor ((T<Node> + T<Element -> unit>) * !?CodeMirror_Options)
                 "fromTextArea" => T<Node> * !?CodeMirror_Options ^-> CodeMirrorTextArea
+
+                //// Add-ons
+
+                // foldcode.js
+                "newFoldFunction" => (CodeMirror_t * T<int> ^-> T<int>) ^-> (CodeMirror_t * T<int> ^-> T<unit>)
+                "braceRangeFinder" =? (CodeMirror_t * T<int> ^-> T<int>)
+                "indentRangeFinder" =? (CodeMirror_t * T<int> ^-> T<int>)
+                "tagRangeFinder" =? (CodeMirror_t * T<int> ^-> T<int>)
+
+                // runmode.js
+                "runMode" => T<string> * T<obj> * (T<Element> + T<string * string -> unit>) ^-> T<unit>
+
+                // simple-hint.js
+                "simpleHint" => CodeMirror_t * (CodeMirror_t ^-> Hint) ^-> T<unit>
+
+                // javascript-hint.js
+                "javascriptHint" => (CodeMirror_t ^-> Hint)
+                "coffeescriptHint" => (CodeMirror_t ^-> Hint)
+
+                // loadmode.js
+                "requireMode" => T<string> * T<unit -> unit> ^-> T<unit>
+                "autoLoadMode" => CodeMirror_t * T<string> ^-> T<unit>
             ]
         |+> Protocol (
             [
@@ -205,7 +252,27 @@ module Definition =
                 "getWrapperElement" => T<unit> ^-> T<Element>
                 "getScrollerElement" => T<unit> ^-> T<Element>
                 "getStateAfter" => T<int> ^-> T<obj>
-            ] @ List.map (fun (name, ty) ->
+
+                //// Add-ons
+
+                // dialog.js
+                "openDialog" => T<string>?template * T<string -> unit>?callback ^-> T<unit -> unit>
+                "openDialog" => T<Element>?template * T<string -> unit>?callback ^-> T<unit -> unit>
+                |> WithInline "$this.openDialog($template.outerHTML, $callback)"
+                "openConfirm" => T<string>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> T<unit -> unit>
+                "openConfirm" => T<Element>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> T<unit -> unit>
+                |> WithInline "$this.openConfirm($template.outerHTML, $callbacks)"
+
+                // searchcursor.js
+                "getSearchCursor" => (T<string> + T<RegExp>) * !?CharCoords * !?T<bool> ^-> SearchCursor
+
+                // match-highlighter.js
+                "matchHighlight" => CodeMirror_t ^-> T<unit>
+
+                // closetag.js
+                "closeTag" => CodeMirror_t * T<char> * !?(T<bool> + T<string[]>) ^-> T<unit>
+            ]
+            @ List.map (fun (name, ty) ->
                     ("option_" + name) =% ty
                     |> WithGetterInline ("$this.getOption('" + name + "')")
                     |> WithSetterInline ("$this.setOption('" + name + "', $value)")
@@ -222,11 +289,13 @@ module Definition =
                 CodeMirrorTextArea
                 Coords
                 CoordsMode
+                Hint
                 HistorySize
                 LineHandle
                 LineInfo
                 Generic - Mark
                 Range
+                SearchCursor
                 Token
             ]
         ]
