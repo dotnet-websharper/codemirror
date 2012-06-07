@@ -7,6 +7,5 @@
   </publications>
   <dependencies>
     <dependency name="WebSharper" rev="latest.integration" />
-    <dependency name="if-ws-jqueryui" rev="latest.integration" />
   </dependencies>
 </ivy-module>

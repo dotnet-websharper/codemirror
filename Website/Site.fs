@@ -18,7 +18,10 @@ module Client =
 
         [<JavaScript>]
         override this.Body =
-            let options = CodeMirror.Options(Mode = "haskell")
+            let options = CodeMirror.Options()
+            options.Mode <- "haskell"
+            options.LineNumbers <- true
+            JavaScript.Alert(string options.LineNumbers)
             let cm =
                 CodeMirror.FromTextArea(
                     Dom.Document.Current.GetElementById "editor",

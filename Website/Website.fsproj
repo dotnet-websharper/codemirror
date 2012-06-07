@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5af91a9c-1603-4383-a09a-c32eed957066}</ProjectGuid>
+    <ProjectGuid>{ce0c6dd7-9439-430e-bde1-fca4d76c7756}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -40,11 +40,11 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\if-ws-codemirror\IntelliFactory.WebSharper.CodeMirror.fsproj">
+    <ProjectReference Include="..\IntelliFactory.WebSharper.CodeMirror\IntelliFactory.WebSharper.CodeMirror.fsproj">
       <Name>IntelliFactory.WebSharper.CodeMirror</Name>
-      <Project>{00f701b3-ea11-4458-a7a1-d5ef9cff5ada}</Project>
+      <Project>{64ca108d-fc9f-46d6-aa9c-d19dfdbd2032}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="../../.build/lib/IntelliFactory.WebSharper.Sitelets.targets" />
+  <Import Project="../.build/lib/IntelliFactory.WebSharper.Sitelets.targets" />
 </Project>
