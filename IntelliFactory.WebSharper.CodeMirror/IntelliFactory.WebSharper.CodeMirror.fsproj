@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
@@ -33,6 +33,20 @@
   <ItemGroup>
     <EmbeddedResource Include="CodeMirror/lib/codemirror.js" />
     <EmbeddedResource Include="CodeMirror/lib/codemirror.css" />
+	<EmbeddedResource Include="CodeMirror/lib/util/closetag.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/dialog.css" />
+	<EmbeddedResource Include="CodeMirror/lib/util/dialog.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/foldcode.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/formatting.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/javascript-hint.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/loadmode.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/match-highlighter.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/overlay.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/runmode.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/search.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/searchcursor.js" />
+	<EmbeddedResource Include="CodeMirror/lib/util/simple-hint.css" />
+	<EmbeddedResource Include="CodeMirror/lib/util/simple-hint.js" />
 	<EmbeddedResource Include="CodeMirror/mode/clike/clike.js" />
 	<EmbeddedResource Include="CodeMirror/mode/clojure/clojure.js" />
 	<EmbeddedResource Include="CodeMirror/mode/coffeescript/coffeescript.js" />

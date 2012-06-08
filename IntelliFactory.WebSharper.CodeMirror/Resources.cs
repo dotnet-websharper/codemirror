@@ -1,26 +1,26 @@
 ﻿using IntelliFactory.WebSharper.Core;
 using IntelliFactory.WebSharper;
 
-namespace IntelliFactory.WebSharper.CodeMirror.Resources
-{
-  public class Css : Core.Resources.BaseResource
-  {
-	public Css() : base("CodeMirror.lib.codemirror.css") { }
-  }
+//namespace IntelliFactory.WebSharper.CodeMirror.Resources
+//{
+//  public class Css : Core.Resources.BaseResource
+//  {
+//    public Css() : base("CodeMirror.lib.codemirror.css") { }
+//  }
 
-  [Attributes.Require(typeof(Css))]
-  public class Js : Core.Resources.BaseResource
-  {
-	public Js() : base("CodeMirror.lib.codemirror.js") { }
-  }
-}
+//  [Attributes.Require(typeof(Css))]
+//  public class Js : Core.Resources.BaseResource
+//  {
+//    public Js() : base("CodeMirror.lib.codemirror.js") { }
+//  }
+//}
 
 namespace IntelliFactory.WebSharper.CodeMirror.Resources.Modes
 {
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Clike : Core.Resources.BaseResource
+  public class CLike : Core.Resources.BaseResource
   {
-	public Clike() : base("CodeMirror.mode.clike.clike.js") { }
+	public CLike() : base("CodeMirror.mode.clike.clike.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
@@ -30,9 +30,9 @@ namespace IntelliFactory.WebSharper.CodeMirror.Resources.Modes
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Coffeescript : Core.Resources.BaseResource
+  public class CoffeeScript : Core.Resources.BaseResource
   {
-	public Coffeescript() : base("CodeMirror.mode.coffeescript.coffeescript.js") { }
+	public CoffeeScript() : base("CodeMirror.mode.coffeescript.coffeescript.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
@@ -84,21 +84,21 @@ namespace IntelliFactory.WebSharper.CodeMirror.Resources.Modes
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Htmlembedded : Core.Resources.BaseResource
+  public class HtmlEmbedded : Core.Resources.BaseResource
   {
-	public Htmlembedded() : base("CodeMirror.mode.htmlembedded.htmlembedded.js") { }
+	public HtmlEmbedded() : base("CodeMirror.mode.htmlembedded.htmlembedded.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Htmlmixed : Core.Resources.BaseResource
+  public class HtmlMixed : Core.Resources.BaseResource
   {
-	public Htmlmixed() : base("CodeMirror.mode.htmlmixed.htmlmixed.js") { }
+	public HtmlMixed() : base("CodeMirror.mode.htmlmixed.htmlmixed.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Javascript : Core.Resources.BaseResource
+  public class JavaScript : Core.Resources.BaseResource
   {
-	public Javascript() : base("CodeMirror.mode.javascript.javascript.js") { }
+	public JavaScript() : base("CodeMirror.mode.javascript.javascript.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
@@ -126,9 +126,9 @@ namespace IntelliFactory.WebSharper.CodeMirror.Resources.Modes
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Mysql : Core.Resources.BaseResource
+  public class MySQL : Core.Resources.BaseResource
   {
-	public Mysql() : base("CodeMirror.mode.mysql.mysql.js") { }
+	public MySQL() : base("CodeMirror.mode.mysql.mysql.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
@@ -150,9 +150,9 @@ namespace IntelliFactory.WebSharper.CodeMirror.Resources.Modes
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Php : Core.Resources.BaseResource
+  public class PHP : Core.Resources.BaseResource
   {
-	public Php() : base("CodeMirror.mode.php.php.js") { }
+	public PHP() : base("CodeMirror.mode.php.php.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
@@ -162,9 +162,9 @@ namespace IntelliFactory.WebSharper.CodeMirror.Resources.Modes
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Plsql : Core.Resources.BaseResource
+  public class PlSQL : Core.Resources.BaseResource
   {
-	public Plsql() : base("CodeMirror.mode.plsql.plsql.js") { }
+	public PlSQL() : base("CodeMirror.mode.plsql.plsql.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
@@ -264,9 +264,9 @@ namespace IntelliFactory.WebSharper.CodeMirror.Resources.Modes
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]
-  public class Vbscript : Core.Resources.BaseResource
+  public class VBScript : Core.Resources.BaseResource
   {
-	public Vbscript() : base("CodeMirror.mode.vbscript.vbscript.js") { }
+	public VBScript() : base("CodeMirror.mode.vbscript.vbscript.js") { }
   }
 
   [Attributes.Require(typeof(IntelliFactory.WebSharper.CodeMirror.Resources.Js))]

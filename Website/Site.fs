@@ -11,22 +11,58 @@ module Client =
     open IntelliFactory.WebSharper.Html
     open IntelliFactory.WebSharper.CodeMirror
 
-    [<Require(typeof<CodeMirror.Resources.Modes.Haskell>)>]
+    [<Require(typeof<CodeMirror.Resources.Js>)>]
+    [<Require(typeof<CodeMirror.Resources.Modes.JavaScript>)>]
+    [<Require(typeof<CodeMirror.Resources.Modes.Xml>)>]
+    [<Require(typeof<CodeMirror.Resources.Modes.HtmlMixed>)>]
     [<Sealed>]
     type Control() =
         inherit Web.Control()
 
         [<JavaScript>]
         override this.Body =
-            let options = CodeMirror.Options()
-            options.Mode <- "haskell"
-            options.LineNumbers <- true
+            let options =
+                CodeMirror.Options(
+                    Mode = "javascript",
+                    LineNumbers = true,
+                    OnGutterClick =
+                        CodeMirror.NewFoldFunction(RangeFinder(CodeMirror.IndentRangeFinder)),
+                    ExtraKeys = New [
+                        "Ctrl-Space", box(fun cm ->
+                            CodeMirror.SimpleHint(cm, CodeMirror.JavascriptHint.Hint))
+                    ],
+                    OnCursorActivity = fun cm ->
+                        cm.MatchHighlight(MatchHighlighter("match-highlight"))
+                )
             let cm =
                 CodeMirror.FromTextArea(
                     Dom.Document.Current.GetElementById "editor",
                     options)
             JavaScript.Log <| cm.CharCoords(CharCoords(1, 1), CoordsMode.Page)
-            Div [] :> _
+            let dial = cm.OpenDialog(Dialog("bar:<input/>"), JavaScript.Log)
+            let resultContainer = Pre [Attr.Class "cm-s-default"]
+
+            let cmXml =
+                let options =
+                    CodeMirror.Options(
+                        Mode = "text/html",
+                        ExtraKeys = New [
+                            "'>'", box(fun (cm: CodeMirror) -> cm.CloseTag.CloseTag(cm, ">"))
+                            "'/'", box(fun (cm: CodeMirror) -> cm.CloseTag.CloseTag(cm, "/"))
+                        ]
+                    )
+                CodeMirror.FromTextArea(
+                    Dom.Document.Current.GetElementById "editor-xml", options)
+
+            Div [
+                Button [Text "Run mode"]
+                |>! OnClick (fun _ _ ->
+                    CodeMirror.RunMode(cm.GetValue(), "javascript",
+                        RunModeOutput(resultContainer.Body)))
+                Button [Text "Clear"]
+                |>! OnClick (fun _ _ -> resultContainer.Clear())
+                resultContainer
+            ] :> _
 
 module Site =
 

@@ -5,6 +5,61 @@ module Definition =
     open IntelliFactory.WebSharper.Dom
     open IntelliFactory.WebSharper.EcmaScript
 
+    module Res =
+
+        let Css =
+            Resource "Css" "CodeMirror.lib.codemirror.css"
+
+        let Js =
+            Resource "Js" "CodeMirror.lib.codemirror.js"
+            |> Requires [Css]
+
+        module Addons =
+
+            let DialogCss =
+                Resource "DialogCss" "CodeMirror.lib.util.dialog.css"
+
+            let Dialog =
+                Resource "Dialog" "CodeMirror.lib.util.dialog.js"
+                |> Requires [Js; DialogCss]
+
+            let SearchCursor =
+                Resource "SearchCursor" "CodeMirror.lib.util.searchcursor.js"
+                |> Requires [Js]
+
+            let Search =
+                Resource "Search" "CodeMirror.lib.util.search.js"
+                |> Requires [Js; SearchCursor]
+
+            let FoldCode =
+                Resource "FoldCode" "CodeMirror.lib.util.foldcode.js"
+                |> Requires [Js]
+
+            let RunMode =
+                Resource "RunMode" "CodeMirror.lib.util.runmode.js"
+                |> Requires [Js]
+
+            let SimpleHintCss =
+                Resource "SimpleHintCss" "CodeMirror.lib.util.simple-hint.css"
+                |> Requires [Js]
+
+            let SimpleHint =
+                Resource "SimpleHint" "CodeMirror.lib.util.simple-hint.js"
+                |> Requires [Js; SimpleHintCss]
+
+            let JavaScriptHint =
+                Resource "JavaScriptHint" "CodeMirror.lib.util.javascript-hint.js"
+                |> Requires [Js; SimpleHint]
+
+            let MatchHighlighter =
+                Resource "MatchHighlighter" "CodeMirror.lib.util.match-highlighter.js"
+                |> Requires [Js; SearchCursor]
+
+            let CloseTag =
+                Resource "CloseTag" "CodeMirror.lib.util.closetag.js"
+                |> Requires [Js]
+
+    let CharCoords_t = Type.New()
     let CharCoords =
         Pattern.Config "CharCoords" {
             Optional = []
@@ -14,6 +69,7 @@ module Definition =
                     "ch", T<int>
                 ]
         }
+        |=> CharCoords_t
 
     let Coords =
         Pattern.Config "Coords" {
@@ -153,6 +209,16 @@ module Definition =
                 "getTextArea" => T<unit> ^-> T<Node>
             ]
 
+    let Dialog =
+        Class "Dialog"
+        |+> [
+                Constructor (T<string>)?template
+                |> WithInline "$template"
+                Constructor (T<Element>)?template
+                |> WithInline "$template.outerHTML"
+            ]
+        |> Requires [Res.Addons.Dialog]
+
     let SearchCursor =
         Class "SearchCursor"
         |+> Protocol [
@@ -162,14 +228,108 @@ module Definition =
                 "to" => T<unit> ^-> CharCoords
                 "replace" => T<string> ^-> T<unit>
             ]
+        |> Requires [Res.Addons.SearchCursor]
+
+    let RangeFinder =
+        Class "RangeFinder"
+        |+> [
+                Constructor ((CodeMirror_t * T<int> * T<bool> ^-> T<int>)?func)
+                |> WithInline "$func"
+            ]
+        |> Requires [Res.Addons.FoldCode]
 
     let Hint =
-        Class "Hint"
+        Pattern.Config "Hint" {
+            Required =
+                [
+                    "list", T<string[]>
+                    "from", CharCoords_t
+                    "to", CharCoords_t
+                ]
+            Optional = []
+        }
+        |> Requires [Res.Addons.SimpleHint]
+
+    let MIME =
+        Class "MIME"
         |+> Protocol [
-                "list" =? T<string[]>
-                "from" =? CharCoords
-                "to" =? CharCoords
+                "mime" =? T<string>
+                "mode" =? T<string>
             ]
+
+    let RunModeOutput =
+        Class "RunModeOutput"
+        |+> Protocol [
+                Constructor (T<string> * T<string> ^-> T<unit>)?displayFunc
+                |> WithInline "$displayFunc"
+                Constructor T<Element>?container
+                |> WithInline "$container"
+            ]
+        |> Requires [Res.Addons.RunMode]
+
+    let JavaScriptHint =
+        Class "JavaScriptHint"
+        |+> Protocol [
+                "hint" =? CodeMirror_t ^-> Hint
+                |> WithGetterInline "$this"
+            ]
+        |> Requires [Res.Addons.JavaScriptHint]
+
+    let MatchHighlighter =
+        Class "MatchHighlighter"
+        |+> [
+                Constructor T<string>?``class``
+                |> WithInline "$class"
+            ]
+        |> Requires [Res.Addons.MatchHighlighter]
+
+    let TagClosing =
+        Class "TagClosing"
+        |+> Protocol [
+                "closeTag" => CodeMirror_t?editor * T<string>?char ^-> T<unit>
+                |> WithInline "$this.call($editor, $editor, $char)"
+                "closeTag" => CodeMirror_t?editor * T<string>?char * (T<string[]> + T<bool>)?indent ^-> T<unit>
+                |> WithInline "$this.call($editor, $editor, $char, $indent)"
+            ]
+        |> Requires [Res.Addons.CloseTag]
+
+    let Stream =
+        Class "Stream"
+        |+> Protocol [
+                "eol" => T<unit -> unit>
+                "sol" => T<unit -> unit>
+                "peek" => T<unit -> char>
+                "next" => T<unit -> char>
+                "eat" => (T<char> + T<RegExp> + T<char -> bool>) ^-> T<char>
+                "eatWhile" => (T<char> + T<RegExp> + T<char -> bool>) ^-> T<bool>
+                "eatSpace" => T<unit -> bool>
+                "skipToEnd" => T<unit -> unit>
+                "skipTo" => T<char -> bool>
+                "match" => T<string>* !?T<bool>?consume * !?T<bool>?caseFold ^-> T<bool>
+                "match" => T<RegExp>* !?T<bool>?consume * !?T<bool>?caseFold ^-> T<string[]>
+                "backUp" => T<int -> unit>
+                "column" => T<unit -> int>
+                "indentation" => T<unit -> int>
+                "current" => T<unit -> string>
+            ]
+
+    let Mode =
+        Generic / fun state ->
+        Pattern.Config "Mode" {
+            Required =
+                [
+                    "token", Stream * state ^-> T<string>
+                ]
+            Optional =
+                [
+                    "startState", T<int> ^-> state
+                    "blankLine", state ^-> T<unit>
+                    "copyState", state ^-> state
+                    "compareStates", state * state ^-> T<bool>
+                    "indent", state * T<string> ^-> T<int>
+                    "electricChars", T<string>
+                ]
+        }
 
     let CodeMirror =
         Class "CodeMirror"
@@ -177,28 +337,30 @@ module Definition =
         |+> [
                 Constructor ((T<Node> + T<Element -> unit>) * !?CodeMirror_Options)
                 "fromTextArea" => T<Node> * !?CodeMirror_Options ^-> CodeMirrorTextArea
+                "listModes" => T<unit> ^-> T<string[]>
+                "listMIMEs" => T<unit> ^-> Type.ArrayOf MIME
+                Generic - fun t -> "defineMode" => T<string> * (CodeMirror_Options * T<obj> ^-> Mode t) ^-> T<unit>
+                "defineMIME" => T<string> * T<obj> ^-> T<unit>
+                Generic - fun t -> "getMode" => CodeMirror_Options * T<obj> ^-> Mode t
+                Generic - fun t -> "copyState" => Mode t * t ^-> t
 
                 //// Add-ons
 
                 // foldcode.js
-                "newFoldFunction" => (CodeMirror_t * T<int> ^-> T<int>) ^-> (CodeMirror_t * T<int> ^-> T<unit>)
-                "braceRangeFinder" =? (CodeMirror_t * T<int> ^-> T<int>)
-                "indentRangeFinder" =? (CodeMirror_t * T<int> ^-> T<int>)
-                "tagRangeFinder" =? (CodeMirror_t * T<int> ^-> T<int>)
+                "newFoldFunction" => RangeFinder * !?T<string>?markText * !?T<bool>?hideEnd ^-> (CodeMirror_t * T<int> * T<Event> ^-> T<unit>)
+                "braceRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
+                "indentRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
+                "tagRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
 
                 // runmode.js
-                "runMode" => T<string> * T<obj> * (T<Element> + T<string * string -> unit>) ^-> T<unit>
+                "runMode" => T<string> * T<obj> * RunModeOutput ^-> T<unit>
 
                 // simple-hint.js
                 "simpleHint" => CodeMirror_t * (CodeMirror_t ^-> Hint) ^-> T<unit>
 
                 // javascript-hint.js
-                "javascriptHint" => (CodeMirror_t ^-> Hint)
-                "coffeescriptHint" => (CodeMirror_t ^-> Hint)
-
-                // loadmode.js
-                "requireMode" => T<string> * T<unit -> unit> ^-> T<unit>
-                "autoLoadMode" => CodeMirror_t * T<string> ^-> T<unit>
+                "javascriptHint" =? JavaScriptHint
+                "coffeescriptHint" =? JavaScriptHint
             ]
         |+> Protocol (
             [
@@ -256,21 +418,19 @@ module Definition =
                 //// Add-ons
 
                 // dialog.js
-                "openDialog" => T<string>?template * T<string -> unit>?callback ^-> T<unit -> unit>
-                "openDialog" => T<Element>?template * T<string -> unit>?callback ^-> T<unit -> unit>
-                |> WithInline "$this.openDialog($template.outerHTML, $callback)"
-                "openConfirm" => T<string>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> T<unit -> unit>
-                "openConfirm" => T<Element>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> T<unit -> unit>
+                "openDialog" => Dialog * T<string -> unit>?callback ^-> (T<unit -> unit>)
+                "openConfirm" => T<string>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> Dialog
+                "openConfirm" => T<Element>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> Dialog
                 |> WithInline "$this.openConfirm($template.outerHTML, $callbacks)"
 
                 // searchcursor.js
                 "getSearchCursor" => (T<string> + T<RegExp>) * !?CharCoords * !?T<bool> ^-> SearchCursor
 
                 // match-highlighter.js
-                "matchHighlight" => CodeMirror_t ^-> T<unit>
+                "matchHighlight" => MatchHighlighter ^-> T<unit>
 
                 // closetag.js
-                "closeTag" => CodeMirror_t * T<char> * !?(T<bool> + T<string[]>) ^-> T<unit>
+                "closeTag" =? TagClosing
             ]
             @ List.map (fun (name, ty) ->
                     ("option_" + name) =% ty
@@ -278,6 +438,7 @@ module Definition =
                     |> WithSetterInline ("$this.setOption('" + name + "', $value)")
                     :> CodeModel.Member)
                 options)
+        |> Requires [Res.Js]
 
     let Assembly =
         Assembly [
@@ -289,14 +450,39 @@ module Definition =
                 CodeMirrorTextArea
                 Coords
                 CoordsMode
+                Dialog
                 Hint
                 HistorySize
+                JavaScriptHint
                 LineHandle
                 LineInfo
                 Generic - Mark
+                MatchHighlighter
+                MIME
+                Generic - Mode
                 Range
+                RangeFinder
+                RunModeOutput
                 SearchCursor
+                TagClosing
                 Token
+            ]
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources" [
+                Res.Css
+                Res.Js
+            ]
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons" [
+                Res.Addons.DialogCss
+                Res.Addons.Dialog
+                Res.Addons.SearchCursor
+                Res.Addons.Search
+                Res.Addons.FoldCode
+                Res.Addons.RunMode
+                Res.Addons.SimpleHintCss
+                Res.Addons.SimpleHint
+                Res.Addons.JavaScriptHint
+                Res.Addons.MatchHighlighter
+                Res.Addons.CloseTag
             ]
         ]
 
