@@ -296,8 +296,8 @@ module Definition =
     let Stream =
         Class "Stream"
         |+> Protocol [
-                "eol" => T<unit -> unit>
-                "sol" => T<unit -> unit>
+                "eol" => T<unit -> bool>
+                "sol" => T<unit -> bool>
                 "peek" => T<unit -> char>
                 "next" => T<unit -> char>
                 "eat" => (T<char> + T<RegExp> + T<char -> bool>) ^-> T<char>
@@ -464,6 +464,7 @@ module Definition =
                 RangeFinder
                 RunModeOutput
                 SearchCursor
+                Stream
                 TagClosing
                 Token
             ]
