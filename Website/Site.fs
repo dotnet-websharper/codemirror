@@ -11,7 +11,6 @@ module Client =
     open IntelliFactory.WebSharper.Html
     open IntelliFactory.WebSharper.CodeMirror
 
-    [<Require(typeof<CodeMirror.Resources.Js>)>]
     [<Require(typeof<CodeMirror.Resources.Modes.JavaScript>)>]
     [<Require(typeof<CodeMirror.Resources.Modes.Xml>)>]
     [<Require(typeof<CodeMirror.Resources.Modes.HtmlMixed>)>]
