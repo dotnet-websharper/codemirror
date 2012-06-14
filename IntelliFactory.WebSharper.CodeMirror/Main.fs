@@ -59,6 +59,61 @@ module Definition =
                 Resource "CloseTag" "CodeMirror.lib.util.closetag.js"
                 |> Requires [Js]
 
+        let Modes =
+            [
+                "CLike", "clike.clike"
+                "Clojure", "clojure.clojure"
+                "CoffeeScript", "coffeescript.coffeescript"
+                "Css", "css.css"
+                "Diff", "diff.diff"
+                "ECL", "ecl.ecl"
+                "Erlang", "erlang.erlang"
+                "GFM", "gfm.gfm"
+                "Go", "go.go"
+                "Groovy", "groovy.groovy"
+                "Haskell", "haskell.haskell"
+                "HtmlEmbedded", "htmlembedded.htmlembedded"
+                "HtmlMixed", "htmlmixed.htmlmixed"
+                "JavaScript", "javascript.javascript"
+                "Jinja2", "jinja2.jinja2"
+                "LESS", "less.less"
+                "Lua", "lua.lua"
+                "Markdown", "markdown.markdown"
+                "MySQL", "mysql.mysql"
+                "NTriples", "ntriples.ntriples"
+                "Pascal", "pascal.pascal"
+                "Perl", "perl.perl"
+                "PHP", "php.php"
+                "Pig", "pig.pig"
+                "PLSQL", "plsql.plsql"
+                "Properties", "properties.properties"
+                "Python", "python.python"
+                "R", "r.r"
+                "RpmChanges", "rpm.changes.changes"
+                "RpmSpec", "rpm.spec.spec"
+                "Rst", "rst.rst"
+                "Ruby", "ruby.ruby"
+                "Rust", "rust.rust"
+                "Scheme", "scheme.scheme"
+                "Shell", "shell.shell"
+                "Smalltalk", "smalltalk.smalltalk"
+                "Smarty", "smarty.smarty"
+                "SPARQL", "sparql.sparql"
+                "Stex", "stex.stex"
+                "TiddlyWiki", "tiddlywiki.tiddlywiki"
+                "Tiki", "tiki.tiki"
+                "VBScript", "vbscript.vbscript"
+                "Velocity", "velocity.velocity"
+                "Verilog", "verilog.verilog"
+                "XML", "xml.xml"
+                "XQuery", "xquery.xquery"
+                "YAML", "yaml.yaml"
+            ]
+            |> List.map (fun (name, path) ->
+                Resource name ("CodeMirror.mode." + path + ".js")
+                |> Requires [Js]
+                :> CodeModel.NamespaceEntity)
+
     let CharCoords_t = Type.New()
     let CharCoords =
         Pattern.Config "CharCoords" {
@@ -485,6 +540,8 @@ module Definition =
                 Res.Addons.MatchHighlighter
                 Res.Addons.CloseTag
             ]
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Modes"
+                Res.Modes
         ]
 
 module Main =

@@ -12,7 +12,7 @@ module Client =
     open IntelliFactory.WebSharper.CodeMirror
 
     [<Require(typeof<CodeMirror.Resources.Modes.JavaScript>)>]
-    [<Require(typeof<CodeMirror.Resources.Modes.Xml>)>]
+    [<Require(typeof<CodeMirror.Resources.Modes.XML>)>]
     [<Require(typeof<CodeMirror.Resources.Modes.HtmlMixed>)>]
     [<Sealed>]
     type Control() =

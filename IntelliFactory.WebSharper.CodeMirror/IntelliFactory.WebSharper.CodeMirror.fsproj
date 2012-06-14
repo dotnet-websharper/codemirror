@@ -95,7 +95,6 @@
 	<EmbeddedResource Include="CodeMirror/mode/xquery/xquery.js" />
 	<EmbeddedResource Include="CodeMirror/mode/yaml/yaml.js" />
     <Compile Include="Main.fs" />
-    <None Include="Resources.cs" />
     <None Include="Marker.cs" />
   </ItemGroup>
   <ItemGroup>
