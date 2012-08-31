@@ -305,6 +305,16 @@ module Definition =
         }
         |> Requires [Res.Addons.SimpleHint]
 
+    let HintOptions =
+        Pattern.Config "HintOptions" {
+            Required = []
+            Optional =
+                [
+                    "closeOnBackspace", T<bool>
+                    "closeOnTokenChange", T<bool>
+                ]
+        }
+
     let MIME =
         Class "MIME"
         |+> Protocol [
@@ -411,7 +421,7 @@ module Definition =
                 "runMode" => T<string> * T<obj> * RunModeOutput ^-> T<unit>
 
                 // simple-hint.js
-                "simpleHint" => CodeMirror_t * (CodeMirror_t ^-> Hint) ^-> T<unit>
+                "simpleHint" => CodeMirror_t?cm * (CodeMirror_t ^-> Hint)?getHint * !?HintOptions?options ^-> T<unit>
 
                 // javascript-hint.js
                 "javascriptHint" =? JavaScriptHint
@@ -507,6 +517,7 @@ module Definition =
                 CoordsMode
                 Dialog
                 Hint
+                HintOptions
                 HistorySize
                 JavaScriptHint
                 LineHandle
