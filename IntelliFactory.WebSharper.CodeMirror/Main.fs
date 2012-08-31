@@ -64,7 +64,7 @@ module Definition =
                 "CLike", "clike.clike"
                 "Clojure", "clojure.clojure"
                 "CoffeeScript", "coffeescript.coffeescript"
-                "Css", "css.css"
+                "CSS", "css.css"
                 "Diff", "diff.diff"
                 "ECL", "ecl.ecl"
                 "Erlang", "erlang.erlang"
@@ -455,7 +455,7 @@ module Definition =
                 "setCursor" => CharCoords ^-> T<unit>
                 "setCursor" => T<int> * T<int> ^-> T<unit>
                 "setSelection" => CharCoords * CharCoords ^-> T<unit>
-                "getline" => T<int> ^-> T<string>
+                "getLine" => T<int> ^-> T<string>
                 "setLine" => T<int> * T<string> ^-> T<unit>
                 "removeLine" => T<unit> ^-> T<unit>
                 "getRange" => CharCoords * CharCoords ^-> T<string>
