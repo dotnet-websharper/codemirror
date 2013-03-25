@@ -12,6 +12,7 @@ using System.Web.UI;
 [assembly: WebResource("CodeMirror.lib.util.formatting.js", "text/javascript")]
 [assembly: WebResource("CodeMirror.lib.util.javascript-hint.js", "text/javascript")]
 [assembly: WebResource("CodeMirror.lib.util.match-highlighter.js", "text/javascript")]
+[assembly: WebResource("CodeMirror.lib.util.multiplex.js", "text/javascript")]
 [assembly: WebResource("CodeMirror.lib.util.overlay.js", "text/javascript")]
 [assembly: WebResource("CodeMirror.lib.util.runmode.js", "text/javascript")]
 [assembly: WebResource("CodeMirror.lib.util.search.js", "text/javascript")]
