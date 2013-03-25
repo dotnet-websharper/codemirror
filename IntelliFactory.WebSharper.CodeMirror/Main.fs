@@ -434,6 +434,9 @@ module Definition =
                 // javascript-hint.js
                 "javascriptHint" =? JavaScriptHint
                 "coffeescriptHint" =? JavaScriptHint
+
+                // multiplex.js
+                "multiplexingMode" => T<string>?``open`` * T<string>?close * T<obj>?mode * !?T<string>?delimStyle ^-> MultiplexMode
             ]
         |+> Protocol (
             [
@@ -504,9 +507,6 @@ module Definition =
 
                 // closetag.js
                 "closeTag" =? TagClosing
-
-                // multiplex.js
-                "multiplexingMode" => T<string>?``open`` * T<string>?close * T<obj>?mode * !?T<string>?delimStyle ^-> MultiplexMode
             ]
             @ List.map (fun (name, ty) ->
                     ("option_" + name) =% ty
