@@ -567,6 +567,7 @@ module Definition =
                 Res.Addons.SearchCursor
                 Res.Addons.Search
                 Res.Addons.FoldCode
+                Res.Addons.Multiplex
                 Res.Addons.RunMode
                 Res.Addons.SimpleHintCss
                 Res.Addons.SimpleHint
