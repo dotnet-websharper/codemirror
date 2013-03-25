@@ -401,7 +401,18 @@ module Definition =
         }
 
     let MultiplexMode =
-        Class "CodeMirror.MultiplexMode"
+        Pattern.Config "CodeMirror.MultiplexMode" {
+            Required =
+                [
+                    "open", T<string>
+                    "close", T<string>
+                    "mode", T<obj>
+                ]
+            Optional =
+                [
+                    "delimStyle", T<string>
+                ]
+        }
         |> Requires [Res.Addons.Multiplex]
 
     let CodeMirror =
@@ -436,7 +447,7 @@ module Definition =
                 "coffeescriptHint" =? JavaScriptHint
 
                 // multiplex.js
-                "multiplexingMode" => T<string>?``open`` * T<string>?close * T<obj>?mode * !?T<string>?delimStyle ^-> MultiplexMode
+                "multiplexingMode" => T<obj>?mode * MultiplexMode ^-> T<obj>
             ]
         |+> Protocol (
             [
@@ -535,6 +546,7 @@ module Definition =
                 LineInfo
                 Generic - Mark
                 MatchHighlighter
+                MultiplexMode
                 MIME
                 Generic - Mode
                 Range
