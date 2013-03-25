@@ -35,6 +35,10 @@ module Definition =
                 Resource "FoldCode" "CodeMirror.lib.util.foldcode.js"
                 |> Requires [Js]
 
+            let Multiplex =
+                Resource "Multiplex" "CodeMirror.lib.util.multiplex.js"
+                |> Requires [Js]
+
             let RunMode =
                 Resource "RunMode" "CodeMirror.lib.util.runmode.js"
                 |> Requires [Js]
@@ -396,6 +400,10 @@ module Definition =
                 ]
         }
 
+    let MultiplexMode =
+        Class "CodeMirror.MultiplexMode"
+        |> Requires [Res.Addons.Multiplex]
+
     let CodeMirror =
         Class "CodeMirror"
         |=> CodeMirror_t
@@ -496,6 +504,9 @@ module Definition =
 
                 // closetag.js
                 "closeTag" =? TagClosing
+
+                // multiplex.js
+                "multiplexingMode" => T<string>?``open`` * T<string>?close * T<obj>?mode * !?T<string>?delimStyle ^-> MultiplexMode
             ]
             @ List.map (fun (name, ty) ->
                     ("option_" + name) =% ty
