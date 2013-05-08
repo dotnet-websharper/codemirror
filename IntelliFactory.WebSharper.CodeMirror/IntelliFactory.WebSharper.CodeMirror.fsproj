@@ -26,7 +26,7 @@
     <Name>IntelliFactory.WebSharper.CodeMirror</Name>
     <RootNamespace>$(Name)</RootNamespace>
     <AssemblyName>$(Name)</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <Import Project="../.build/lib/IntelliFactory.WebSharper.InterfaceGenerator.targets" />
