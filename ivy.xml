@@ -1,0 +1,11 @@
+<ivy-module version="2.0">
+  <info organisation="IntelliFactory" module="if-ws-codemirror" revision="2.4" />
+  <publications>
+    <artifact name="IntelliFactory.WebSharper.CodeMirror" ext="dll" type="bin" />
+    <artifact name="IntelliFactory.WebSharper.CodeMirror" ext="pdb" type="debug" />
+    <!-- <artifact name="IntelliFactory.WebSharper.CodeMirror" ext="xml" type="doc" /> -->
+  </publications>
+  <dependencies>
+    <dependency name="WebSharper" rev="latest.integration" />
+  </dependencies>
+</ivy-module>

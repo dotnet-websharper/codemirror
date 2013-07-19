@@ -1,0 +1,7 @@
+syntax: glob
+.build/*
+*/bin/*
+*/obj/*
+*/Scripts/*
+*.suo
+*.user
