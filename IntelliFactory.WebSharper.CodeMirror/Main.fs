@@ -20,52 +20,126 @@ module Definition =
 
         module Addons =
 
-            let DialogCss =
-                Resource "DialogCss" "CodeMirror.lib.util.dialog.css"
+            let comment_comment_js =
+                Resource "comment_comment_js" "CodeMirror.addon.comment.comment.js"
 
-            let Dialog =
-                Resource "Dialog" "CodeMirror.lib.util.dialog.js"
-                |> Requires [Js; DialogCss]
+            let dialog_dialog_css =
+                Resource "dialog_dialog_css" "CodeMirror.addon.dialog.dialog.css"
 
-            let SearchCursor =
-                Resource "SearchCursor" "CodeMirror.lib.util.searchcursor.js"
-                |> Requires [Js]
+            let dialog_dialog_js =
+                Resource "dialog_dialog_js" "CodeMirror.addon.dialog.dialog.js"
+                |> Requires [dialog_dialog_css]
 
-            let Search =
-                Resource "Search" "CodeMirror.lib.util.search.js"
-                |> Requires [Js; SearchCursor]
+            let display_placeholder_js =
+                Resource "display_placeholder_js" "CodeMirror.addon.display.placeholder.js"
 
-            let FoldCode =
-                Resource "FoldCode" "CodeMirror.lib.util.foldcode.js"
-                |> Requires [Js]
+            let edit_closebrackets_js =
+                Resource "edit_closebrackets_js" "CodeMirror.addon.edit.closebrackets.js"
 
-            let Multiplex =
-                Resource "Multiplex" "CodeMirror.lib.util.multiplex.js"
-                |> Requires [Js]
+            let edit_closetag_js =
+                Resource "edit_closetag_js" "CodeMirror.addon.edit.closetag.js"
 
-            let RunMode =
-                Resource "RunMode" "CodeMirror.lib.util.runmode.js"
-                |> Requires [Js]
+            let edit_continuecomment_js =
+                Resource "edit_continuecomment_js" "CodeMirror.addon.edit.continuecomment.js"
 
-            let SimpleHintCss =
-                Resource "SimpleHintCss" "CodeMirror.lib.util.simple-hint.css"
-                |> Requires [Js]
+            let edit_continuelist_js =
+                Resource "edit_continuelist_js" "CodeMirror.addon.edit.continuelist.js"
 
-            let SimpleHint =
-                Resource "SimpleHint" "CodeMirror.lib.util.simple-hint.js"
-                |> Requires [Js; SimpleHintCss]
+            let edit_matchbrackets_js =
+                Resource "edit_matchbrackets_js" "CodeMirror.addon.edit.matchbrackets.js"
 
-            let JavaScriptHint =
-                Resource "JavaScriptHint" "CodeMirror.lib.util.javascript-hint.js"
-                |> Requires [Js; SimpleHint]
+            let edit_trailingspace_js =
+                Resource "edit_trailingspace_js" "CodeMirror.addon.edit.trailingspace.js"
 
-            let MatchHighlighter =
-                Resource "MatchHighlighter" "CodeMirror.lib.util.match-highlighter.js"
-                |> Requires [Js; SearchCursor]
+            let fold_foldcode_js =
+                Resource "fold_foldcode_js" "CodeMirror.addon.fold.foldcode.js"
 
-            let CloseTag =
-                Resource "CloseTag" "CodeMirror.lib.util.closetag.js"
-                |> Requires [Js]
+            let fold_brace_fold_js =
+                Resource "fold_brace_fold_js" "CodeMirror.addon.fold.brace-fold.js"
+
+            let fold_indent_fold_js =
+                Resource "fold_indent_fold_js" "CodeMirror.addon.fold.indent-fold.js"
+
+            let fold_xml_fold_js =
+                Resource "fold_xml_fold_js" "CodeMirror.addon.fold.xml-fold.js"
+
+            let hint_html_hint_js =
+                Resource "hint_html_hint_js" "CodeMirror.addon.hint.html-hint.js"
+
+            let hint_javascript_hint_js =
+                Resource "hint_javascript_hint_js" "CodeMirror.addon.hint.javascript-hint.js"
+
+            let hint_pig_hint_js =
+                Resource "hint_pig_hint_js" "CodeMirror.addon.hint.pig-hint.js"
+
+            let hint_python_hint_js =
+                Resource "hint_python_hint_js" "CodeMirror.addon.hint.python-hint.js"
+
+            let hint_show_hint_css =
+                Resource "hint_show_hint_css" "CodeMirror.addon.hint.show-hint.css"
+
+            let hint_show_hint_js =
+                Resource "hint_show_hint_js" "CodeMirror.addon.hint.show-hint.js"
+                |> Requires [hint_show_hint_css]
+
+            let hint_xml_hint_js =
+                Resource "hint_xml_hint_js" "CodeMirror.addon.hint.xml-hint.js"
+
+            let lint_coffeescript_lint_js =
+                Resource "lint_coffeescript_lint_js" "CodeMirror.addon.lint.coffeescript-lint.js"
+
+            let lint_javascript_lint_js =
+                Resource "lint_javascript_lint_js" "CodeMirror.addon.lint.javascript-lint.js"
+
+            let lint_json_lint_js =
+                Resource "lint_json_lint_js" "CodeMirror.addon.lint.json-lint.js"
+
+            let lint_lint_css =
+                Resource "lint_lint_css" "CodeMirror.addon.lint.lint.css"
+
+            let lint_lint_js =
+                Resource "lint_lint_js" "CodeMirror.addon.lint.lint.js"
+                |> Requires [lint_lint_css]
+
+            let merge_merge_css =
+                Resource "merge_merge_css" "CodeMirror.addon.merge.merge.css"
+
+            let merge_merge_js =
+                Resource "merge_merge_js" "CodeMirror.addon.merge.merge.js"
+                |> Requires [merge_merge_css]
+
+            let merge_dep_diff_match_patch_js =
+                Resource "merge_dep_diff_match_patch_js" "CodeMirror.addon.merge.dep.diff_match_patch.js"
+
+            let mode_loadmode_js =
+                Resource "mode_loadmode_js" "CodeMirror.addon.mode_.loadmode.js"
+
+            let mode_multiplex_js =
+                Resource "mode_multiplex_js" "CodeMirror.addon.mode_.multiplex.js"
+
+            let mode_overlay_js =
+                Resource "mode_overlay_js" "CodeMirror.addon.mode_.overlay.js"
+
+            let runmode_colorize_js =
+                Resource "runmode_colorize_js" "CodeMirror.addon.runmode.colorize.js"
+
+            let runmode_runmode_js =
+                Resource "runmode_runmode_js" "CodeMirror.addon.runmode.runmode.js"
+
+            let search_match_highlighter_js =
+                Resource "search_match_highlighter_js" "CodeMirror.addon.search.match-highlighter.js"
+
+            let search_search_js =
+                Resource "search_search_js" "CodeMirror.addon.search.search.js"
+
+            let search_searchcursor_js =
+                Resource "search_searchcursor_js" "CodeMirror.addon.search.searchcursor.js"
+
+            let selection_active_line_js =
+                Resource "selection_active_line_js" "CodeMirror.addon.selection.active-line.js"
+
+            let selection_mark_selection_js =
+                Resource "selection_mark_selection_js" "CodeMirror.addon.selection.mark-selection.js"
 
         let Modes =
             [
@@ -433,7 +507,7 @@ module Definition =
                 Constructor (T<Element>)?template
                 |> WithInline "$template.outerHTML"
             ]
-        |> Requires [Res.Addons.Dialog]
+        |> Requires [Res.Addons.dialog_dialog_js]
 
     let SearchCursor =
         Class "SearchCursor"
@@ -444,7 +518,7 @@ module Definition =
                 "to" => T<unit> ^-> CharCoords
                 "replace" => T<string> ^-> T<unit>
             ]
-        |> Requires [Res.Addons.SearchCursor]
+        |> Requires [Res.Addons.search_searchcursor_js]
 
     let RangeFinder =
         Class "RangeFinder"
@@ -452,7 +526,7 @@ module Definition =
                 Constructor ((CodeMirror_t * T<int> * T<bool> ^-> T<int>)?func)
                 |> WithInline "$func"
             ]
-        |> Requires [Res.Addons.FoldCode]
+        |> Requires [Res.Addons.fold_foldcode_js]
 
     let Hint =
         Pattern.Config "Hint" {
@@ -464,7 +538,7 @@ module Definition =
                 ]
             Optional = []
         }
-        |> Requires [Res.Addons.SimpleHint]
+        |> Requires [Res.Addons.hint_show_hint_js]
 
     let HintOptions =
         Pattern.Config "HintOptions" {
@@ -503,7 +577,7 @@ module Definition =
                 Constructor T<Element>?container
                 |> WithInline "$container"
             ]
-        |> Requires [Res.Addons.RunMode]
+        |> Requires [Res.Addons.runmode_runmode_js]
 
     let JavaScriptHint =
         Class "JavaScriptHint"
@@ -511,7 +585,7 @@ module Definition =
                 "hint" =? CodeMirror_t ^-> Hint
                 |> WithGetterInline "$this"
             ]
-        |> Requires [Res.Addons.JavaScriptHint]
+        |> Requires [Res.Addons.hint_javascript_hint_js; Res.Addons.hint_show_hint_js]
 
     let MatchHighlighter =
         Class "MatchHighlighter"
@@ -519,7 +593,7 @@ module Definition =
                 Constructor T<string>?``class``
                 |> WithInline "$class"
             ]
-        |> Requires [Res.Addons.MatchHighlighter]
+        |> Requires [Res.Addons.search_match_highlighter_js]
 
     let TagClosing =
         Class "TagClosing"
@@ -529,7 +603,7 @@ module Definition =
                 "closeTag" => CodeMirror_t?editor * T<string>?char * (T<string[]> + T<bool>)?indent ^-> T<unit>
                 |> WithInline "$this.call($editor, $editor, $char, $indent)"
             ]
-        |> Requires [Res.Addons.CloseTag]
+        |> Requires [Res.Addons.edit_closetag_js]
 
     let Stream =
         Class "Stream"
@@ -582,7 +656,7 @@ module Definition =
                     "delimStyle", T<string>
                 ]
         }
-        |> Requires [Res.Addons.Multiplex]
+        |> Requires [Res.Addons.mode_multiplex_js]
 
     let Collapse =
         Pattern.EnumStrings "CodeMirror.Collapse" ["start"; "end"]
@@ -865,18 +939,45 @@ module Definition =
                 Res.Js
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons" [
-                Res.Addons.DialogCss
-                Res.Addons.Dialog
-                Res.Addons.SearchCursor
-                Res.Addons.Search
-                Res.Addons.FoldCode
-                Res.Addons.Multiplex
-                Res.Addons.RunMode
-                Res.Addons.SimpleHintCss
-                Res.Addons.SimpleHint
-                Res.Addons.JavaScriptHint
-                Res.Addons.MatchHighlighter
-                Res.Addons.CloseTag
+                Res.Addons.comment_comment_js
+                Res.Addons.dialog_dialog_css
+                Res.Addons.dialog_dialog_js
+                Res.Addons.display_placeholder_js
+                Res.Addons.edit_closebrackets_js
+                Res.Addons.edit_closetag_js
+                Res.Addons.edit_continuecomment_js
+                Res.Addons.edit_continuelist_js
+                Res.Addons.edit_matchbrackets_js
+                Res.Addons.edit_trailingspace_js
+                Res.Addons.fold_foldcode_js
+                Res.Addons.fold_brace_fold_js
+                Res.Addons.fold_indent_fold_js
+                Res.Addons.fold_xml_fold_js
+                Res.Addons.hint_html_hint_js
+                Res.Addons.hint_javascript_hint_js
+                Res.Addons.hint_pig_hint_js
+                Res.Addons.hint_python_hint_js
+                Res.Addons.hint_show_hint_css
+                Res.Addons.hint_show_hint_js
+                Res.Addons.hint_xml_hint_js
+                Res.Addons.lint_coffeescript_lint_js
+                Res.Addons.lint_javascript_lint_js
+                Res.Addons.lint_json_lint_js
+                Res.Addons.lint_lint_js
+                Res.Addons.lint_lint_css
+                Res.Addons.merge_merge_css
+                Res.Addons.merge_merge_js
+                Res.Addons.merge_dep_diff_match_patch_js
+                Res.Addons.mode_loadmode_js
+                Res.Addons.mode_multiplex_js
+                Res.Addons.mode_overlay_js
+                Res.Addons.runmode_colorize_js
+                Res.Addons.runmode_runmode_js
+                Res.Addons.search_match_highlighter_js
+                Res.Addons.search_search_js
+                Res.Addons.search_searchcursor_js
+                Res.Addons.selection_active_line_js
+                Res.Addons.selection_mark_selection_js
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Modes"
                 Res.Modes
