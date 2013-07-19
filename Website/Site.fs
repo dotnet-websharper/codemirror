@@ -24,34 +24,33 @@ module Client =
                 CodeMirror.Options(
                     Mode = "javascript",
                     LineNumbers = true,
-                    OnGutterClick =
-                        CodeMirror.NewFoldFunction(RangeFinder(CodeMirror.IndentRangeFinder)),
                     ExtraKeys = New [
                         "Ctrl-Space", box(fun cm ->
                             CodeMirror.SimpleHint(cm, CodeMirror.JavascriptHint.Hint))
-                    ],
-                    OnCursorActivity = fun cm ->
-                        cm.MatchHighlight(MatchHighlighter("match-highlight"))
+                    ]
                 )
             let cm =
                 CodeMirror.FromTextArea(
                     Dom.Document.Current.GetElementById "editor",
                     options)
+            cm.OnCursorActivity(fun cm ->
+                        cm.MatchHighlight(MatchHighlighter("match-highlight")))
+            //cm.OnGutterClick(CodeMirror.NewFoldFunction(RangeFinder(CodeMirror.IndentRangeFinder)))
             JavaScript.Log <| cm.CharCoords(CharCoords(1, 1), CoordsMode.Page)
             let dial = cm.OpenDialog(Dialog("bar:<input/>"), JavaScript.Log)
             let resultContainer = Pre [Attr.Class "cm-s-default"]
 
-            let cmXml =
-                let options =
-                    CodeMirror.Options(
-                        Mode = "text/html",
-                        ExtraKeys = New [
-                            "'>'", box(fun (cm: CodeMirror) -> cm.CloseTag.CloseTag(cm, ">"))
-                            "'/'", box(fun (cm: CodeMirror) -> cm.CloseTag.CloseTag(cm, "/"))
-                        ]
-                    )
-                CodeMirror.FromTextArea(
-                    Dom.Document.Current.GetElementById "editor-xml", options)
+//            let cmXml =
+//                let options =
+//                    CodeMirror.Options(
+//                        Mode = "text/html",
+//                        ExtraKeys = New [
+//                            "'>'", box(fun (cm: CodeMirror) -> cm.CloseTag.CloseTag(cm, ">"))
+//                            "'/'", box(fun (cm: CodeMirror) -> cm.CloseTag.CloseTag(cm, "/"))
+//                        ]
+//                    )
+//                CodeMirror.FromTextArea(
+//                    Dom.Document.Current.GetElementById "editor-xml", options)
 
             Div [
                 Button [Text "Run mode"]
