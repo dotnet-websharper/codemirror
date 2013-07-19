@@ -543,8 +543,8 @@ module Definition =
                 "eatSpace" => T<unit -> bool>
                 "skipToEnd" => T<unit -> unit>
                 "skipTo" => T<char -> bool>
-                "match" => T<string>* !?T<bool>?consume * !?T<bool>?caseFold ^-> T<bool>
-                "match" => T<RegExp>* !?T<bool>?consume * !?T<bool>?caseFold ^-> T<string[]>
+                "match" => T<string>?pattern * !?T<bool>?consume * !?T<bool>?caseFold ^-> T<bool>
+                "match" => T<RegExp>?pattern * !?T<bool>?consume * !?T<bool>?caseFold ^-> T<string[]>
                 "backUp" => T<int -> unit>
                 "column" => T<unit -> int>
                 "indentation" => T<unit -> int>
@@ -602,7 +602,7 @@ module Definition =
         |+> [
                 Constructor ((T<Node> + T<Element -> unit>) * !?CodeMirror_Options)
                 "version" =? T<string>
-                "fromTextArea" => T<Node> * !?CodeMirror_Options ^-> CodeMirrorTextArea
+                "fromTextArea" => T<Node>?textArea * !?CodeMirror_Options ^-> CodeMirrorTextArea
                 "defaults" =? CodeMirror_Options
                 "defineExtension" => T<string> * T<obj> ^-> T<unit>
                 Generic - fun t -> "defineOption" => T<string> * t?``default`` * (CodeMirror_t * t ^-> T<unit>) ^-> T<unit>
@@ -619,7 +619,7 @@ module Definition =
                 //// Add-ons
 
                 // foldcode.js
-                "newFoldFunction" => RangeFinder * !?T<string>?markText * !?T<bool>?hideEnd ^-> (CodeMirror_t * T<int> * T<Event> ^-> T<unit>)
+                "newFoldFunction" => RangeFinder?rangeFinder * !?T<string>?markText * !?T<bool>?hideEnd ^-> (CodeMirror_t * T<int> * T<Event> ^-> T<unit>)
                 "braceRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
                 "indentRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
                 "tagRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
@@ -643,7 +643,7 @@ module Definition =
                 "getValue" => T<unit> ^-> T<string>
                 "setValue" => T<string> ^-> T<unit>
                 "getRange" => CharCoords?from * CharCoords?``to`` * !?T<string>?separator ^-> T<string>
-                "replaceRange" => T<string> * CharCoords * !?CharCoords ^-> T<unit>
+                "replaceRange" => T<string>?replacement * CharCoords?from * !?CharCoords?``to`` ^-> T<unit>
                 "getLine" => T<int> ^-> T<string>
                 "setLine" => T<int> * T<string> ^-> T<unit>
                 "removeLine" => T<unit> ^-> T<unit>
@@ -657,13 +657,13 @@ module Definition =
 
                 // Cursor and selection methods
                 "getSelection" => T<unit> ^-> T<string>
-                "replaceSelection" => T<string> * !?Collapse ^-> T<unit>
+                "replaceSelection" => T<string>?replacement * !?Collapse ^-> T<unit>
                 "getCursor" => !?T<bool> ^-> CharCoords
                 "somethingSelected" => T<unit> ^-> T<bool>
                 "setCursor" => CharCoords ^-> T<unit>
                 "setCursor" => T<int> * T<int> ^-> T<unit>
-                "setSelection" => CharCoords * !?CharCoords ^-> T<unit>
-                "extendSelection" => CharCoords * !?CharCoords ^-> T<unit>
+                "setSelection" => CharCoords?anchor * !?CharCoords?head ^-> T<unit>
+                "extendSelection" => CharCoords?from * !?CharCoords?``to`` ^-> T<unit>
                 "setExtending" => T<bool> ^-> T<unit>
                 "hasFocus" => T<unit> ^-> T<bool>
                 "findPosH" => CharCoords?start * T<int>?amount * FindPosHUnit * T<bool>?visually ^-> FindPosCoords
@@ -674,8 +674,8 @@ module Definition =
                 "getOption" => T<string> ^-> T<obj>
                 "addKeyMap" => T<obj> * T<bool>?bottom ^-> T<unit>
                 "removeKeyMap" => T<obj> ^-> T<unit>
-                "addOverlay" => (T<string> + T<obj>) * !?OverlayOptions ^-> T<unit>
-                "removeOverlay" => (T<string> + T<obj>) ^-> T<unit>
+                "addOverlay" => (T<string> + T<obj>)?mode * !?OverlayOptions ^-> T<unit>
+                "removeOverlay" => (T<string> + T<obj>)?mode ^-> T<unit>
                 "on" => T<string> * T<obj> ^-> T<unit>
                 "off" => T<string> * T<obj> ^-> T<unit>
 
@@ -688,8 +688,8 @@ module Definition =
                 "setHistory" => History ^-> T<unit>
 
                 // Text-marking methods
-                "markText" => CharCoords * CharCoords * !?TextMarkerOptions ^-> TextMarker (Range CharCoords)
-                "setBookmark" => CharCoords * !?BookmarkOptions ^-> TextMarker CharCoords
+                "markText" => CharCoords?from * CharCoords?``to`` * !?TextMarkerOptions ^-> TextMarker (Range CharCoords)
+                "setBookmark" => CharCoords?pos * !?BookmarkOptions ^-> TextMarker CharCoords
                 "findMarksAt" => CharCoords ^-> Type.ArrayOf (TextMarker T<obj>)
                 "getAllMarks" => T<unit> ^-> Type.ArrayOf (TextMarker T<obj>)
 
@@ -700,11 +700,11 @@ module Definition =
                 "removeLineClass" => line * LineClassWhere * T<string> ^-> LineHandle
                 "lineInfo" => line ^-> LineInfo
                 "addWidget" => CharCoords * T<Node> * T<bool> ^-> T<unit>
-                "addLineWidget" => line * T<Node> * !?LineWidgetOptions ^-> LineWidget
+                "addLineWidget" => line?line * T<Node>?node * !?LineWidgetOptions ^-> LineWidget
                 "setSize" => (T<int> + T<string>)?width * (T<int> + T<string>)?height ^-> T<unit>
                 "scrollTo" => T<int> * T<int> ^-> T<unit>
                 "getScrollInfo" => T<unit> ^-> ScrollInfo
-                "scrollIntoView" => (CharCoords + Rectangle) * !?T<int>?margin ^-> T<unit>
+                "scrollIntoView" => (CharCoords + Rectangle)?pos * !?T<int>?margin ^-> T<unit>
                 "cursorCoords" => T<bool> * CoordsMode ^-> Coords
                 "charCoords" => CharCoords * CoordsMode ^-> Coords
                 "coordsChar" => Coords ^-> CharCoords
@@ -718,14 +718,14 @@ module Definition =
                 // Mode, state, and token-related methods
                 Generic - fun t -> "getMode" => T<unit> ^-> Mode t
                 Generic - fun t -> "getModeAt" => CharCoords ^-> Mode t
-                "getTokenAt" => CharCoords * !?T<bool>?precise ^-> Token
+                "getTokenAt" => CharCoords?pos * !?T<bool>?precise ^-> Token
                 "getTokenTypeAt" => CharCoords ^-> T<string>
                 "getHelper" => CharCoords * T<string>?``type`` ^-> T<obj>
                 "getStateAfter" => !?T<int> * !?T<bool>?precise ^-> T<obj>
 
                 // Miscellaneous methods
                 Generic - fun t -> "operation" => (T<unit> ^-> t) ^-> t
-                "indentLine" => line * !?(Indent + T<int>) ^-> T<unit>
+                "indentLine" => line?line * !?(Indent + T<int>) ^-> T<unit>
                 "toggleOverwrite" => !?T<bool>?value ^-> T<unit>
                 "posFromIndex" => T<int> ^-> CharCoords
                 "indexFromPos" => CharCoords ^-> T<int>
@@ -798,7 +798,7 @@ module Definition =
                 "matchBrackets" => T<unit> ^-> T<unit>
 
                 // searchcursor.js
-                "getSearchCursor" => (T<string> + T<RegExp>) * !?CharCoords * !?T<bool> ^-> SearchCursor
+                "getSearchCursor" => (T<string> + T<RegExp>)?query * !?CharCoords * !?T<bool> ^-> SearchCursor
 
                 // match-highlighter.js
                 "matchHighlight" => MatchHighlighter ^-> T<unit>
