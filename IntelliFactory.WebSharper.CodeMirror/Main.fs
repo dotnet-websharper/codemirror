@@ -640,6 +640,10 @@ module Definition =
                     "compareStates", state * state ^-> T<bool>
                     "indent", state * T<string> ^-> T<int>
                     "electricChars", T<string>
+                    "lineComment", T<string>
+                    "blockCommentStart", T<string>
+                    "blockCommentEnd", T<string>
+                    "blockCommentLead", T<string>
                 ]
         }
 
