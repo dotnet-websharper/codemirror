@@ -693,6 +693,8 @@ module Definition =
                 "defineMIME" => T<string> * T<obj> ^-> T<unit>
                 Generic - fun t -> "getMode" => CodeMirror_Options * T<obj> ^-> Mode t
                 Generic - fun t -> "copyState" => Mode t * t ^-> t
+                "Pass" => T<unit -> unit>
+                |> WithInline "CodeMirror.Pass"
 
                 //// Add-ons
 
