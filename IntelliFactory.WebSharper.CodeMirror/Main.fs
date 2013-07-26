@@ -8,209 +8,210 @@ module Definition =
     module Res =
 
         let Css =
-            Resource "Css" "CodeMirror.lib.codemirror.css"
+            Resource "Css" "codemirror.css"
+            |> fun js -> js.AssemblyWide()
 
         let Js =
-            Resource "Js" "CodeMirror.lib.codemirror.js"
-            |> Requires [Css]
+            Resource "Js" "codemirror.js"
+            |> fun js -> js.AssemblyWide()
 
         let ModeMeta =
-            Resource "Meta" "CodeMirror.mode.meta.js"
+            Resource "Meta" "meta.js"
             |> Requires [Js]
 
         module Addons =
 
             let comment_comment_js =
-                Resource "comment_comment_js" "CodeMirror.addon.comment.comment.js"
+                Resource "comment_comment_js" "comment.js"
 
             let dialog_dialog_css =
-                Resource "dialog_dialog_css" "CodeMirror.addon.dialog.dialog.css"
+                Resource "dialog_dialog_css" "dialog.css"
 
             let dialog_dialog_js =
-                Resource "dialog_dialog_js" "CodeMirror.addon.dialog.dialog.js"
+                Resource "dialog_dialog_js" "dialog.js"
                 |> Requires [dialog_dialog_css]
 
             let display_placeholder_js =
-                Resource "display_placeholder_js" "CodeMirror.addon.display.placeholder.js"
+                Resource "display_placeholder_js" "placeholder.js"
 
             let edit_closebrackets_js =
-                Resource "edit_closebrackets_js" "CodeMirror.addon.edit.closebrackets.js"
+                Resource "edit_closebrackets_js" "closebrackets.js"
 
             let edit_closetag_js =
-                Resource "edit_closetag_js" "CodeMirror.addon.edit.closetag.js"
+                Resource "edit_closetag_js" "closetag.js"
 
             let edit_continuecomment_js =
-                Resource "edit_continuecomment_js" "CodeMirror.addon.edit.continuecomment.js"
+                Resource "edit_continuecomment_js" "continuecomment.js"
 
             let edit_continuelist_js =
-                Resource "edit_continuelist_js" "CodeMirror.addon.edit.continuelist.js"
+                Resource "edit_continuelist_js" "continuelist.js"
 
             let edit_matchbrackets_js =
-                Resource "edit_matchbrackets_js" "CodeMirror.addon.edit.matchbrackets.js"
+                Resource "edit_matchbrackets_js" "matchbrackets.js"
 
             let edit_trailingspace_js =
-                Resource "edit_trailingspace_js" "CodeMirror.addon.edit.trailingspace.js"
+                Resource "edit_trailingspace_js" "trailingspace.js"
 
             let fold_foldcode_js =
-                Resource "fold_foldcode_js" "CodeMirror.addon.fold.foldcode.js"
+                Resource "fold_foldcode_js" "foldcode.js"
 
             let fold_brace_fold_js =
-                Resource "fold_brace_fold_js" "CodeMirror.addon.fold.brace-fold.js"
+                Resource "fold_brace_fold_js" "brace-fold.js"
 
             let fold_indent_fold_js =
-                Resource "fold_indent_fold_js" "CodeMirror.addon.fold.indent-fold.js"
+                Resource "fold_indent_fold_js" "indent-fold.js"
 
             let fold_xml_fold_js =
-                Resource "fold_xml_fold_js" "CodeMirror.addon.fold.xml-fold.js"
+                Resource "fold_xml_fold_js" "xml-fold.js"
 
             let hint_html_hint_js =
-                Resource "hint_html_hint_js" "CodeMirror.addon.hint.html-hint.js"
+                Resource "hint_html_hint_js" "html-hint.js"
 
             let hint_javascript_hint_js =
-                Resource "hint_javascript_hint_js" "CodeMirror.addon.hint.javascript-hint.js"
+                Resource "hint_javascript_hint_js" "javascript-hint.js"
 
             let hint_pig_hint_js =
-                Resource "hint_pig_hint_js" "CodeMirror.addon.hint.pig-hint.js"
+                Resource "hint_pig_hint_js" "pig-hint.js"
 
             let hint_python_hint_js =
-                Resource "hint_python_hint_js" "CodeMirror.addon.hint.python-hint.js"
+                Resource "hint_python_hint_js" "python-hint.js"
 
             let hint_show_hint_css =
-                Resource "hint_show_hint_css" "CodeMirror.addon.hint.show-hint.css"
+                Resource "hint_show_hint_css" "show-hint.css"
 
             let hint_show_hint_js =
-                Resource "hint_show_hint_js" "CodeMirror.addon.hint.show-hint.js"
+                Resource "hint_show_hint_js" "show-hint.js"
                 |> Requires [hint_show_hint_css]
 
             let hint_xml_hint_js =
-                Resource "hint_xml_hint_js" "CodeMirror.addon.hint.xml-hint.js"
+                Resource "hint_xml_hint_js" "xml-hint.js"
 
             let lint_coffeescript_lint_js =
-                Resource "lint_coffeescript_lint_js" "CodeMirror.addon.lint.coffeescript-lint.js"
+                Resource "lint_coffeescript_lint_js" "coffeescript-lint.js"
 
             let lint_javascript_lint_js =
-                Resource "lint_javascript_lint_js" "CodeMirror.addon.lint.javascript-lint.js"
+                Resource "lint_javascript_lint_js" "javascript-lint.js"
 
             let lint_json_lint_js =
-                Resource "lint_json_lint_js" "CodeMirror.addon.lint.json-lint.js"
+                Resource "lint_json_lint_js" "json-lint.js"
 
             let lint_lint_css =
-                Resource "lint_lint_css" "CodeMirror.addon.lint.lint.css"
+                Resource "lint_lint_css" "lint.css"
 
             let lint_lint_js =
-                Resource "lint_lint_js" "CodeMirror.addon.lint.lint.js"
+                Resource "lint_lint_js" "lint.js"
                 |> Requires [lint_lint_css]
 
             let merge_merge_css =
-                Resource "merge_merge_css" "CodeMirror.addon.merge.merge.css"
+                Resource "merge_merge_css" "merge.css"
 
             let merge_merge_js =
-                Resource "merge_merge_js" "CodeMirror.addon.merge.merge.js"
+                Resource "merge_merge_js" "merge.js"
                 |> Requires [merge_merge_css]
 
             let merge_dep_diff_match_patch_js =
-                Resource "merge_dep_diff_match_patch_js" "CodeMirror.addon.merge.dep.diff_match_patch.js"
+                Resource "merge_dep_diff_match_patch_js" "diff_match_patch.js"
 
             let mode_loadmode_js =
-                Resource "mode_loadmode_js" "CodeMirror.addon.mode_.loadmode.js"
+                Resource "mode_loadmode_js" "loadmode.js"
 
             let mode_multiplex_js =
-                Resource "mode_multiplex_js" "CodeMirror.addon.mode_.multiplex.js"
+                Resource "mode_multiplex_js" "multiplex.js"
 
             let mode_overlay_js =
-                Resource "mode_overlay_js" "CodeMirror.addon.mode_.overlay.js"
+                Resource "mode_overlay_js" "overlay.js"
 
             let runmode_colorize_js =
-                Resource "runmode_colorize_js" "CodeMirror.addon.runmode.colorize.js"
+                Resource "runmode_colorize_js" "colorize.js"
 
             let runmode_runmode_js =
-                Resource "runmode_runmode_js" "CodeMirror.addon.runmode.runmode.js"
+                Resource "runmode_runmode_js" "runmode.js"
 
             let search_match_highlighter_js =
-                Resource "search_match_highlighter_js" "CodeMirror.addon.search.match-highlighter.js"
+                Resource "search_match_highlighter_js" "match-highlighter.js"
 
             let search_search_js =
-                Resource "search_search_js" "CodeMirror.addon.search.search.js"
+                Resource "search_search_js" "search.js"
 
             let search_searchcursor_js =
-                Resource "search_searchcursor_js" "CodeMirror.addon.search.searchcursor.js"
+                Resource "search_searchcursor_js" "searchcursor.js"
 
             let selection_active_line_js =
-                Resource "selection_active_line_js" "CodeMirror.addon.selection.active-line.js"
+                Resource "selection_active_line_js" "active-line.js"
 
             let selection_mark_selection_js =
-                Resource "selection_mark_selection_js" "CodeMirror.addon.selection.mark-selection.js"
+                Resource "selection_mark_selection_js" "mark-selection.js"
 
         let Modes =
             [
-                "APL", "apl.apl"
-                "Asterisk", "asterisk.asterisk"
-                "CLike", "clike.clike"
-                "Clojure", "clojure.clojure"
-                "Cobol", "cobol.cobol"
-                "CoffeeScript", "coffeescript.coffeescript"
-                "CommonLisp", "commonlisp.commonlisp"
-                "CSS", "css.css"
-                "D", "d.d"
-                "Diff", "diff.diff"
-                "ECL", "ecl.ecl"
-                "Erlang", "erlang.erlang"
-                "Gas", "gas.gas"
-                "GFM", "gfm.gfm"
-                "Go", "go.go"
-                "Groovy", "groovy.groovy"
-                "HAML", "haml.haml"
-                "Haskell", "haskell.haskell"
-                "Haxe", "haxe.haxe"
-                "HtmlEmbedded", "htmlembedded.htmlembedded"
-                "HtmlMixed", "htmlmixed.htmlmixed"
-                "HTTP", "http.http"
-                "JavaScript", "javascript.javascript"
-                "Jinja2", "jinja2.jinja2"
-                "LESS", "less.less"
-                "LiveScript", "livescript.livescript"
-                "Lua", "lua.lua"
-                "Markdown", "markdown.markdown"
-                "MIRC", "mirc.mirc"
-                "NTriples", "ntriples.ntriples"
-                "OCaml", "ocaml.ocaml"
-                "Pascal", "pascal.pascal"
-                "Perl", "perl.perl"
-                "PHP", "php.php"
-                "Pig", "pig.pig"
-                "Properties", "properties.properties"
-                "Python", "python.python"
-                "Q", "q.q"
-                "R", "r.r"
-                "RpmChanges", "rpm.changes.changes"
-                "RpmSpec", "rpm.spec.spec"
-                "Rst", "rst.rst"
-                "Ruby", "ruby.ruby"
-                "Rust", "rust.rust"
-                "SASS", "sass.sass"
-                "Scheme", "scheme.scheme"
-                "Shell", "shell.shell"
-                "Sieve", "sieve.sieve"
-                "Smalltalk", "smalltalk.smalltalk"
-                "Smarty", "smarty.smarty"
-                "SPARQL", "sparql.sparql"
-                "SQL", "sql.sql"
-                "Stex", "stex.stex"
-                "Tcl", "tcl.tcl"
-                "TiddlyWiki", "tiddlywiki.tiddlywiki"
-                "Tiki", "tiki.tiki"
-                "Turtle", "turtle.turtle"
-                "VB", "vb.vb"
-                "VBScript", "vbscript.vbscript"
-                "Velocity", "velocity.velocity"
-                "Verilog", "verilog.verilog"
-                "XML", "xml.xml"
-                "XQuery", "xquery.xquery"
-                "YAML", "yaml.yaml"
-                "Z80", "z80.z80"
+                "APL", "apl"
+                "Asterisk", "asterisk"
+                "CLike", "clike"
+                "Clojure", "clojure"
+                "Cobol", "cobol"
+                "CoffeeScript", "coffeescript"
+                "CommonLisp", "commonlisp"
+                "CSS", "css"
+                "D", "d"
+                "Diff", "diff"
+                "ECL", "ecl"
+                "Erlang", "erlang"
+                "Gas", "gas"
+                "GFM", "gfm"
+                "Go", "go"
+                "Groovy", "groovy"
+                "HAML", "haml"
+                "Haskell", "haskell"
+                "Haxe", "haxe"
+                "HtmlEmbedded", "htmlembedded"
+                "HtmlMixed", "htmlmixed"
+                "HTTP", "http"
+                "JavaScript", "javascript"
+                "Jinja2", "jinja2"
+                "LESS", "less"
+                "LiveScript", "livescript"
+                "Lua", "lua"
+                "Markdown", "markdown"
+                "MIRC", "mirc"
+                "NTriples", "ntriples"
+                "OCaml", "ocaml"
+                "Pascal", "pascal"
+                "Perl", "perl"
+                "PHP", "php"
+                "Pig", "pig"
+                "Properties", "properties"
+                "Python", "python"
+                "Q", "q"
+                "R", "r"
+                "RpmChanges", "changes"
+                "RpmSpec", "spec"
+                "Rst", "rst"
+                "Ruby", "ruby"
+                "Rust", "rust"
+                "SASS", "sass"
+                "Scheme", "scheme"
+                "Shell", "shell"
+                "Sieve", "sieve"
+                "Smalltalk", "smalltalk"
+                "Smarty", "smarty"
+                "SPARQL", "sparql"
+                "SQL", "sql"
+                "Stex", "stex"
+                "Tcl", "tcl"
+                "TiddlyWiki", "tiddlywiki"
+                "Tiki", "tiki"
+                "Turtle", "turtle"
+                "VB", "vb"
+                "VBScript", "vbscript"
+                "Velocity", "velocity"
+                "Verilog", "verilog"
+                "XML", "xml"
+                "XQuery", "xquery"
+                "YAML", "yaml"
+                "Z80", "z80"
             ]
             |> List.map (fun (name, path) ->
-                Resource name ("CodeMirror.mode." + path + ".js")
+                Resource name (path + ".js")
                 |> Requires [Js]
                 :> CodeModel.NamespaceEntity)
 
@@ -992,4 +993,6 @@ module Definition =
 module Main =
     open IntelliFactory.WebSharper.InterfaceGenerator
 
-    do Compiler.Compile stdout Definition.Assembly
+    [<EntryPoint>]
+    let Start args =
+        Compiler.Create().Start(args, Definition.Assembly)

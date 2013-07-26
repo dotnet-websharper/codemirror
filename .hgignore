@@ -1,7 +1,8 @@
-syntax: glob
-.build/*
-*/bin/*
-*/obj/*
-*/Scripts/*
-*.suo
-*.user
+^packages/
+^tools/packages/
+^Web/bin/
+^Web/obj/
+^Web/Scripts/
+^build/
+\.suo$
+\.user$
