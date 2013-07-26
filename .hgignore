@@ -1,0 +1,8 @@
+^packages/
+^tools/packages/
+^Web/bin/
+^Web/obj/
+^Web/Scripts/
+^build/
+\.suo$
+\.user$

@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{64ca108d-fc9f-46d6-aa9c-d19dfdbd2032}</ProjectGuid>
+    <OutputPath>bin</OutputPath>
+    <Name>IntelliFactory.WebSharper.CodeMirror</Name>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CodeMirror/lib/codemirror.js" />
+    <EmbeddedResource Include="CodeMirror/lib/codemirror.css" />
+    <EmbeddedResource Include="CodeMirror/mode/meta.js" />
+    <EmbeddedResource Include="CodeMirror/mode/apl/apl.js" />
+    <EmbeddedResource Include="CodeMirror/mode/asterisk/asterisk.js" />
+    <EmbeddedResource Include="CodeMirror/mode/clike/clike.js" />
+    <EmbeddedResource Include="CodeMirror/mode/clojure/clojure.js" />
+    <EmbeddedResource Include="CodeMirror/mode/cobol/cobol.js" />
+    <EmbeddedResource Include="CodeMirror/mode/coffeescript/coffeescript.js" />
+    <EmbeddedResource Include="CodeMirror/mode/commonlisp/commonlisp.js" />
+    <EmbeddedResource Include="CodeMirror/mode/css/css.js" />
+    <EmbeddedResource Include="CodeMirror/mode/d/d.js" />
+    <EmbeddedResource Include="CodeMirror/mode/diff/diff.js" />
+    <EmbeddedResource Include="CodeMirror/mode/ecl/ecl.js" />
+    <EmbeddedResource Include="CodeMirror/mode/erlang/erlang.js" />
+    <EmbeddedResource Include="CodeMirror/mode/gas/gas.js" />
+    <EmbeddedResource Include="CodeMirror/mode/gfm/gfm.js" />
+    <EmbeddedResource Include="CodeMirror/mode/go/go.js" />
+    <EmbeddedResource Include="CodeMirror/mode/groovy/groovy.js" />
+    <EmbeddedResource Include="CodeMirror/mode/haml/haml.js" />
+    <EmbeddedResource Include="CodeMirror/mode/haskell/haskell.js" />
+    <EmbeddedResource Include="CodeMirror/mode/haxe/haxe.js" />
+    <EmbeddedResource Include="CodeMirror/mode/htmlembedded/htmlembedded.js" />
+    <EmbeddedResource Include="CodeMirror/mode/htmlmixed/htmlmixed.js" />
+    <EmbeddedResource Include="CodeMirror/mode/http/http.js" />
+    <EmbeddedResource Include="CodeMirror/mode/javascript/javascript.js" />
+    <EmbeddedResource Include="CodeMirror/mode/jinja2/jinja2.js" />
+    <EmbeddedResource Include="CodeMirror/mode/less/less.js" />
+    <EmbeddedResource Include="CodeMirror/mode/livescript/livescript.js" />
+    <EmbeddedResource Include="CodeMirror/mode/lua/lua.js" />
+    <EmbeddedResource Include="CodeMirror/mode/markdown/markdown.js" />
+    <EmbeddedResource Include="CodeMirror/mode/mirc/mirc.js" />
+    <EmbeddedResource Include="CodeMirror/mode/ntriples/ntriples.js" />
+    <EmbeddedResource Include="CodeMirror/mode/ocaml/ocaml.js" />
+    <EmbeddedResource Include="CodeMirror/mode/pascal/pascal.js" />
+    <EmbeddedResource Include="CodeMirror/mode/perl/perl.js" />
+    <EmbeddedResource Include="CodeMirror/mode/php/php.js" />
+    <EmbeddedResource Include="CodeMirror/mode/pig/pig.js" />
+    <EmbeddedResource Include="CodeMirror/mode/properties/properties.js" />
+    <EmbeddedResource Include="CodeMirror/mode/python/python.js" />
+    <EmbeddedResource Include="CodeMirror/mode/q/q.js" />
+    <EmbeddedResource Include="CodeMirror/mode/r/r.js" />
+    <EmbeddedResource Include="CodeMirror/mode/rpm/changes/changes.js" />
+    <EmbeddedResource Include="CodeMirror/mode/rpm/spec/spec.js" />
+    <EmbeddedResource Include="CodeMirror/mode/rst/rst.js" />
+    <EmbeddedResource Include="CodeMirror/mode/ruby/ruby.js" />
+    <EmbeddedResource Include="CodeMirror/mode/rust/rust.js" />
+    <EmbeddedResource Include="CodeMirror/mode/sass/sass.js" />
+    <EmbeddedResource Include="CodeMirror/mode/scheme/scheme.js" />
+    <EmbeddedResource Include="CodeMirror/mode/shell/shell.js" />
+    <EmbeddedResource Include="CodeMirror/mode/sieve/sieve.js" />
+    <EmbeddedResource Include="CodeMirror/mode/smalltalk/smalltalk.js" />
+    <EmbeddedResource Include="CodeMirror/mode/smarty/smarty.js" />
+    <EmbeddedResource Include="CodeMirror/mode/sparql/sparql.js" />
+    <EmbeddedResource Include="CodeMirror/mode/sql/sql.js" />
+    <EmbeddedResource Include="CodeMirror/mode/stex/stex.js" />
+    <EmbeddedResource Include="CodeMirror/mode/tcl/tcl.js" />
+    <EmbeddedResource Include="CodeMirror/mode/tiddlywiki/tiddlywiki.js" />
+    <EmbeddedResource Include="CodeMirror/mode/tiki/tiki.js" />
+    <EmbeddedResource Include="CodeMirror/mode/turtle/turtle.js" />
+    <EmbeddedResource Include="CodeMirror/mode/vb/vb.js" />
+    <EmbeddedResource Include="CodeMirror/mode/vbscript/vbscript.js" />
+    <EmbeddedResource Include="CodeMirror/mode/velocity/velocity.js" />
+    <EmbeddedResource Include="CodeMirror/mode/verilog/verilog.js" />
+    <EmbeddedResource Include="CodeMirror/mode/xml/xml.js" />
+    <EmbeddedResource Include="CodeMirror/mode/xquery/xquery.js" />
+    <EmbeddedResource Include="CodeMirror/mode/yaml/yaml.js" />
+    <EmbeddedResource Include="CodeMirror/mode/z80/z80.js" />
+    <EmbeddedResource Include="CodeMirror/addon/comment/comment.js" />
+    <EmbeddedResource Include="CodeMirror/addon/dialog/dialog.css" />
+    <EmbeddedResource Include="CodeMirror/addon/dialog/dialog.js" />
+    <EmbeddedResource Include="CodeMirror/addon/display/placeholder.js" />
+    <EmbeddedResource Include="CodeMirror/addon/edit/closebrackets.js" />
+    <EmbeddedResource Include="CodeMirror/addon/edit/closetag.js" />
+    <EmbeddedResource Include="CodeMirror/addon/edit/continuecomment.js" />
+    <EmbeddedResource Include="CodeMirror/addon/edit/continuelist.js" />
+    <EmbeddedResource Include="CodeMirror/addon/edit/matchbrackets.js" />
+    <EmbeddedResource Include="CodeMirror/addon/edit/trailingspace.js" />
+    <EmbeddedResource Include="CodeMirror/addon/fold/foldcode.js" />
+    <EmbeddedResource Include="CodeMirror/addon/fold/brace-fold.js" />
+    <EmbeddedResource Include="CodeMirror/addon/fold/indent-fold.js" />
+    <EmbeddedResource Include="CodeMirror/addon/fold/xml-fold.js" />
+    <EmbeddedResource Include="CodeMirror/addon/hint/html-hint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/hint/javascript-hint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/hint/pig-hint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/hint/python-hint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/hint/show-hint.css" />
+    <EmbeddedResource Include="CodeMirror/addon/hint/show-hint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/hint/xml-hint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/lint/coffeescript-lint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/lint/javascript-lint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/lint/json-lint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/lint/lint.js" />
+    <EmbeddedResource Include="CodeMirror/addon/lint/lint.css" />
+    <EmbeddedResource Include="CodeMirror/addon/merge/merge.css" />
+    <EmbeddedResource Include="CodeMirror/addon/merge/merge.js" />
+    <EmbeddedResource Include="CodeMirror/addon/merge/dep/diff_match_patch.js" />
+    <EmbeddedResource Include="CodeMirror/addon/mode_/loadmode.js" />
+    <EmbeddedResource Include="CodeMirror/addon/mode_/multiplex.js" />
+    <EmbeddedResource Include="CodeMirror/addon/mode_/overlay.js" />
+    <EmbeddedResource Include="CodeMirror/addon/runmode/colorize.js" />
+    <EmbeddedResource Include="CodeMirror/addon/runmode/runmode.js" />
+    <EmbeddedResource Include="CodeMirror/addon/search/match-highlighter.js" />
+    <EmbeddedResource Include="CodeMirror/addon/search/search.js" />
+    <EmbeddedResource Include="CodeMirror/addon/search/searchcursor.js" />
+    <EmbeddedResource Include="CodeMirror/addon/selection/active-line.js" />
+    <EmbeddedResource Include="CodeMirror/addon/selection/mark-selection.js" />
+    <Compile Include="Main.fs" />
+  </ItemGroup>
+  <Import Project="../build/net45/$(Name).proj" />
+  <Import Project="$(MSBuildExtensionsPath32)/../Microsoft SDKs/F#/3.0/Framework/v4.0/Microsoft.FSharp.targets" />
+  <Target Name="Build" />
+  <Target Name="Clean" />
+</Project>
