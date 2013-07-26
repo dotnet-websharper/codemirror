@@ -304,6 +304,48 @@ module Definition =
 
     let CodeMirror_t = Type.New()
 
+    module Lint =
+
+        let Severity =
+            Pattern.EnumStrings "CodeMirror.Lint.Severity" ["warning"; "error"]
+
+        let Annotation =
+            Pattern.Config "CodeMirror.Lint.Annotation" {
+                Required =
+                    [
+                        "from", CharCoords.Type
+                        "to", CharCoords.Type
+                        "severity", Severity.Type
+                    ]
+                Optional =
+                    [
+                        "message", T<string>
+                    ]
+            }
+
+        let Options =
+            let Options = Type.New()
+            Pattern.Config "CodeMirror.Lint.Options" {
+                Required = []
+                Optional =
+                    [
+                        "async", T<bool>
+                        "formatAnnotation", Annotation ^-> Annotation
+                        "tooltips", T<bool>
+                        "onUpdateLinting", Type.ArrayOf Annotation * Type.ArrayOf Annotation * CodeMirror_t ^-> T<unit>
+                        "delay", T<int>
+                    ]
+            }
+            |+> Protocol [
+                    "getAnnotations" =% T<string> ^-> Type.ArrayOf Annotation
+                    |> WithSetterInline "$this.async=false, $this.getAnnotations=$value"
+                    "getAnnotationsAsync" =% CodeMirror_t * (CodeMirror_t * Type.ArrayOf Annotation ^-> T<unit>) * Options ^-> T<unit>
+                    |> WithSetterInline "$this.async=true, $this.getAnnotations=$value"
+                    |> WithGetterInline "$this.getAnnotations"
+                ]
+            |=> Options
+            |> Requires [Res.Addons.lint_lint_js]
+
     let options =
         [
             "value", T<string>
@@ -351,6 +393,9 @@ module Definition =
             // closetag.js
             "closeTagEnabled", T<bool>
             "closeTagIndent", T<string[]>
+
+            // lint.js
+            "lint", Lint.Options.Type
         ]
 
     let CodeMirror_Options =
@@ -938,6 +983,11 @@ module Definition =
                 Generic - TextMarker
                 TextMarkerOptions
                 Token
+            ]
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Lint" [
+                Lint.Annotation
+                Lint.Options
+                Lint.Severity
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources" [
                 Res.Css
