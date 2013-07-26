@@ -323,6 +323,13 @@ module Definition =
                     ]
             }
 
+        let Updater =
+            Class "CodeMirror.Lint.Updater"
+            |+> Protocol [
+                    "update" => CodeMirror_t?cm * (Type.ArrayOf Annotation)?ann ^-> T<unit>
+                    |> WithInline "$this($cm, $ann)"
+                ]
+
         let Options =
             let Options = Type.New()
             Pattern.Config "CodeMirror.Lint.Options" {
@@ -339,7 +346,7 @@ module Definition =
             |+> Protocol [
                     "getAnnotations" =% T<string> ^-> Type.ArrayOf Annotation
                     |> WithSetterInline "$this.async=false, $this.getAnnotations=$value"
-                    "getAnnotationsAsync" =% CodeMirror_t * (CodeMirror_t * Type.ArrayOf Annotation ^-> T<unit>) * Options ^-> T<unit>
+                    "getAnnotationsAsync" =% CodeMirror_t * Updater * Options ^-> T<unit>
                     |> WithSetterInline "$this.async=true, $this.getAnnotations=$value"
                     |> WithGetterInline "$this.getAnnotations"
                 ]
@@ -988,6 +995,7 @@ module Definition =
                 Lint.Annotation
                 Lint.Options
                 Lint.Severity
+                Lint.Updater
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources" [
                 Res.Css
