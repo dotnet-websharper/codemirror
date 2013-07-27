@@ -144,9 +144,9 @@ bt.Solution [
     website
     web
 
-//    bt.NuGet.CreatePackage()
-//        .Add(main)
-//        .Description("AppHarbor utilities for WebSharper")
+    bt.NuGet.CreatePackage()
+        .Add(main)
+        .Description("CodeMirror bindings for WebSharper")
 
 ]
 |> bt.Dispatch
