@@ -1,6 +1,7 @@
 <ivy-module version="2.0">
   <info organisation="IntelliFactory" module="if-ws-codemirror" revision="2.5" />
   <dependencies>
+    <dependency name="build" rev="latest.integration" />
     <dependency name="websharper-security" rev="latest.integration" />
   </dependencies>
 </ivy-module>
