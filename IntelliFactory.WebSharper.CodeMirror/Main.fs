@@ -64,18 +64,6 @@ module Definition =
             let fold_xml_fold_js =
                 Resource "fold_xml_fold_js" "xml-fold.js"
 
-            let hint_html_hint_js =
-                Resource "hint_html_hint_js" "html-hint.js"
-
-            let hint_javascript_hint_js =
-                Resource "hint_javascript_hint_js" "javascript-hint.js"
-
-            let hint_pig_hint_js =
-                Resource "hint_pig_hint_js" "pig-hint.js"
-
-            let hint_python_hint_js =
-                Resource "hint_python_hint_js" "python-hint.js"
-
             let hint_show_hint_css =
                 Resource "hint_show_hint_css" "show-hint.css"
 
@@ -83,8 +71,25 @@ module Definition =
                 Resource "hint_show_hint_js" "show-hint.js"
                 |> Requires [hint_show_hint_css]
 
+            let hint_html_hint_js =
+                Resource "hint_html_hint_js" "html-hint.js"
+                |> Requires [hint_show_hint_js]
+
+            let hint_javascript_hint_js =
+                Resource "hint_javascript_hint_js" "javascript-hint.js"
+                |> Requires [hint_show_hint_js]
+
+            let hint_pig_hint_js =
+                Resource "hint_pig_hint_js" "pig-hint.js"
+                |> Requires [hint_show_hint_js]
+
+            let hint_python_hint_js =
+                Resource "hint_python_hint_js" "python-hint.js"
+                |> Requires [hint_show_hint_js]
+
             let hint_xml_hint_js =
                 Resource "hint_xml_hint_js" "xml-hint.js"
+                |> Requires [hint_show_hint_js]
 
             let lint_coffeescript_lint_js =
                 Resource "lint_coffeescript_lint_js" "coffeescript-lint.js"
@@ -581,28 +586,6 @@ module Definition =
             ]
         |> Requires [Res.Addons.fold_foldcode_js]
 
-    let Hint =
-        Pattern.Config "Hint" {
-            Required =
-                [
-                    "list", T<string[]>
-                    "from", CharCoords_t
-                    "to", CharCoords_t
-                ]
-            Optional = []
-        }
-        |> Requires [Res.Addons.hint_show_hint_js]
-
-    let HintOptions =
-        Pattern.Config "HintOptions" {
-            Required = []
-            Optional =
-                [
-                    "closeOnBackspace", T<bool>
-                    "closeOnTokenChange", T<bool>
-                ]
-        }
-
     let MIME =
         Class "MIME"
         |+> Protocol [
@@ -631,14 +614,6 @@ module Definition =
                 |> WithInline "$container"
             ]
         |> Requires [Res.Addons.runmode_runmode_js]
-
-    let JavaScriptHint =
-        Class "JavaScriptHint"
-        |+> Protocol [
-                "hint" =? CodeMirror_t ^-> Hint
-                |> WithGetterInline "$this"
-            ]
-        |> Requires [Res.Addons.hint_javascript_hint_js; Res.Addons.hint_show_hint_js]
 
     let MatchHighlighter =
         Class "MatchHighlighter"
@@ -727,6 +702,160 @@ module Definition =
                 ]
         }
 
+    module Hint =
+
+        let Hint_t = Type.New()
+
+        let Item =
+            let Item_t = Type.New()
+            Pattern.Config "CodeMirror.Hint.Item" {
+                Required = [ "text", T<string> ]
+                Optional =
+                    [
+                        "displayText", T<string>
+                        "className", T<string>
+                        "render", T<Element> * Hint_t * Item_t ^-> T<unit>
+                        "hint", CodeMirror_t * Hint_t * Item_t ^-> T<unit>
+                    ]
+            }
+            |=> Item_t
+
+        let Hint =
+            Pattern.Config "CodeMirror.Hint.Hint" {
+                Required =
+                    [
+                        "list", Type.ArrayOf Item
+                        "from", CharCoords.Type
+                        "to", CharCoords.Type
+                    ]
+                Optional = []
+            }
+            |=> Hint_t
+            |> Requires [Res.Addons.hint_show_hint_js]
+
+        let Obj =
+            let Obj_t = Type.New()
+            Generic / fun t ->
+            Class "Obj"
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{}"
+                ]
+            |+> Protocol [
+                    "with" => T<string>?field * t?value ^-> Obj_t.[t]
+                    |> WithInline "($this[$field]=$value),$this"
+                    "get" => T<string>?field ^-> t
+                    |> WithInline "$this[$field]"
+                ]
+
+        let SchemaNode =
+            Pattern.Config "CodeMirror.Hint.SchemaNode" {
+                Optional = []
+                Required =
+                    [
+                        "attrs", (Obj T<string[]>).Type
+                        "children", T<string[]>
+                    ]
+            }
+
+        let SchemaInfo =
+            Pattern.Config "CodeMirror.Hint.SchemaInfo" {
+                Required = []
+                Optional =
+                    [
+                        "!top", T<string[]>
+                    ]
+            }
+            |=> Inherits (Obj SchemaNode)
+            |> Requires [Res.Addons.hint_xml_hint_js]
+
+        let Options =
+            Class "CodeMirror.Hint.Options"
+            |+> Protocol [
+                    "completeSingle" =% T<bool>
+                    "alignWithWord" =% T<bool>
+                    "closeOnUnfocus" =% T<bool>
+                    "customKeys" =% T<obj>
+                    "extraKeys" =% T<obj>
+                    "schemaInfo" =% SchemaInfo
+                ]
+
+        let AsyncOptions =
+            Class "CodeMirror.Hint.AsyncOptions"
+            |=> Inherits Options
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{async:true}"
+                ]
+
+        let SyncOptions =
+            Class "CodeMirror.Hint.SyncOptions"
+            |=> Inherits Options
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{async:false}"
+                ]
+
+        let BuiltinFun =
+            Class "CodeMirror.Hint.BuiltinFun"
+
+        let JavaScriptHint =
+            Class "CodeMirror.Hint.JavaScript"
+            |=> Inherits BuiltinFun
+            |> Requires [Res.Addons.hint_javascript_hint_js]
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "CodeMirror.javascriptHint"
+                ]
+
+        let CoffeeScriptHint =
+            Class "CodeMirror.Hint.CoffeeScript"
+            |=> Inherits BuiltinFun
+            |> Requires [Res.Addons.hint_javascript_hint_js]
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "CodeMirror.coffeescriptHint"
+                ]
+
+        let PythonHint =
+            Class "CodeMirror.Hint.Python"
+            |=> Inherits BuiltinFun
+            |> Requires [Res.Addons.hint_python_hint_js]
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "CodeMirror.pythonHint"
+                ]
+
+        let PigHint =
+            Class "CodeMirror.Hint.Pig"
+            |=> Inherits BuiltinFun
+            |> Requires [Res.Addons.hint_pig_hint_js]
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "CodeMirror.pigHint"
+                ]
+
+        let XmlHint =
+            Class "CodeMirror.Hint.Xml"
+            |=> Inherits BuiltinFun
+            |> Requires [Res.Addons.hint_xml_hint_js]
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "CodeMirror.xmlHint"
+                ]
+
+        let HtmlHint =
+            Class "CodeMirror.Hint.Html"
+            |=> Inherits BuiltinFun
+            |> Requires [Res.Addons.hint_xml_hint_js]
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "CodeMirror.htmlHint"
+                ]
+
+        let SyncFun = CodeMirror_t * SyncOptions ^-> Hint
+        let AsyncFun = CodeMirror_t * (Hint ^-> T<unit>) * AsyncOptions ^-> T<unit>
+
     let CodeMirror =
         Class "CodeMirror"
         |=> CodeMirror_t
@@ -751,6 +880,14 @@ module Definition =
 
                 //// Add-ons
 
+                // hint/show-hint.js
+                "showHint" => CodeMirror_t?cm * Hint.BuiltinFun?f * !?Hint.SyncOptions ^-> T<unit>
+                "showHint" => CodeMirror_t?cm * Hint.SyncFun?f * !?Hint.SyncOptions ^-> T<unit>
+                "showHint" => CodeMirror_t?cm * Hint.AsyncFun?f * Hint.AsyncOptions ^-> T<unit>
+
+                // hint/html-hint.js
+                "htmlSchema" =? Hint.SchemaInfo
+
                 // foldcode.js
                 "newFoldFunction" => RangeFinder?rangeFinder * !?T<string>?markText * !?T<bool>?hideEnd ^-> (CodeMirror_t * T<int> * T<Event> ^-> T<unit>)
                 "braceRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
@@ -759,13 +896,6 @@ module Definition =
 
                 // runmode.js
                 "runMode" => T<string> * T<obj> * RunModeOutput ^-> T<unit>
-
-                // simple-hint.js
-                "simpleHint" => CodeMirror_t?cm * (CodeMirror_t ^-> Hint)?getHint * !?HintOptions?options ^-> T<unit>
-
-                // javascript-hint.js
-                "javascriptHint" =? JavaScriptHint
-                "coffeescriptHint" =? JavaScriptHint
 
                 // multiplex.js
                 "multiplexingMode" => T<obj>?mode * MultiplexMode ^-> T<obj>
@@ -964,12 +1094,9 @@ module Definition =
                 FindPosCoords
                 FindPosHUnit
                 FindPosVUnit
-                Hint
-                HintOptions
                 History
                 HistorySize
                 Indent
-                JavaScriptHint
                 LineClassWhere
                 LineHandle
                 LineInfo
@@ -997,6 +1124,23 @@ module Definition =
                 Lint.Options
                 Lint.Severity
                 Lint.Updater
+            ]
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Hint" [
+                Hint.Hint
+                Hint.Item
+                Hint.BuiltinFun
+                Hint.JavaScriptHint
+                Hint.CoffeeScriptHint
+                Hint.PythonHint
+                Hint.PigHint
+                Hint.XmlHint
+                Hint.HtmlHint
+                Hint.Options
+                Hint.AsyncOptions
+                Hint.SyncOptions
+                Generic - Hint.Obj
+                Hint.SchemaNode
+                Hint.SchemaInfo
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources" [
                 Res.Css
