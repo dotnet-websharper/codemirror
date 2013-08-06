@@ -26,15 +26,15 @@ module Client =
                     LineNumbers = true,
                     ExtraKeys = New [
                         "Ctrl-Space", box(fun cm ->
-                            CodeMirror.SimpleHint(cm, CodeMirror.JavascriptHint.Hint))
+                            CodeMirror.ShowHint(cm, Hint.JavaScript()))
                     ]
                 )
             let cm =
                 CodeMirror.FromTextArea(
                     Dom.Document.Current.GetElementById "editor",
                     options)
-            cm.OnCursorActivity(fun cm ->
-                        cm.MatchHighlight(MatchHighlighter("match-highlight")))
+            // cm.OnCursorActivity(fun cm ->
+            //             cm.MatchHighlight(MatchHighlighter("match-highlight")))
             //cm.OnGutterClick(CodeMirror.NewFoldFunction(RangeFinder(CodeMirror.IndentRangeFinder)))
             JavaScript.Log <| cm.CharCoords(CharCoords(1, 1), CoordsMode.Page)
             let dial = cm.OpenDialog(Dialog("bar:<input/>"), JavaScript.Log)
