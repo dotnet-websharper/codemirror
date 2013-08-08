@@ -418,18 +418,19 @@ module Definition =
             |> Requires [Res.Addons.fold_xml_fold_js]
 
         let GutterOptions =
-            Class "CodeMirror.Fold.GutterOptions"
+            Pattern.Config "CodeMirror.Fold.GutterOptions" {
+                Required = []
+                Optional =
+                    [
+                        "gutter", T<string>
+                        "indicatorOpen", T<Element>
+                        "indicatorFolded", T<Element>
+                        "rangeFinder", CodeMirror_t * CharCoords ^-> Range CharCoords
+                    ]
+            }
             |+> [
                     Constructor Options?RangeFinder
                     |> WithInline "{rangeFinder:$1.rangeFinder}"
-                    Constructor T<unit>
-                    |> WithInline "{}"
-                ]
-            |+> Protocol [
-                    "gutter" =% T<string>
-                    "indicatorOpen" =% T<Element>
-                    "indicatorFolded" =% T<Element>
-                    "rangeFinder" =% CodeMirror_t * CharCoords ^-> Range CharCoords
                 ]
             |> Requires [Res.Addons.fold_foldgutter_js]
 
