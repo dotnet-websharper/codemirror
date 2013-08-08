@@ -308,6 +308,14 @@ module Definition =
             "clientHeight" =? T<int>
         ]
 
+    let Range =
+        Generic / fun t ->
+        Class "Range"
+        |+> Protocol [
+                "from" =? t
+                "to" =? t
+            ]
+
     let CodeMirror_t = Type.New()
 
     module Lint =
@@ -495,14 +503,6 @@ module Definition =
                 "string" => T<string>
                 "type" => T<string>
                 "state" => T<obj>
-            ]
-
-    let Range =
-        Generic / fun t ->
-        Class "Range"
-        |+> Protocol [
-                "from" =? t
-                "to" =? t
             ]
 
     let TextMarker =
