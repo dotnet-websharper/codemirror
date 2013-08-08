@@ -310,11 +310,14 @@ module Definition =
 
     let Range =
         Generic / fun t ->
-        Class "Range"
-        |+> Protocol [
-                "from" =? t
-                "to" =? t
-            ]
+        Pattern.Config "CodeMirror.Range" {
+            Required =
+                [
+                    "from", t
+                    "to", t
+                ]
+            Optional = []
+        }
 
     let CodeMirror_t = Type.New()
 
