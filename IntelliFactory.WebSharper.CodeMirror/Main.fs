@@ -578,14 +578,6 @@ module Definition =
             ]
         |> Requires [Res.Addons.search_searchcursor_js]
 
-    let RangeFinder =
-        Class "RangeFinder"
-        |+> [
-                Constructor ((CodeMirror_t * T<int> * T<bool> ^-> T<int>)?func)
-                |> WithInline "$func"
-            ]
-        |> Requires [Res.Addons.fold_foldcode_js]
-
     let MIME =
         Class "MIME"
         |+> Protocol [
@@ -856,6 +848,50 @@ module Definition =
         let SyncFun = CodeMirror_t * SyncOptions ^-> Hint
         let AsyncFun = CodeMirror_t * (Hint ^-> T<unit>) * AsyncOptions ^-> T<unit>
 
+    module Fold =
+
+        let Options =
+            Pattern.Config "CodeMirror.Options" {
+                Required =
+                    [
+                        "rangeFinder", CodeMirror_t * CharCoords ^-> Range CharCoords
+                    ]
+                Optional =
+                    [
+                        "widget", T<Element>
+                        "scanUp", T<bool>
+                        "minFoldSize", T<int>
+                    ]
+            }
+            |> Requires [Res.Addons.fold_foldcode_js]
+
+        let BraceOptions =
+            Class "CodeMirror.BraceOptions"
+            |=> Inherits Options
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{rangeFinder:CodeMirror.fold.brace}"
+                ]
+            |> Requires [Res.Addons.fold_brace_fold_js]
+
+        let IndentOptions =
+            Class "CodeMirror.IndentOptions"
+            |=> Inherits Options
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{rangeFinder:CodeMirror.fold.indent}"
+                ]
+            |> Requires [Res.Addons.fold_indent_fold_js]
+
+        let XmlOptions =
+            Class "CodeMirror.XmlOptions"
+            |=> Inherits Options
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{rangeFinder:CodeMirror.fold.xml}"
+                ]
+            |> Requires [Res.Addons.fold_xml_fold_js]
+
     let CodeMirror =
         Class "CodeMirror"
         |=> CodeMirror_t
@@ -887,12 +923,6 @@ module Definition =
 
                 // hint/html-hint.js
                 "htmlSchema" =? Hint.SchemaInfo
-
-                // foldcode.js
-                "newFoldFunction" => RangeFinder?rangeFinder * !?T<string>?markText * !?T<bool>?hideEnd ^-> (CodeMirror_t * T<int> * T<Event> ^-> T<unit>)
-                "braceRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
-                "indentRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
-                "tagRangeFinder" =? (CodeMirror_t * T<int> * T<bool> ^-> T<int>)
 
                 // runmode.js
                 "runMode" => T<string> * T<obj> * RunModeOutput ^-> T<unit>
@@ -1051,6 +1081,9 @@ module Definition =
 
                 //// Add-ons
 
+                // fold/foldcode.js
+                "foldCode" => (T<int> + CharCoords) * Fold.Options ^-> T<unit>
+
                 // dialog.js
                 "openDialog" => Dialog * T<string -> unit>?callback ^-> (T<unit -> unit>)
                 "openConfirm" => T<string>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> Dialog
@@ -1107,7 +1140,6 @@ module Definition =
                 MIME
                 Generic - Mode
                 Generic - Range
-                RangeFinder
                 Rectangle
                 RunModeOutput
                 ScrollInfo
@@ -1141,6 +1173,12 @@ module Definition =
                 Generic - Hint.Obj
                 Hint.SchemaNode
                 Hint.SchemaInfo
+            ]
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Fold" [
+                Fold.Options
+                Fold.BraceOptions
+                Fold.IndentOptions
+                Fold.XmlOptions
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources" [
                 Res.Css
