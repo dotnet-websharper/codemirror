@@ -422,6 +422,8 @@ module Definition =
             |+> [
                     Constructor Options?RangeFinder
                     |> WithInline "{rangeFinder:$1.rangeFinder}"
+                    Constructor T<unit>
+                    |> WithInline "{}"
                 ]
             |+> Protocol [
                     "gutter" =% T<string>
