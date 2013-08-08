@@ -85,6 +85,7 @@ let resourceFiles =
         "CodeMirror/addon/edit/matchbrackets.js"
         "CodeMirror/addon/edit/trailingspace.js"
         "CodeMirror/addon/fold/foldcode.js"
+        "CodeMirror/addon/fold/foldgutter.js"
         "CodeMirror/addon/fold/brace-fold.js"
         "CodeMirror/addon/fold/indent-fold.js"
         "CodeMirror/addon/fold/xml-fold.js"

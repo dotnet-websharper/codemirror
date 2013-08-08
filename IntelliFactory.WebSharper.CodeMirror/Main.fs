@@ -55,6 +55,9 @@ module Definition =
             let fold_foldcode_js =
                 Resource "fold_foldcode_js" "foldcode.js"
 
+            let fold_foldgutter_js =
+                Resource "fold_foldgutter_js" "foldgutter.js"
+
             let fold_brace_fold_js =
                 Resource "fold_brace_fold_js" "brace-fold.js"
 
@@ -414,13 +417,19 @@ module Definition =
                 ]
             |> Requires [Res.Addons.fold_xml_fold_js]
 
-        // let GutterOptions =
-        //     Pattern.Config "CodeMirror.Fold.GutterOptions" {
-        //         Required =
-        //             [
-        //                 "rangeFinder", 
-        //             ]
-        //     }
+        let GutterOptions =
+            Class "CodeMirror.Fold.GutterOptions"
+            |+> [
+                    Constructor Options?RangeFinder
+                    |> WithInline "{rangeFinder:$1.rangeFinder}"
+                ]
+            |+> Protocol [
+                    "gutter" =% T<string>
+                    "indicatorOpen" =% T<Element>
+                    "indicatorFolded" =% T<Element>
+                    "rangeFinder" =% CodeMirror_t * CharCoords ^-> Range CharCoords
+                ]
+            |> Requires [Res.Addons.fold_foldgutter_js]
 
     let options =
         [
@@ -474,7 +483,7 @@ module Definition =
             "lint", Lint.Options.Type
 
             // foldgutter.js
-            // "foldGutter", Fold.GutterOptions
+            "foldGutter", Fold.GutterOptions.Type
         ]
 
     let CodeMirror_Options =
@@ -1193,6 +1202,7 @@ module Definition =
                 Fold.BraceOptions
                 Fold.IndentOptions
                 Fold.XmlOptions
+                Fold.GutterOptions
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources" [
                 Res.Css
@@ -1211,6 +1221,7 @@ module Definition =
                 Res.Addons.edit_matchbrackets_js
                 Res.Addons.edit_trailingspace_js
                 Res.Addons.fold_foldcode_js
+                Res.Addons.fold_foldgutter_js
                 Res.Addons.fold_brace_fold_js
                 Res.Addons.fold_indent_fold_js
                 Res.Addons.fold_xml_fold_js
