@@ -429,8 +429,8 @@ module Definition =
                     ]
             }
             |+> [
-                    Constructor Options?RangeFinder
-                    |> WithInline "{rangeFinder:$1.rangeFinder}"
+                    Constructor Options?Options
+                    |> WithInline "{rangeFinder:$Options.rangeFinder}"
                 ]
             |> Requires [Res.Addons.fold_foldgutter_js]
 
