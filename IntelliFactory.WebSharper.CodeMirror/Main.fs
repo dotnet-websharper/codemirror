@@ -359,6 +359,58 @@ module Definition =
             |=> Options
             |> Requires [Res.Addons.lint_lint_js]
 
+    module Fold =
+
+        let Options =
+            Pattern.Config "CodeMirror.Fold.Options" {
+                Required =
+                    [
+                        "rangeFinder", CodeMirror_t * CharCoords ^-> Range CharCoords
+                    ]
+                Optional =
+                    [
+                        "widget", T<Element>
+                        "scanUp", T<bool>
+                        "minFoldSize", T<int>
+                    ]
+            }
+            |> Requires [Res.Addons.fold_foldcode_js]
+
+        let BraceOptions =
+            Class "CodeMirror.Fold.BraceOptions"
+            |=> Inherits Options
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{rangeFinder:CodeMirror.braceRangeFinder}"
+                ]
+            |> Requires [Res.Addons.fold_brace_fold_js]
+
+        let IndentOptions =
+            Class "CodeMirror.Fold.IndentOptions"
+            |=> Inherits Options
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{rangeFinder:CodeMirror.indentRangeFinder}"
+                ]
+            |> Requires [Res.Addons.fold_indent_fold_js]
+
+        let XmlOptions =
+            Class "CodeMirror.Fold.XmlOptions"
+            |=> Inherits Options
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "{rangeFinder:CodeMirror.xmlRangeFinder}"
+                ]
+            |> Requires [Res.Addons.fold_xml_fold_js]
+
+        // let GutterOptions =
+        //     Pattern.Config "CodeMirror.Fold.GutterOptions" {
+        //         Required =
+        //             [
+        //                 "rangeFinder", 
+        //             ]
+        //     }
+
     let options =
         [
             "value", T<string>
@@ -409,6 +461,9 @@ module Definition =
 
             // lint.js
             "lint", Lint.Options.Type
+
+            // foldgutter.js
+            // "foldGutter", Fold.GutterOptions
         ]
 
     let CodeMirror_Options =
@@ -847,50 +902,6 @@ module Definition =
 
         let SyncFun = CodeMirror_t * SyncOptions ^-> Hint
         let AsyncFun = CodeMirror_t * (Hint ^-> T<unit>) * AsyncOptions ^-> T<unit>
-
-    module Fold =
-
-        let Options =
-            Pattern.Config "CodeMirror.Options" {
-                Required =
-                    [
-                        "rangeFinder", CodeMirror_t * CharCoords ^-> Range CharCoords
-                    ]
-                Optional =
-                    [
-                        "widget", T<Element>
-                        "scanUp", T<bool>
-                        "minFoldSize", T<int>
-                    ]
-            }
-            |> Requires [Res.Addons.fold_foldcode_js]
-
-        let BraceOptions =
-            Class "CodeMirror.BraceOptions"
-            |=> Inherits Options
-            |+> [
-                    Constructor T<unit>
-                    |> WithInline "{rangeFinder:CodeMirror.fold.brace}"
-                ]
-            |> Requires [Res.Addons.fold_brace_fold_js]
-
-        let IndentOptions =
-            Class "CodeMirror.IndentOptions"
-            |=> Inherits Options
-            |+> [
-                    Constructor T<unit>
-                    |> WithInline "{rangeFinder:CodeMirror.fold.indent}"
-                ]
-            |> Requires [Res.Addons.fold_indent_fold_js]
-
-        let XmlOptions =
-            Class "CodeMirror.XmlOptions"
-            |=> Inherits Options
-            |+> [
-                    Constructor T<unit>
-                    |> WithInline "{rangeFinder:CodeMirror.fold.xml}"
-                ]
-            |> Requires [Res.Addons.fold_xml_fold_js]
 
     let CodeMirror =
         Class "CodeMirror"
