@@ -23,132 +23,159 @@ module Definition =
 
             let comment_comment_js =
                 Resource "comment_comment_js" "comment.js"
+                |> Requires [Js]
 
             let dialog_dialog_css =
                 Resource "dialog_dialog_css" "dialog.css"
 
             let dialog_dialog_js =
                 Resource "dialog_dialog_js" "dialog.js"
-                |> Requires [dialog_dialog_css]
+                |> Requires [Js; dialog_dialog_css]
 
             let display_placeholder_js =
                 Resource "display_placeholder_js" "placeholder.js"
+                |> Requires [Js]
 
             let edit_closebrackets_js =
                 Resource "edit_closebrackets_js" "closebrackets.js"
+                |> Requires [Js]
 
             let edit_closetag_js =
                 Resource "edit_closetag_js" "closetag.js"
+                |> Requires [Js]
 
             let edit_continuecomment_js =
                 Resource "edit_continuecomment_js" "continuecomment.js"
+                |> Requires [Js]
 
             let edit_continuelist_js =
                 Resource "edit_continuelist_js" "continuelist.js"
+                |> Requires [Js]
 
             let edit_matchbrackets_js =
                 Resource "edit_matchbrackets_js" "matchbrackets.js"
+                |> Requires [Js]
 
             let edit_trailingspace_js =
                 Resource "edit_trailingspace_js" "trailingspace.js"
+                |> Requires [Js]
 
             let fold_foldcode_js =
                 Resource "fold_foldcode_js" "foldcode.js"
+                |> Requires [Js]
 
             let fold_foldgutter_js =
                 Resource "fold_foldgutter_js" "foldgutter.js"
+                |> Requires [Js]
 
             let fold_brace_fold_js =
                 Resource "fold_brace_fold_js" "brace-fold.js"
+                |> Requires [Js]
 
             let fold_indent_fold_js =
                 Resource "fold_indent_fold_js" "indent-fold.js"
+                |> Requires [Js]
 
             let fold_xml_fold_js =
                 Resource "fold_xml_fold_js" "xml-fold.js"
+                |> Requires [Js]
 
             let hint_show_hint_css =
                 Resource "hint_show_hint_css" "show-hint.css"
 
             let hint_show_hint_js =
                 Resource "hint_show_hint_js" "show-hint.js"
-                |> Requires [hint_show_hint_css]
+                |> Requires [hint_show_hint_css; Js]
 
             let hint_html_hint_js =
                 Resource "hint_html_hint_js" "html-hint.js"
-                |> Requires [hint_show_hint_js]
+                |> Requires [hint_show_hint_js; Js]
 
             let hint_javascript_hint_js =
                 Resource "hint_javascript_hint_js" "javascript-hint.js"
-                |> Requires [hint_show_hint_js]
+                |> Requires [hint_show_hint_js; Js]
 
             let hint_pig_hint_js =
                 Resource "hint_pig_hint_js" "pig-hint.js"
-                |> Requires [hint_show_hint_js]
+                |> Requires [hint_show_hint_js; Js]
 
             let hint_python_hint_js =
                 Resource "hint_python_hint_js" "python-hint.js"
-                |> Requires [hint_show_hint_js]
+                |> Requires [hint_show_hint_js; Js]
 
             let hint_xml_hint_js =
                 Resource "hint_xml_hint_js" "xml-hint.js"
-                |> Requires [hint_show_hint_js]
+                |> Requires [hint_show_hint_js; Js]
 
             let lint_coffeescript_lint_js =
                 Resource "lint_coffeescript_lint_js" "coffeescript-lint.js"
+                |> Requires [Js]
 
             let lint_javascript_lint_js =
                 Resource "lint_javascript_lint_js" "javascript-lint.js"
+                |> Requires [Js]
 
             let lint_json_lint_js =
                 Resource "lint_json_lint_js" "json-lint.js"
+                |> Requires [Js]
 
             let lint_lint_css =
                 Resource "lint_lint_css" "lint.css"
 
             let lint_lint_js =
                 Resource "lint_lint_js" "lint.js"
-                |> Requires [lint_lint_css]
+                |> Requires [lint_lint_css; Js]
 
             let merge_merge_css =
                 Resource "merge_merge_css" "merge.css"
 
             let merge_merge_js =
                 Resource "merge_merge_js" "merge.js"
-                |> Requires [merge_merge_css]
+                |> Requires [merge_merge_css; Js]
 
             let merge_dep_diff_match_patch_js =
                 Resource "merge_dep_diff_match_patch_js" "diff_match_patch.js"
+                |> Requires [Js]
 
             let mode_loadmode_js =
                 Resource "mode_loadmode_js" "loadmode.js"
+                |> Requires [Js]
 
             let mode_multiplex_js =
                 Resource "mode_multiplex_js" "multiplex.js"
+                |> Requires [Js]
 
             let mode_overlay_js =
                 Resource "mode_overlay_js" "overlay.js"
+                |> Requires [Js]
 
             let runmode_colorize_js =
                 Resource "runmode_colorize_js" "colorize.js"
+                |> Requires [Js]
 
             let runmode_runmode_js =
                 Resource "runmode_runmode_js" "runmode.js"
+                |> Requires [Js]
 
             let search_match_highlighter_js =
                 Resource "search_match_highlighter_js" "match-highlighter.js"
+                |> Requires [Js]
 
             let search_search_js =
                 Resource "search_search_js" "search.js"
+                |> Requires [Js]
 
             let search_searchcursor_js =
                 Resource "search_searchcursor_js" "searchcursor.js"
+                |> Requires [Js]
 
             let selection_active_line_js =
                 Resource "selection_active_line_js" "active-line.js"
+                |> Requires [Js]
 
             let selection_mark_selection_js =
                 Resource "selection_mark_selection_js" "mark-selection.js"
+                |> Requires [Js]
 
         let Modes =
             [
