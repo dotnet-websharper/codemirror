@@ -1285,9 +1285,12 @@ module Definition =
                 Res.Modes
         ]
 
-module Main =
-    open IntelliFactory.WebSharper.InterfaceGenerator
+open IntelliFactory.WebSharper.InterfaceGenerator
 
-    [<EntryPoint>]
-    let Start args =
-        Compiler.Create().Start(args, Definition.Assembly)
+[<Sealed>]
+type CodeMirrorExtension() =
+    interface IExtension with
+        member ext.Assembly = Definition.Assembly
+
+[<assembly: Extension(typeof<CodeMirrorExtension>)>]
+do ()
