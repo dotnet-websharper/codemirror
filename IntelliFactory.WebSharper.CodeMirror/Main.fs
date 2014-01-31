@@ -822,6 +822,17 @@ module Definition =
             |=> Hint_t
             |> Requires [Res.Addons.hint_show_hint_js]
 
+        let HintHandle =
+            Class "CodeMirror.Hint.HintHandle"
+            |+> Protocol [
+                "moveFocus" => T<int>?n * !?T<bool>?avoidWrap ^-> T<unit>
+                "setFocus" => T<int>?n ^-> T<unit>
+                "menuSize" => T<unit -> int>
+                "length" =? T<int>
+                "close" => T<unit -> unit>
+                "pick" => T<unit -> unit>
+            ]
+
         let Obj =
             let Obj_t = Type.New()
             Generic / fun t ->
@@ -1212,6 +1223,7 @@ module Definition =
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Hint" [
                 Hint.Hint
+                Hint.HintHandle
                 Hint.Item
                 Hint.BuiltinFun
                 Hint.JavaScriptHint
