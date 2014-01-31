@@ -542,9 +542,9 @@ module Definition =
         |+> Protocol [
                 "start" =? T<int>
                 "end" =? T<int>
-                "string" => T<string>
-                "type" => T<string>
-                "state" => T<obj>
+                "string" =? T<string>
+                "type" =? T<string>
+                "state" =? T<obj>
             ]
 
     let TextMarker =
