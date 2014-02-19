@@ -2,7 +2,8 @@
 open IntelliFactory.Build
 
 let bt =
-    BuildTool().PackageId("WebSharper.CodeMirror", "2.5")
+    let bt = BuildTool().PackageId("WebSharper.CodeMirror", "2.5")
+    bt.WithFramework(bt.Framework.Net40)
 
 let resourceFiles =
     [
