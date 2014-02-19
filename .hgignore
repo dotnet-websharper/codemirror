@@ -6,3 +6,4 @@
 ^build/
 \.suo$
 \.user$
+^Web/Content/WebSharper
