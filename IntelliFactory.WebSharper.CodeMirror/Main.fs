@@ -970,6 +970,7 @@ module Definition =
                 "registerHelper" => T<string>?``type`` * T<string>?name * T<obj>?helper ^-> T<unit>
                 "Pos" => T<int>?line * !?T<int>?ch ^-> CharCoords
                 "changeEnd" => Change ^-> CharCoords
+                Generic - fun t -> "on" => T<obj>?target * T<string>?event * (t ^-> T<unit>)?handler ^-> T<unit>
 
                 Generic - fun t -> "defineMode" => T<string> * (CodeMirror_Options * T<obj> ^-> Mode t) ^-> T<unit>
                 "defineMIME" => T<string> * T<obj> ^-> T<unit>
