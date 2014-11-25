@@ -4,8 +4,24 @@ module Definition =
     open IntelliFactory.WebSharper.InterfaceGenerator
     open IntelliFactory.WebSharper.Dom
     open IntelliFactory.WebSharper.EcmaScript
+    open System.IO
+    open System.Collections.Generic
+    let ( +/ ) a b = Path.Combine(a, b)
+    
+    let ( .- ) (m, n) k = 
+        match m |> Map.tryFind k with
+        | None ->
+            printfn "lookup failed in '%s' : %A" n k
+            failwith "lookup failed"
+        | Some v -> v
 
     module Res =
+        let customRes =
+            Set [
+                "codemirror.css"
+                "codemirror.js"
+                "meta.js"
+            ]
 
         let Css =
             Resource "Css" "codemirror.css"
@@ -17,238 +33,56 @@ module Definition =
 
         let ModeMeta =
             Resource "Meta" "meta.js"
-            |> Requires [Js]
 
-        module Addons =
+        type GenRes =
+            {
+                Folder : string
+                ResName : string
+                FileName : string
+            }
 
-            let comment_comment_js =
-                Resource "comment_comment_js" "comment.js"
-                |> Requires [Js]
+        let GroupedGen, Gen =
+            let input =
+                File.ReadAllLines(__SOURCE_DIRECTORY__ +/ "../.temp/res.txt")
+                |> Seq.choose (fun r ->
+                    let p = r.Split '\\'
+                    let f = p.[p.Length - 1]
+                    if customRes.Contains f then None else
+                        Some {
+                            Folder = p.[0]
+                            ResName = 
+                                if p.[0] = "mode" then
+                                    Path.GetFileNameWithoutExtension f
+                                else
+                                    p.[1..] |> Seq.map (fun n -> n.Replace('-', '_').Replace('.', '_') ) |> String.concat "_"
+                            FileName = f
+                        }
+                )
+                |> Array.ofSeq
 
-            let dialog_dialog_css =
-                Resource "dialog_dialog_css" "dialog.css"
+            let gen = Dictionary()
+            
+            for r in input do
+                if Path.GetExtension r.FileName = ".css" then
+                    gen.Add (r.FileName, (r.Folder, Resource r.ResName r.FileName))
 
-            let dialog_dialog_js =
-                Resource "dialog_dialog_js" "dialog.js"
-                |> Requires [Js; dialog_dialog_css]
+            for r in input do
+                if Path.GetExtension r.FileName = ".js" then
+                    let res = Resource r.ResName r.FileName
+                    let res =
+                        match gen.TryGetValue(r.FileName.[.. r.FileName.Length - 3] + "css") with
+                        | true, (_, cssRes) -> res |> Requires [cssRes]
+                        | _ -> res
+                    gen.Add (r.FileName, (r.Folder, res))
 
-            let display_placeholder_js =
-                Resource "display_placeholder_js" "placeholder.js"
-                |> Requires [Js]
-
-            let edit_closebrackets_js =
-                Resource "edit_closebrackets_js" "closebrackets.js"
-                |> Requires [Js]
-
-            let edit_closetag_js =
-                Resource "edit_closetag_js" "closetag.js"
-                |> Requires [Js]
-
-            let edit_continuecomment_js =
-                Resource "edit_continuecomment_js" "continuecomment.js"
-                |> Requires [Js]
-
-            let edit_continuelist_js =
-                Resource "edit_continuelist_js" "continuelist.js"
-                |> Requires [Js]
-
-            let edit_matchbrackets_js =
-                Resource "edit_matchbrackets_js" "matchbrackets.js"
-                |> Requires [Js]
-
-            let edit_trailingspace_js =
-                Resource "edit_trailingspace_js" "trailingspace.js"
-                |> Requires [Js]
-
-            let fold_foldcode_js =
-                Resource "fold_foldcode_js" "foldcode.js"
-                |> Requires [Js]
-
-            let fold_foldgutter_js =
-                Resource "fold_foldgutter_js" "foldgutter.js"
-                |> Requires [Js]
-
-            let fold_brace_fold_js =
-                Resource "fold_brace_fold_js" "brace-fold.js"
-                |> Requires [Js]
-
-            let fold_indent_fold_js =
-                Resource "fold_indent_fold_js" "indent-fold.js"
-                |> Requires [Js]
-
-            let fold_xml_fold_js =
-                Resource "fold_xml_fold_js" "xml-fold.js"
-                |> Requires [Js]
-
-            let hint_show_hint_css =
-                Resource "hint_show_hint_css" "show-hint.css"
-
-            let hint_show_hint_js =
-                Resource "hint_show_hint_js" "show-hint.js"
-                |> Requires [hint_show_hint_css; Js]
-
-            let hint_html_hint_js =
-                Resource "hint_html_hint_js" "html-hint.js"
-                |> Requires [hint_show_hint_js; Js]
-
-            let hint_javascript_hint_js =
-                Resource "hint_javascript_hint_js" "javascript-hint.js"
-                |> Requires [hint_show_hint_js; Js]
-
-            let hint_pig_hint_js =
-                Resource "hint_pig_hint_js" "pig-hint.js"
-                |> Requires [hint_show_hint_js; Js]
-
-            let hint_python_hint_js =
-                Resource "hint_python_hint_js" "python-hint.js"
-                |> Requires [hint_show_hint_js; Js]
-
-            let hint_xml_hint_js =
-                Resource "hint_xml_hint_js" "xml-hint.js"
-                |> Requires [hint_show_hint_js; Js]
-
-            let lint_coffeescript_lint_js =
-                Resource "lint_coffeescript_lint_js" "coffeescript-lint.js"
-                |> Requires [Js]
-
-            let lint_javascript_lint_js =
-                Resource "lint_javascript_lint_js" "javascript-lint.js"
-                |> Requires [Js]
-
-            let lint_json_lint_js =
-                Resource "lint_json_lint_js" "json-lint.js"
-                |> Requires [Js]
-
-            let lint_lint_css =
-                Resource "lint_lint_css" "lint.css"
-
-            let lint_lint_js =
-                Resource "lint_lint_js" "lint.js"
-                |> Requires [lint_lint_css; Js]
-
-            let merge_merge_css =
-                Resource "merge_merge_css" "merge.css"
-
-            let merge_merge_js =
-                Resource "merge_merge_js" "merge.js"
-                |> Requires [merge_merge_css; Js]
-
-            let merge_dep_diff_match_patch_js =
-                Resource "merge_dep_diff_match_patch_js" "diff_match_patch.js"
-                |> Requires [Js]
-
-            let mode_loadmode_js =
-                Resource "mode_loadmode_js" "loadmode.js"
-                |> Requires [Js]
-
-            let mode_multiplex_js =
-                Resource "mode_multiplex_js" "multiplex.js"
-                |> Requires [Js]
-
-            let mode_overlay_js =
-                Resource "mode_overlay_js" "overlay.js"
-                |> Requires [Js]
-
-            let runmode_colorize_js =
-                Resource "runmode_colorize_js" "colorize.js"
-                |> Requires [Js]
-
-            let runmode_runmode_js =
-                Resource "runmode_runmode_js" "runmode.js"
-                |> Requires [Js]
-
-            let search_match_highlighter_js =
-                Resource "search_match_highlighter_js" "match-highlighter.js"
-                |> Requires [Js]
-
-            let search_search_js =
-                Resource "search_search_js" "search.js"
-                |> Requires [Js]
-
-            let search_searchcursor_js =
-                Resource "search_searchcursor_js" "searchcursor.js"
-                |> Requires [Js]
-
-            let selection_active_line_js =
-                Resource "selection_active_line_js" "active-line.js"
-                |> Requires [Js]
-
-            let selection_mark_selection_js =
-                Resource "selection_mark_selection_js" "mark-selection.js"
-                |> Requires [Js]
-
-        let Modes =
-            [
-                "APL", "apl"
-                "Asterisk", "asterisk"
-                "CLike", "clike"
-                "Clojure", "clojure"
-                "Cobol", "cobol"
-                "CoffeeScript", "coffeescript"
-                "CommonLisp", "commonlisp"
-                "CSS", "css"
-                "D", "d"
-                "Diff", "diff"
-                "ECL", "ecl"
-                "Erlang", "erlang"
-                "Gas", "gas"
-                "GFM", "gfm"
-                "Go", "go"
-                "Groovy", "groovy"
-                "HAML", "haml"
-                "Haskell", "haskell"
-                "Haxe", "haxe"
-                "HtmlEmbedded", "htmlembedded"
-                "HtmlMixed", "htmlmixed"
-                "HTTP", "http"
-                "JavaScript", "javascript"
-                "Jinja2", "jinja2"
-                "LESS", "less"
-                "LiveScript", "livescript"
-                "Lua", "lua"
-                "Markdown", "markdown"
-                "MIRC", "mirc"
-                "NTriples", "ntriples"
-                "OCaml", "ocaml"
-                "Pascal", "pascal"
-                "Perl", "perl"
-                "PHP", "php"
-                "Pig", "pig"
-                "Properties", "properties"
-                "Python", "python"
-                "Q", "q"
-                "R", "r"
-                "RpmChanges", "changes"
-                "RpmSpec", "spec"
-                "Rst", "rst"
-                "Ruby", "ruby"
-                "Rust", "rust"
-                "SASS", "sass"
-                "Scheme", "scheme"
-                "Shell", "shell"
-                "Sieve", "sieve"
-                "Smalltalk", "smalltalk"
-                "Smarty", "smarty"
-                "SPARQL", "sparql"
-                "SQL", "sql"
-                "Stex", "stex"
-                "Tcl", "tcl"
-                "TiddlyWiki", "tiddlywiki"
-                "Tiki", "tiki"
-                "Turtle", "turtle"
-                "VB", "vb"
-                "VBScript", "vbscript"
-                "Velocity", "velocity"
-                "Verilog", "verilog"
-                "XML", "xml"
-                "XQuery", "xquery"
-                "YAML", "yaml"
-                "Z80", "z80"
-            ]
-            |> List.map (fun (name, path) ->
-                Resource name (path + ".js")
-                |> Requires [Js]
-                :> CodeModel.NamespaceEntity)
+            (
+                gen.Values |> Seq.groupBy fst 
+                |> Seq.map (fun (f, s) -> f, s |> Seq.map (fun (_, r) -> r :> CodeModel.NamespaceEntity) |> List.ofSeq) |> Map.ofSeq
+                , "Resources by folder"
+            ), (
+                gen |> Seq.map (fun (KeyValue(f, (_, r))) -> f, r) |> Map.ofSeq
+                , "Resources by file name"
+            )
 
     let CharCoords_t = Type.New()
     let CharCoords =
@@ -398,7 +232,7 @@ module Definition =
                     |> WithGetterInline "$this.getAnnotations"
                 ]
             |=> Options
-            |> Requires [Res.Addons.lint_lint_js]
+            |> Requires [Res.Gen .- "lint.js"]
 
     module Fold =
 
@@ -415,7 +249,7 @@ module Definition =
                         "minFoldSize", T<int>
                     ]
             }
-            |> Requires [Res.Addons.fold_foldcode_js]
+            |> Requires [Res.Gen .- "foldcode.js"]
 
         let BraceOptions =
             Class "CodeMirror.Fold.BraceOptions"
@@ -424,7 +258,7 @@ module Definition =
                     Constructor T<unit>
                     |> WithInline "{rangeFinder:CodeMirror.braceRangeFinder}"
                 ]
-            |> Requires [Res.Addons.fold_brace_fold_js]
+            |> Requires [Res.Gen .- "brace-fold.js"]
 
         let IndentOptions =
             Class "CodeMirror.Fold.IndentOptions"
@@ -433,7 +267,7 @@ module Definition =
                     Constructor T<unit>
                     |> WithInline "{rangeFinder:CodeMirror.indentRangeFinder}"
                 ]
-            |> Requires [Res.Addons.fold_indent_fold_js]
+            |> Requires [Res.Gen .- "indent-fold.js"]
 
         let XmlOptions =
             Class "CodeMirror.Fold.XmlOptions"
@@ -442,7 +276,7 @@ module Definition =
                     Constructor T<unit>
                     |> WithInline "{rangeFinder:CodeMirror.xmlRangeFinder}"
                 ]
-            |> Requires [Res.Addons.fold_xml_fold_js]
+            |> Requires [Res.Gen .- "xml-fold.js"]
 
         let GutterOptions =
             Pattern.Config "CodeMirror.Fold.GutterOptions" {
@@ -459,7 +293,7 @@ module Definition =
                     Constructor Options?Options
                     |> WithInline "{rangeFinder:$Options.rangeFinder}"
                 ]
-            |> Requires [Res.Addons.fold_foldgutter_js]
+            |> Requires [Res.Gen .- "foldgutter.js"]
 
     let options =
         [
@@ -662,7 +496,7 @@ module Definition =
                 Constructor (T<Element>)?template
                 |> WithInline "$template.outerHTML"
             ]
-        |> Requires [Res.Addons.dialog_dialog_js]
+        |> Requires [Res.Gen .- "dialog.js"]
 
     let SearchCursor =
         Class "SearchCursor"
@@ -673,7 +507,7 @@ module Definition =
                 "to" => T<unit> ^-> CharCoords
                 "replace" => T<string> ^-> T<unit>
             ]
-        |> Requires [Res.Addons.search_searchcursor_js]
+        |> Requires [Res.Gen .- "searchcursor.js"]
 
     let MIME =
         Class "MIME"
@@ -702,7 +536,7 @@ module Definition =
                 Constructor T<Element>?container
                 |> WithInline "$container"
             ]
-        |> Requires [Res.Addons.runmode_runmode_js]
+        |> Requires [Res.Gen .- "runmode.js"]
 
     let MatchHighlighter =
         Class "MatchHighlighter"
@@ -710,7 +544,7 @@ module Definition =
                 Constructor T<string>?``class``
                 |> WithInline "$class"
             ]
-        |> Requires [Res.Addons.search_match_highlighter_js]
+        |> Requires [Res.Gen .- "match-highlighter.js"]
 
     let TagClosing =
         Class "TagClosing"
@@ -720,7 +554,7 @@ module Definition =
                 "closeTag" => CodeMirror_t?editor * T<string>?char * (T<string[]> + T<bool>)?indent ^-> T<unit>
                 |> WithInline "$this.call($editor, $editor, $char, $indent)"
             ]
-        |> Requires [Res.Addons.edit_closetag_js]
+        |> Requires [Res.Gen .- "closetag.js"]
 
     let Stream =
         Class "Stream"
@@ -777,7 +611,7 @@ module Definition =
                     "delimStyle", T<string>
                 ]
         }
-        |> Requires [Res.Addons.mode_multiplex_js]
+        |> Requires [Res.Gen .- "multiplex.js"]
 
     let Collapse =
         Pattern.EnumStrings "CodeMirror.Collapse" ["start"; "end"]
@@ -820,7 +654,7 @@ module Definition =
                 Optional = []
             }
             |=> Hint_t
-            |> Requires [Res.Addons.hint_show_hint_js]
+            |> Requires [Res.Gen .- "show-hint.js"]
 
         let HintHandle =
             Class "CodeMirror.Hint.HintHandle"
@@ -867,7 +701,7 @@ module Definition =
                     ]
             }
             |=> Inherits (Obj SchemaNode)
-            |> Requires [Res.Addons.hint_xml_hint_js]
+            |> Requires [Res.Gen .- "xml-hint.js"]
 
         let Options =
             Class "CodeMirror.Hint.Options"
@@ -902,7 +736,7 @@ module Definition =
         let JavaScriptHint =
             Class "CodeMirror.Hint.JavaScript"
             |=> Inherits BuiltinFun
-            |> Requires [Res.Addons.hint_javascript_hint_js]
+            |> Requires [Res.Gen .- "javascript-hint.js"]
             |+> [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.javascriptHint"
@@ -911,7 +745,7 @@ module Definition =
         let CoffeeScriptHint =
             Class "CodeMirror.Hint.CoffeeScript"
             |=> Inherits BuiltinFun
-            |> Requires [Res.Addons.hint_javascript_hint_js]
+            |> Requires [Res.Gen .- "javascript-hint.js"]
             |+> [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.coffeescriptHint"
@@ -920,25 +754,16 @@ module Definition =
         let PythonHint =
             Class "CodeMirror.Hint.Python"
             |=> Inherits BuiltinFun
-            |> Requires [Res.Addons.hint_python_hint_js]
+            |> Requires [Res.Gen .- "python-hint.js"]
             |+> [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.pythonHint"
                 ]
 
-        let PigHint =
-            Class "CodeMirror.Hint.Pig"
-            |=> Inherits BuiltinFun
-            |> Requires [Res.Addons.hint_pig_hint_js]
-            |+> [
-                    Constructor T<unit>
-                    |> WithInline "CodeMirror.pigHint"
-                ]
-
         let XmlHint =
             Class "CodeMirror.Hint.Xml"
             |=> Inherits BuiltinFun
-            |> Requires [Res.Addons.hint_xml_hint_js]
+            |> Requires [Res.Gen .- "xml-hint.js"]
             |+> [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.xmlHint"
@@ -947,10 +772,28 @@ module Definition =
         let HtmlHint =
             Class "CodeMirror.Hint.Html"
             |=> Inherits BuiltinFun
-            |> Requires [Res.Addons.hint_xml_hint_js]
+            |> Requires [Res.Gen .- "html-hint.js"]
             |+> [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.htmlHint"
+                ]
+
+        let AnywordHint =
+            Class "CodeMirror.Hint.AnyWord"
+            |=> Inherits BuiltinFun
+            |> Requires [Res.Gen .- "anyword-hint.js"]
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "CodeMirror.anywordHint"
+                ]
+
+        let SqlHint =
+            Class "CodeMirror.Hint.Sql"
+            |=> Inherits BuiltinFun
+            |> Requires [Res.Gen .- "sql-hint.js"]
+            |+> [
+                    Constructor T<unit>
+                    |> WithInline "CodeMirror.sqlHint"
                 ]
 
         let SyncFun = CodeMirror_t * SyncOptions ^-> Hint
@@ -1230,7 +1073,6 @@ module Definition =
                 Hint.JavaScriptHint
                 Hint.CoffeeScriptHint
                 Hint.PythonHint
-                Hint.PigHint
                 Hint.XmlHint
                 Hint.HtmlHint
                 Hint.Options
@@ -1239,6 +1081,8 @@ module Definition =
                 Generic - Hint.Obj
                 Hint.SchemaNode
                 Hint.SchemaInfo
+                Hint.AnywordHint
+                Hint.SqlHint
             ]
             Namespace "IntelliFactory.WebSharper.CodeMirror.Fold" [
                 Fold.Options
@@ -1252,50 +1096,10 @@ module Definition =
                 Res.ModeMeta
                 Res.Js
             ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons" [
-                Res.Addons.comment_comment_js
-                Res.Addons.dialog_dialog_css
-                Res.Addons.dialog_dialog_js
-                Res.Addons.display_placeholder_js
-                Res.Addons.edit_closebrackets_js
-                Res.Addons.edit_closetag_js
-                Res.Addons.edit_continuecomment_js
-                Res.Addons.edit_continuelist_js
-                Res.Addons.edit_matchbrackets_js
-                Res.Addons.edit_trailingspace_js
-                Res.Addons.fold_foldcode_js
-                Res.Addons.fold_foldgutter_js
-                Res.Addons.fold_brace_fold_js
-                Res.Addons.fold_indent_fold_js
-                Res.Addons.fold_xml_fold_js
-                Res.Addons.hint_html_hint_js
-                Res.Addons.hint_javascript_hint_js
-                Res.Addons.hint_pig_hint_js
-                Res.Addons.hint_python_hint_js
-                Res.Addons.hint_show_hint_css
-                Res.Addons.hint_show_hint_js
-                Res.Addons.hint_xml_hint_js
-                Res.Addons.lint_coffeescript_lint_js
-                Res.Addons.lint_javascript_lint_js
-                Res.Addons.lint_json_lint_js
-                Res.Addons.lint_lint_js
-                Res.Addons.lint_lint_css
-                Res.Addons.merge_merge_css
-                Res.Addons.merge_merge_js
-                Res.Addons.merge_dep_diff_match_patch_js
-                Res.Addons.mode_loadmode_js
-                Res.Addons.mode_multiplex_js
-                Res.Addons.mode_overlay_js
-                Res.Addons.runmode_colorize_js
-                Res.Addons.runmode_runmode_js
-                Res.Addons.search_match_highlighter_js
-                Res.Addons.search_search_js
-                Res.Addons.search_searchcursor_js
-                Res.Addons.selection_active_line_js
-                Res.Addons.selection_mark_selection_js
-            ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Modes"
-                Res.Modes
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons"  (Res.GroupedGen .- "addon")
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Modes"   (Res.GroupedGen .- "mode") 
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Keymaps" (Res.GroupedGen .- "keymap") 
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Themes"  (Res.GroupedGen .- "theme") 
         ]
 
 open IntelliFactory.WebSharper.InterfaceGenerator
