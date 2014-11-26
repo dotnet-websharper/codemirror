@@ -24,11 +24,11 @@ module Definition =
             ]
 
         let Css =
-            Resource "Css" "codemirror.css"
+            Resource "CodeMirrorCss" "codemirror.css"
             |> fun js -> js.AssemblyWide()
 
         let Js =
-            Resource "Js" "codemirror.js"
+            Resource "CodeMirror" "codemirror.js"
             |> fun js -> js.AssemblyWide()
 
         let ModeMeta =
@@ -46,15 +46,17 @@ module Definition =
                 File.ReadAllLines(__SOURCE_DIRECTORY__ +/ "../.temp/res.txt")
                 |> Seq.choose (fun r ->
                     let p = r.Split '\\'
+                    let d = p.[0]
                     let f = p.[p.Length - 1]
                     if customRes.Contains f then None else
                         Some {
-                            Folder = p.[0]
+                            Folder = d
                             ResName = 
-                                if p.[0] = "mode" then
+                                if d = "mode" then
                                     Path.GetFileNameWithoutExtension f
                                 else
-                                    p.[1..] |> Seq.map (fun n -> n.Replace('-', '_').Replace('.', '_') ) |> String.concat "_"
+                                    Seq.append (p.[1.. p.Length - 2]) (Seq.singleton (Path.GetFileNameWithoutExtension f))
+                                    |> Seq.map (fun n -> n.Replace('-', '_').Replace('.', '_') ) |> String.concat "_"
                             FileName = f
                         }
                 )
@@ -64,7 +66,8 @@ module Definition =
             
             for r in input do
                 if Path.GetExtension r.FileName = ".css" then
-                    gen.Add (r.FileName, (r.Folder, Resource r.ResName r.FileName))
+                    let d = if r.Folder = "theme" then "theme" else "css"
+                    gen.Add (r.FileName, (d, Resource r.ResName r.FileName))
 
             for r in input do
                 if Path.GetExtension r.FileName = ".js" then
@@ -84,7 +87,6 @@ module Definition =
                 , "Resources by file name"
             )
 
-    let CharCoords_t = Type.New()
     let CharCoords =
         Pattern.Config "CharCoords" {
             Optional = []
@@ -94,7 +96,6 @@ module Definition =
                     "ch", T<int>
                 ]
         }
-        |=> CharCoords_t
 
     let FindPosCoords =
         Class "FindPosCoords"
@@ -305,6 +306,8 @@ module Definition =
             "tabSize", T<int>
             "indentWithTabs", T<bool>
             "electricChars", T<bool>
+            "specialChars",T<RegExp>
+            "specialCharPlaceholder", T<string -> Element>
             "rtlMoveVisually", T<bool>
             "keyMap", T<string>
             "extraKeys", T<obj>
@@ -321,17 +324,20 @@ module Definition =
             "historyEventDelay", T<int>
             "tabindex", T<int>
             "autofocus", T<bool>
+            
+            // specialized
             "dragDrop", T<bool>
-            "onDragEvent", CodeMirror_t * T<Event> ^-> T<bool>
-            "onKeyEvent", CodeMirror_t * T<Event> ^-> T<bool>
             "cursorBlinkRate", T<int>
             "cursorScrollMargin", T<int>
             "cursorHeight", T<float>
+            "resetSelectionOnContextMenu", T<bool>
             "workTime", T<int>
             "workDelay", T<int>
             "pollInterval", T<int>
             "flattenSpans", T<bool>
+            "addModeClass", T<bool>
             "maxHighlightLength", T<float>
+            "crudeMeasuringFrom", T<int>
             "viewportMargin", T<int>
 
             //// Add-ons
@@ -1100,6 +1106,7 @@ module Definition =
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Modes"   (Res.GroupedGen .- "mode") 
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Keymaps" (Res.GroupedGen .- "keymap") 
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Themes"  (Res.GroupedGen .- "theme") 
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Css"     (Res.GroupedGen .- "css") 
         ]
 
 open IntelliFactory.WebSharper.InterfaceGenerator
