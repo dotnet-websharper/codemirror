@@ -21,6 +21,7 @@ module Definition =
                 "codemirror.css"
                 "codemirror.js"
                 "meta.js"
+                "show-hint.js"
             ]
 
         let Css =
@@ -32,7 +33,10 @@ module Definition =
             |> fun js -> js.AssemblyWide()
 
         let ModeMeta =
-            Resource "Meta" "meta.js"
+            Resource "Meta" "meta.js" 
+
+        let ShowHint = 
+            Resource "hint_show_hint" "show-hint.js" |> Requires [Js]
 
         type GenRes =
             {
@@ -71,11 +75,16 @@ module Definition =
 
             for r in input do
                 if Path.GetExtension r.FileName = ".js" then
-                    let res = Resource r.ResName r.FileName
-                    let res =
-                        match gen.TryGetValue(r.FileName.[.. r.FileName.Length - 3] + "css") with
-                        | true, (_, cssRes) -> res |> Requires [cssRes]
-                        | _ -> res
+                    let req =
+                        [
+                            yield Js
+                            match gen.TryGetValue(r.FileName.[.. r.FileName.Length - 3] + "css") with
+                            | true, (_, cssRes) -> yield cssRes
+                            | _ -> ()
+                            if r.Folder = "addon" && r.ResName.StartsWith "hint_" then
+                                yield ShowHint
+                        ]
+                    let res = Resource r.ResName r.FileName |> Requires req
                     gen.Add (r.FileName, (r.Folder, res))
 
             (
@@ -660,7 +669,7 @@ module Definition =
                 Optional = []
             }
             |=> Hint_t
-            |> Requires [Res.Gen .- "show-hint.js"]
+            |> Requires [Res.ShowHint]
 
         let HintHandle =
             Class "CodeMirror.Hint.HintHandle"
@@ -1102,7 +1111,7 @@ module Definition =
                 Res.ModeMeta
                 Res.Js
             ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons"  (Res.GroupedGen .- "addon")
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons"  (upcast Res.ShowHint :: Res.GroupedGen .- "addon")
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Modes"   (Res.GroupedGen .- "mode") 
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Keymaps" (Res.GroupedGen .- "keymap") 
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Themes"  (Res.GroupedGen .- "theme") 
