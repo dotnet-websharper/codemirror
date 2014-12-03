@@ -3,7 +3,7 @@
 open IntelliFactory.Build
 
 let bt =
-    let bt = BuildTool().PackageId("WebSharper.CodeMirror", "2.5")
+    let bt = BuildTool().PackageId("WebSharper.CodeMirror", "3.0-alpha")
     bt.WithFramework(bt.Framework.Net40)
 
 open System.IO
