@@ -39,8 +39,14 @@ let getResources() =
     let res =
         [|
             for d in [| "addon"; "keymap"; "lib"; "mode"; "theme" |] do
-                let d = inner +/ d 
-                yield! Directory.GetFiles(d, "*.js", SearchOption.AllDirectories) |> Seq.filter (fun p -> Path.GetFileName p <> "test.js") 
+                let d = inner +/ d
+                for p in Directory.GetFiles(d, "*.js", SearchOption.AllDirectories) do
+                    if Path.GetFileName p <> "test.js" then
+                        File.WriteAllText(p,
+                            "if(typeof(define) == 'function'){__define__old=define;delete define}\n"
+                            + File.ReadAllText(p)
+                            + "\nif(typeof(__define__old) == 'function'){define=__define__old;delete __define__old}")
+                        yield p
                 yield! Directory.GetFiles(d, "*.css", SearchOption.AllDirectories)
         |]
 
