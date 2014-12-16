@@ -235,9 +235,9 @@ module Definition =
                     ]
             }
             |+> Protocol [
-                    "getAnnotations" =% T<string> ^-> Type.ArrayOf Annotation
+                    "getAnnotations" =% T<string> * Options * CodeMirror_t ^-> Type.ArrayOf Annotation
                     |> WithSetterInline "$this.async=false, $this.getAnnotations=$value"
-                    "getAnnotationsAsync" =% CodeMirror_t * Updater * Options ^-> T<unit>
+                    "getAnnotationsAsync" =% T<string> * Updater * Options * CodeMirror_t ^-> T<unit>
                     |> WithSetterInline "$this.async=true, $this.getAnnotations=$value"
                     |> WithGetterInline "$this.getAnnotations"
                 ]
