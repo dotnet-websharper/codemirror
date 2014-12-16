@@ -21,6 +21,7 @@ module Definition =
                 "codemirror.css"
                 "codemirror.js"
                 "meta.js"
+                "show-hint.css"
                 "show-hint.js"
             ]
 
@@ -35,8 +36,11 @@ module Definition =
         let ModeMeta =
             Resource "Meta" "meta.js" 
 
+        let ShowHintCss = 
+            Resource "hint_show_hint_css" "show-hint.css"
+
         let ShowHint = 
-            Resource "hint_show_hint" "show-hint.js" |> Requires [Js]
+            Resource "hint_show_hint" "show-hint.js" |> Requires [Js; ShowHintCss]
 
         type GenRes =
             {
@@ -1111,7 +1115,7 @@ module Definition =
                 Res.ModeMeta
                 Res.Js
             ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons"  (upcast Res.ShowHint :: Res.GroupedGen .- "addon")
+            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons"  (upcast Res.ShowHint :: upcast Res.ShowHintCss :: Res.GroupedGen .- "addon")
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Modes"   (Res.GroupedGen .- "mode") 
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Keymaps" (Res.GroupedGen .- "keymap") 
             Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Themes"  (Res.GroupedGen .- "theme") 
