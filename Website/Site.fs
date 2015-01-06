@@ -1,14 +1,13 @@
 ﻿namespace Website
 
 open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.Sitelets
 
 type Action = Index
 
 module Client =
 
-    open IntelliFactory.WebSharper
-    open IntelliFactory.WebSharper.Html
+    open IntelliFactory.WebSharper.JavaScript
+    open IntelliFactory.WebSharper.Html.Client
     open IntelliFactory.WebSharper.CodeMirror
 
     [<Require(typeof<CodeMirror.Resources.Modes.Javascript>)>]
@@ -31,13 +30,13 @@ module Client =
                 )
             let cm =
                 CodeMirror.FromTextArea(
-                    Dom.Document.Current.GetElementById "editor",
+                    JS.Document.GetElementById "editor",
                     options)
             // cm.OnCursorActivity(fun cm ->
             //             cm.MatchHighlight(MatchHighlighter("match-highlight")))
             //cm.OnGutterClick(CodeMirror.NewFoldFunction(RangeFinder(CodeMirror.IndentRangeFinder)))
-            JavaScript.Log <| cm.CharCoords(CharCoords(1, 1), CoordsMode.Page)
-            let dial = cm.OpenDialog(Dialog("bar:<input/>"), JavaScript.Log)
+            Console.Log (cm.CharCoords(CharCoords(1, 1), CoordsMode.Page))
+            let dial = cm.OpenDialog(Dialog("bar:<input/>"), fun x -> Console.Log(x))
             let resultContainer = Pre [Attr.Class "cm-s-default"]
 
 //            let cmXml =
@@ -50,21 +49,23 @@ module Client =
 //                        ]
 //                    )
 //                CodeMirror.FromTextArea(
-//                    Dom.Document.Current.GetElementById "editor-xml", options)
+//                    JS.Document.GetElementById "editor-xml", options)
 
             Div [
                 Button [Text "Run mode"]
                 |>! OnClick (fun _ _ ->
                     CodeMirror.RunMode(cm.GetValue(), "javascript",
-                        RunModeOutput(resultContainer.Body)))
+                        RunModeOutput(resultContainer.Dom)))
                 Button [Text "Clear"]
                 |>! OnClick (fun _ _ -> resultContainer.Clear())
                 resultContainer
             ] :> _
 
+open IntelliFactory.WebSharper.Sitelets
+
 module Site =
 
-    open IntelliFactory.Html
+    open IntelliFactory.WebSharper.Html.Server
 
     type Page =
         {

@@ -1,11 +1,12 @@
 ﻿namespace IntelliFactory.WebSharper.CodeMirror.Definition
 
 module Definition =
-    open IntelliFactory.WebSharper.InterfaceGenerator
-    open IntelliFactory.WebSharper.Dom
-    open IntelliFactory.WebSharper.EcmaScript
     open System.IO
     open System.Collections.Generic
+    open IntelliFactory.WebSharper.InterfaceGenerator
+    open IntelliFactory.WebSharper.JavaScript.Dom
+    type RegExp = IntelliFactory.WebSharper.JavaScript.RegExp
+
     let ( +/ ) a b = Path.Combine(a, b)
     
     let ( .- ) (m, n) k = 
@@ -770,15 +771,6 @@ module Definition =
                     |> WithInline "CodeMirror.coffeescriptHint"
                 ]
 
-        let PythonHint =
-            Class "CodeMirror.Hint.Python"
-            |=> Inherits BuiltinFun
-            |> Requires [Res.Gen .- "python-hint.js"]
-            |+> [
-                    Constructor T<unit>
-                    |> WithInline "CodeMirror.pythonHint"
-                ]
-
         let XmlHint =
             Class "CodeMirror.Hint.Xml"
             |=> Inherits BuiltinFun
@@ -1091,7 +1083,6 @@ module Definition =
                 Hint.BuiltinFun
                 Hint.JavaScriptHint
                 Hint.CoffeeScriptHint
-                Hint.PythonHint
                 Hint.XmlHint
                 Hint.HtmlHint
                 Hint.Options
