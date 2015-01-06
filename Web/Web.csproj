@@ -41,6 +41,16 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IntelliFactory.WebSharper.CodeMirror\IntelliFactory.WebSharper.CodeMirror.fsproj">
+      <Project>{64ca108d-fc9f-46d6-aa9c-d19dfdbd2032}</Project>
+      <Name>IntelliFactory.WebSharper.CodeMirror</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Website\Website.fsproj">
+      <Project>{ce0c6dd7-9439-430e-bde1-fca4d76c7756}</Project>
+      <Name>Website</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
