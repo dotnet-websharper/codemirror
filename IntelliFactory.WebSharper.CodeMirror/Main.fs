@@ -114,7 +114,7 @@ module Definition =
     let FindPosCoords =
         Class "FindPosCoords"
         |=> Inherits CharCoords
-        |+> Protocol [
+        |+> Instance [
             "hitSide" =? T<bool>
         ]
 
@@ -153,14 +153,14 @@ module Definition =
         Class "ChangeArgs"
         |=> ChangeArgs_t
         |=> Inherits Change
-        |+> Protocol [
+        |+> Instance [
                 "removed" =? T<string>
                 "next" =? ChangeArgs_t
             ]
 
     let BeforeChangeArgs =
         Class "BeforeChangeArgs"
-        |+> Protocol [
+        |+> Instance [
             "from" =? CharCoords
             "to" =? CharCoords
             "removed" =? T<string>
@@ -171,14 +171,14 @@ module Definition =
 
     let SelectionArgs =
         Class "SelectionArgs"
-        |+> Protocol [
+        |+> Instance [
             "head" =? CharCoords
             "anchor" =? CharCoords
         ]
 
     let ScrollInfo =
         Class "ScrollInfo"
-        |+> Protocol [
+        |+> Instance [
             "left" =? T<int>
             "top" =? T<int>
             "width" =? T<int>
@@ -188,12 +188,12 @@ module Definition =
         ]
 
     let Range =
-        Generic / fun t ->
+        Generic - fun t ->
         Pattern.Config "CodeMirror.Range" {
             Required =
                 [
-                    "from", t
-                    "to", t
+                    "from", t.Type
+                    "to", t.Type
                 ]
             Optional = []
         }
@@ -221,7 +221,7 @@ module Definition =
 
         let Updater =
             Class "CodeMirror.Lint.Updater"
-            |+> Protocol [
+            |+> Instance [
                     "update" => CodeMirror_t?cm * (Type.ArrayOf Annotation)?ann ^-> T<unit>
                     |> WithInline "$this($cm, $ann)"
                 ]
@@ -239,10 +239,10 @@ module Definition =
                         "delay", T<int>
                     ]
             }
-            |+> Protocol [
-                    "getAnnotations" =% T<string> * Options * CodeMirror_t ^-> Type.ArrayOf Annotation
+            |+> Instance [
+                    "getAnnotations" =@ T<string> * Options * CodeMirror_t ^-> Type.ArrayOf Annotation
                     |> WithSetterInline "$this.async=false, $this.getAnnotations=$value"
-                    "getAnnotationsAsync" =% T<string> * Updater * Options * CodeMirror_t ^-> T<unit>
+                    "getAnnotationsAsync" =@ T<string> * Updater * Options * CodeMirror_t ^-> T<unit>
                     |> WithSetterInline "$this.async=true, $this.getAnnotations=$value"
                     |> WithGetterInline "$this.getAnnotations"
                 ]
@@ -255,7 +255,7 @@ module Definition =
             Pattern.Config "CodeMirror.Fold.Options" {
                 Required =
                     [
-                        "rangeFinder", CodeMirror_t * CharCoords ^-> Range CharCoords
+                        "rangeFinder", CodeMirror_t * CharCoords ^-> Range.[CharCoords]
                     ]
                 Optional =
                     [
@@ -269,7 +269,7 @@ module Definition =
         let BraceOptions =
             Class "CodeMirror.Fold.BraceOptions"
             |=> Inherits Options
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "{rangeFinder:CodeMirror.braceRangeFinder}"
                 ]
@@ -278,7 +278,7 @@ module Definition =
         let IndentOptions =
             Class "CodeMirror.Fold.IndentOptions"
             |=> Inherits Options
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "{rangeFinder:CodeMirror.indentRangeFinder}"
                 ]
@@ -287,7 +287,7 @@ module Definition =
         let XmlOptions =
             Class "CodeMirror.Fold.XmlOptions"
             |=> Inherits Options
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "{rangeFinder:CodeMirror.xmlRangeFinder}"
                 ]
@@ -301,10 +301,10 @@ module Definition =
                         "gutter", T<string>
                         "indicatorOpen", T<Element>
                         "indicatorFolded", T<Element>
-                        "rangeFinder", CodeMirror_t * CharCoords ^-> Range CharCoords
+                        "rangeFinder", CodeMirror_t * CharCoords ^-> Range.[CharCoords]
                     ]
             }
-            |+> [
+            |+> Static [
                     Constructor Options?Options
                     |> WithInline "{rangeFinder:$Options.rangeFinder}"
                 ]
@@ -386,14 +386,14 @@ module Definition =
 
     let HistorySize =
         Class "HistorySize"
-        |+> Protocol [
+        |+> Instance [
                 "undo" =? T<int>
                 "redo" =? T<int>
             ]
 
     let Token =
         Class "Token"
-        |+> Protocol [
+        |+> Instance [
                 "start" =? T<int>
                 "end" =? T<int>
                 "string" =? T<string>
@@ -402,9 +402,9 @@ module Definition =
             ]
 
     let TextMarker =
-        Generic / fun t ->
+        Generic - fun t ->
         Class "Mark"
-        |+> Protocol [
+        |+> Instance [
             "clear" => T<unit> ^-> T<unit>
             "find" => T<unit> ^-> t
             "changed" => T<unit> ^-> T<unit>
@@ -456,7 +456,7 @@ module Definition =
         let LineHandle_t = Type.New()
         Class "LineHandle"
         |=> LineHandle_t
-        |+> Protocol [
+        |+> Instance [
             "onDelete" => (T<unit> ^-> T<unit>) ^-> T<unit>
             |> WithInline "$0.on('delete', $1)"
             "onChange" => (LineHandle_t * T<obj> ^-> T<unit>) ^-> T<unit>
@@ -467,14 +467,14 @@ module Definition =
 
     let LineWidget =
         Class "LineWidget"
-        |+> Protocol [
+        |+> Instance [
             "clear" => T<unit> ^-> T<unit>
             "changed" => T<unit> ^-> T<unit>
         ]
 
     let LineInfo =
         Class "LineInfo"
-        |+> Protocol [
+        |+> Instance [
                 "line" =? T<int>
                 "handle" =? LineHandle
                 "text" =? T<string>
@@ -502,7 +502,7 @@ module Definition =
     let CodeMirrorTextArea =
         Class "CodeMirrorTextArea"
         |=> Inherits CodeMirror_t
-        |+> Protocol [
+        |+> Instance [
                 "save" => T<unit> ^-> T<unit>
                 "toTextArea" => T<unit> ^-> T<unit>
                 "getTextArea" => T<unit> ^-> T<Node>
@@ -510,7 +510,7 @@ module Definition =
 
     let Dialog =
         Class "Dialog"
-        |+> [
+        |+> Static [
                 Constructor (T<string>)?template
                 |> WithInline "$template"
                 Constructor (T<Element>)?template
@@ -520,7 +520,7 @@ module Definition =
 
     let SearchCursor =
         Class "SearchCursor"
-        |+> Protocol [
+        |+> Instance [
                 "findNext" => T<unit> ^-> T<bool>
                 "findPrevious" => T<unit> ^-> T<bool>
                 "from" => T<unit> ^-> CharCoords
@@ -531,7 +531,7 @@ module Definition =
 
     let MIME =
         Class "MIME"
-        |+> Protocol [
+        |+> Instance [
                 "mime" =? T<string>
                 "mode" =? T<string>
             ]
@@ -550,7 +550,7 @@ module Definition =
 
     let RunModeOutput =
         Class "RunModeOutput"
-        |+> Protocol [
+        |+> Instance [
                 Constructor (T<string> * T<string> ^-> T<unit>)?displayFunc
                 |> WithInline "$displayFunc"
                 Constructor T<Element>?container
@@ -560,7 +560,7 @@ module Definition =
 
     let MatchHighlighter =
         Class "MatchHighlighter"
-        |+> [
+        |+> Static [
                 Constructor T<string>?``class``
                 |> WithInline "$class"
             ]
@@ -568,7 +568,7 @@ module Definition =
 
     let TagClosing =
         Class "TagClosing"
-        |+> Protocol [
+        |+> Instance [
                 "closeTag" => CodeMirror_t?editor * T<string>?char ^-> T<unit>
                 |> WithInline "$this.call($editor, $editor, $char)"
                 "closeTag" => CodeMirror_t?editor * T<string>?char * (T<string[]> + T<bool>)?indent ^-> T<unit>
@@ -578,7 +578,7 @@ module Definition =
 
     let Stream =
         Class "Stream"
-        |+> Protocol [
+        |+> Instance [
                 "eol" => T<unit -> bool>
                 "sol" => T<unit -> bool>
                 "peek" => T<unit -> char>
@@ -597,7 +597,7 @@ module Definition =
             ]
 
     let Mode =
-        Generic / fun state ->
+        Generic - fun state ->
         Pattern.Config "Mode" {
             Required =
                 [
@@ -678,7 +678,7 @@ module Definition =
 
         let HintHandle =
             Class "CodeMirror.Hint.HintHandle"
-            |+> Protocol [
+            |+> Instance [
                 "moveFocus" => T<int>?n * !?T<bool>?avoidWrap ^-> T<unit>
                 "setFocus" => T<int>?n ^-> T<unit>
                 "menuSize" => T<unit -> int>
@@ -689,13 +689,13 @@ module Definition =
 
         let Obj =
             let Obj_t = Type.New()
-            Generic / fun t ->
+            Generic - fun t ->
             Class "Obj"
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "{}"
                 ]
-            |+> Protocol [
+            |+> Instance [
                     "with" => T<string>?field * t?value ^-> Obj_t.[t]
                     |> WithInline "($this[$field]=$value),$this"
                     "get" => T<string>?field ^-> t
@@ -707,7 +707,7 @@ module Definition =
                 Optional = []
                 Required =
                     [
-                        "attrs", (Obj T<string[]>).Type
+                        "attrs", Obj.[T<string[]>]
                         "children", T<string[]>
                     ]
             }
@@ -720,24 +720,24 @@ module Definition =
                         "!top", T<string[]>
                     ]
             }
-            |=> Inherits (Obj SchemaNode)
+            |=> Inherits Obj.[SchemaNode]
             |> Requires [Res.Gen .- "xml-hint.js"]
 
         let Options =
             Class "CodeMirror.Hint.Options"
-            |+> Protocol [
-                    "completeSingle" =% T<bool>
-                    "alignWithWord" =% T<bool>
-                    "closeOnUnfocus" =% T<bool>
-                    "customKeys" =% T<obj>
-                    "extraKeys" =% T<obj>
-                    "schemaInfo" =% SchemaInfo
+            |+> Instance [
+                    "completeSingle" =@ T<bool>
+                    "alignWithWord" =@ T<bool>
+                    "closeOnUnfocus" =@ T<bool>
+                    "customKeys" =@ T<obj>
+                    "extraKeys" =@ T<obj>
+                    "schemaInfo" =@ SchemaInfo
                 ]
 
         let AsyncOptions =
             Class "CodeMirror.Hint.AsyncOptions"
             |=> Inherits Options
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "{async:true}"
                 ]
@@ -745,7 +745,7 @@ module Definition =
         let SyncOptions =
             Class "CodeMirror.Hint.SyncOptions"
             |=> Inherits Options
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "{async:false}"
                 ]
@@ -757,7 +757,7 @@ module Definition =
             Class "CodeMirror.Hint.JavaScript"
             |=> Inherits BuiltinFun
             |> Requires [Res.Gen .- "javascript-hint.js"]
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.javascriptHint"
                 ]
@@ -766,7 +766,7 @@ module Definition =
             Class "CodeMirror.Hint.CoffeeScript"
             |=> Inherits BuiltinFun
             |> Requires [Res.Gen .- "javascript-hint.js"]
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.coffeescriptHint"
                 ]
@@ -775,7 +775,7 @@ module Definition =
             Class "CodeMirror.Hint.Xml"
             |=> Inherits BuiltinFun
             |> Requires [Res.Gen .- "xml-hint.js"]
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.xmlHint"
                 ]
@@ -784,7 +784,7 @@ module Definition =
             Class "CodeMirror.Hint.Html"
             |=> Inherits BuiltinFun
             |> Requires [Res.Gen .- "html-hint.js"]
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.htmlHint"
                 ]
@@ -793,7 +793,7 @@ module Definition =
             Class "CodeMirror.Hint.AnyWord"
             |=> Inherits BuiltinFun
             |> Requires [Res.Gen .- "anyword-hint.js"]
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.anywordHint"
                 ]
@@ -802,7 +802,7 @@ module Definition =
             Class "CodeMirror.Hint.Sql"
             |=> Inherits BuiltinFun
             |> Requires [Res.Gen .- "sql-hint.js"]
-            |+> [
+            |+> Static [
                     Constructor T<unit>
                     |> WithInline "CodeMirror.sqlHint"
                 ]
@@ -813,7 +813,7 @@ module Definition =
     let CodeMirror =
         Class "CodeMirror"
         |=> CodeMirror_t
-        |+> [
+        |+> Static [
                 Constructor ((T<Node> + T<Element -> unit>) * !?CodeMirror_Options)
                 "version" =? T<string>
                 "fromTextArea" => T<Node>?textArea * !?CodeMirror_Options ^-> CodeMirrorTextArea
@@ -826,10 +826,10 @@ module Definition =
                 "changeEnd" => Change ^-> CharCoords
                 Generic - fun t -> "on" => T<obj>?target * T<string>?event * (t ^-> T<unit>)?handler ^-> T<unit>
 
-                Generic - fun t -> "defineMode" => T<string> * (CodeMirror_Options * T<obj> ^-> Mode t) ^-> T<unit>
+                Generic - fun t -> "defineMode" => T<string> * (CodeMirror_Options * T<obj> ^-> Mode.[t]) ^-> T<unit>
                 "defineMIME" => T<string> * T<obj> ^-> T<unit>
-                Generic - fun t -> "getMode" => CodeMirror_Options * T<obj> ^-> Mode t
-                Generic - fun t -> "copyState" => Mode t * t ^-> t
+                Generic - fun t -> "getMode" => CodeMirror_Options * T<obj> ^-> Mode.[t]
+                Generic - fun t -> "copyState" => Mode.[t] * t ^-> t
                 "Pass" => T<unit -> unit>
                 |> WithInline "CodeMirror.Pass"
 
@@ -849,7 +849,7 @@ module Definition =
                 // multiplex.js
                 "multiplexingMode" => T<obj>?mode * MultiplexMode ^-> T<obj>
             ]
-        |+> Protocol (
+        |+> Instance (
             [
                 // Content manipulation methods
                 "getValue" => T<unit> ^-> T<string>
@@ -900,10 +900,10 @@ module Definition =
                 "setHistory" => History ^-> T<unit>
 
                 // Text-marking methods
-                "markText" => CharCoords?from * CharCoords?``to`` * !?TextMarkerOptions ^-> TextMarker (Range CharCoords)
-                "setBookmark" => CharCoords?pos * !?BookmarkOptions ^-> TextMarker CharCoords
-                "findMarksAt" => CharCoords ^-> Type.ArrayOf (TextMarker T<obj>)
-                "getAllMarks" => T<unit> ^-> Type.ArrayOf (TextMarker T<obj>)
+                "markText" => CharCoords?from * CharCoords?``to`` * !?TextMarkerOptions ^-> TextMarker.[Range.[CharCoords]]
+                "setBookmark" => CharCoords?pos * !?BookmarkOptions ^-> TextMarker.[CharCoords]
+                "findMarksAt" => CharCoords ^-> Type.ArrayOf (TextMarker.[T<obj>])
+                "getAllMarks" => T<unit> ^-> Type.ArrayOf (TextMarker.[T<obj>])
 
                 // Widget, gutter, and decoration methods
                 "setGutterMarker" => line * T<string>?gutterID * T<Element> ^-> LineHandle
@@ -924,12 +924,12 @@ module Definition =
                 "heightAtLine" => T<int>?number * !?T<string>?mode ^-> T<int>
                 "defaultTextHeight" => T<unit> ^-> T<int>
                 "defaultCharWidth" => T<unit> ^-> T<int>
-                "getViewport" => T<unit> ^-> Range T<int>
+                "getViewport" => T<unit> ^-> Range.[T<int>]
                 "refresh" => T<unit> ^-> T<unit>
 
                 // Mode, state, and token-related methods
-                Generic - fun t -> "getMode" => T<unit> ^-> Mode t
-                Generic - fun t -> "getModeAt" => CharCoords ^-> Mode t
+                Generic - fun t -> "getMode" => T<unit> ^-> Mode.[t]
+                Generic - fun t -> "getModeAt" => CharCoords ^-> Mode.[t]
                 "getTokenAt" => CharCoords?pos * !?T<bool>?precise ^-> Token
                 "getTokenTypeAt" => CharCoords ^-> T<string>
                 "getHelper" => CharCoords * T<string>?``type`` ^-> T<obj>
@@ -1022,10 +1022,10 @@ module Definition =
                 "closeTag" =? TagClosing
             ]
             @ List.map (fun (name, ty) ->
-                    ("option_" + name) =% ty
+                    ("option_" + name) =@ ty
                     |> WithGetterInline ("$this.getOption('" + name + "')")
                     |> WithSetterInline ("$this.setOption('" + name + "', $value)")
-                    :> CodeModel.Member)
+                    :> _)
                 options)
         |> Requires [Res.Js]
 
@@ -1057,8 +1057,8 @@ module Definition =
                 MatchHighlighter
                 MultiplexMode
                 MIME
-                Generic - Mode
-                Generic - Range
+                Mode
+                Range
                 Rectangle
                 RunModeOutput
                 ScrollInfo
@@ -1066,7 +1066,7 @@ module Definition =
                 SelectionArgs
                 Stream
                 TagClosing
-                Generic - TextMarker
+                TextMarker
                 TextMarkerOptions
                 Token
             ]
@@ -1088,7 +1088,7 @@ module Definition =
                 Hint.Options
                 Hint.AsyncOptions
                 Hint.SyncOptions
-                Generic - Hint.Obj
+                Hint.Obj
                 Hint.SchemaNode
                 Hint.SchemaInfo
                 Hint.AnywordHint
