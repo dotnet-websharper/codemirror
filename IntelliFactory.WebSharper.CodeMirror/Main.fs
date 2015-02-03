@@ -696,6 +696,7 @@ module Definition =
             let Obj_t = Type.New()
             Generic - fun t ->
             Class "Obj"
+            |=> Obj_t
             |+> Static [
                     Constructor T<unit>
                     |> WithInline "{}"
