@@ -101,6 +101,16 @@ module Definition =
                 , "Resources by file name"
             )
 
+    let mkEvent1 name (arg: Type.Type) =
+        let capName = name |> String.mapi (fun i c -> if i = 0 then System.Char.ToUpper c else c)
+        ("on" + capName) => (arg ^-> T<unit>) ^-> T<unit>
+        |> WithInline (sprintf "$0.on('%s', $1)" name)
+
+    let mkEventN name (args: Type.Type) =
+        let capName = name |> String.mapi (fun i c -> if i = 0 then System.Char.ToUpper c else c)
+        ("on" + capName) => (args.Parameter ^-> T<unit>) ^-> T<unit>
+        |> WithInline (sprintf "$0.on('%s', $wsruntime.CreateFuncWithArgs($1))" name)
+
     let CharCoords =
         Pattern.Config "CharCoords" {
             Optional = []
@@ -240,11 +250,12 @@ module Definition =
                     ]
             }
             |+> Instance [
-                    "getAnnotations" =@ T<string> * Options * CodeMirror_t ^-> Type.ArrayOf Annotation
-                    |> WithSetterInline "$this.async=false, $this.getAnnotations=$value"
-                    "getAnnotationsAsync" =@ T<string> * Updater * Options * CodeMirror_t ^-> T<unit>
-                    |> WithSetterInline "$this.async=true, $this.getAnnotations=$value"
-                    |> WithGetterInline "$this.getAnnotations"
+                    "getAnnotations" =@ (T<string> * Options * CodeMirror_t).Parameter ^-> Type.ArrayOf Annotation
+                    |> WithSetterInline "$this.async=false, $this.getAnnotations=$wsruntime.CreateFuncWithArgs($value)"
+                    |> WithGetterInline "function(args) { return $this.getAnnotations.apply(this, args) }"
+                    "getAnnotationsAsync" =@ (T<string> * Updater * Options * CodeMirror_t).Parameter ^-> T<unit>
+                    |> WithSetterInline "$this.async=true, $this.getAnnotations=$wsruntime.CreateFuncWithArgs($value)"
+                    |> WithGetterInline "function(args) { return $this.getAnnotations.apply(this, args) }"
                 ]
             |=> Options
             |> Requires [Res.Gen .- "lint.js"]
@@ -408,14 +419,10 @@ module Definition =
             "clear" => T<unit> ^-> T<unit>
             "find" => T<unit> ^-> t
             "changed" => T<unit> ^-> T<unit>
-            "onBeforeCursorEnter" => (T<unit> ^-> T<unit>) ^-> T<unit>
-            |> WithInline "$0.on('beforeCursorEnter', $1)"
-            "onClear" => (T<unit> ^-> T<unit>) ^-> T<unit>
-            |> WithInline "$0.on('clear', $1)"
-            "onHide" => (T<unit> ^-> T<unit>) ^-> T<unit>
-            |> WithInline "$0.on('hide', $1)"
-            "onUnhide" => (T<unit> ^-> T<unit>) ^-> T<unit>
-            |> WithInline "$0.on('unhide', $1)"
+            mkEvent1 "beforeCursorEnter" T<unit>
+            mkEvent1 "clear" T<unit>
+            mkEvent1 "hide" T<unit>
+            mkEvent1 "unhide" T<unit>
         ]
 
     let TextMarkerOptions =
@@ -457,10 +464,8 @@ module Definition =
         Class "LineHandle"
         |=> LineHandle_t
         |+> Instance [
-            "onDelete" => (T<unit> ^-> T<unit>) ^-> T<unit>
-            |> WithInline "$0.on('delete', $1)"
-            "onChange" => (LineHandle_t * T<obj> ^-> T<unit>) ^-> T<unit>
-            |> WithInline "$0.on('change', $1)"
+            mkEvent1 "delete" T<unit>
+            mkEventN "change" (LineHandle_t * T<obj>)
         ]
 
     let line = T<int> + LineHandle
@@ -551,8 +556,8 @@ module Definition =
     let RunModeOutput =
         Class "RunModeOutput"
         |+> Instance [
-                Constructor (T<string> * T<string> ^-> T<unit>)?displayFunc
-                |> WithInline "$displayFunc"
+                Constructor ((T<string> * T<string>).Parameter ^-> T<unit>)?displayFunc
+                |> WithInline "$wsruntime.CreateFuncWithArgs($displayFunc)"
                 Constructor T<Element>?container
                 |> WithInline "$container"
             ]
@@ -951,52 +956,29 @@ module Definition =
                 Generic - fun t -> "compoundChange" => (T<unit> ^-> t) ^-> t
 
                 // Events
-                "onChange" => (CodeMirror_t * ChangeArgs ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('change', $1)"
-                "onBeforeChange" => (CodeMirror_t * BeforeChangeArgs ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('beforeChange', $1)"
-                "onCursorActivity" => (CodeMirror_t ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('cursorActivity', $1)"
-                "onKeyHandled" => (CodeMirror_t * T<string> * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('keyHandled', $1)"
-                "onInputRead" => (CodeMirror_t * T<obj> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('inputRead', $1)"
-                "onBeforeSelectionChange" => (CodeMirror_t * SelectionArgs ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('beforeSelectionChange', $1)"
-                "onViewportChange" => (CodeMirror_t * T<int> * T<int> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('viewportChange', $1)"
-                "onGutterClick" => (CodeMirror_t * T<int> * T<string> * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('gutterClick', $1)"
-                "onFocus" => (CodeMirror_t ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('focus', $1)"
-                "onBlur" => (CodeMirror_t ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('blur', $1)"
-                "onScroll" => (CodeMirror_t ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('scroll', $1)"
-                "onUpdate" => (CodeMirror_t ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('update', $1)"
-                "onRenderLine" => (CodeMirror_t * LineHandle ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('renderLine', $1)"
-                "onMousedown" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('mousedown', $1)"
-                "onDblclick" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('dblclick', $1)"
-                "onContextmenu" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('contextmenu', $1)"
-                "onKeydown" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('keydown', $1)"
-                "onKeypress" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('keypress', $1)"
-                "onKeyup" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('keyup', $1)"
-                "onDragstart" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('dragstart', $1)"
-                "onDragenter" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('dragenter', $1)"
-                "onDragover" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('dragover', $1)"
-                "onDrop" => (CodeMirror_t * T<Event> ^-> T<unit>) ^-> T<unit>
-                |> WithInline "$0.on('drop', $1)"
+                mkEventN "change" (CodeMirror_t * ChangeArgs)
+                mkEventN "beforeChange" (CodeMirror_t * BeforeChangeArgs)
+                mkEvent1 "cursorActivity" CodeMirror_t
+                mkEventN "keyHandled" (CodeMirror_t * T<string> * T<Event>)
+                mkEventN "inputRead" (CodeMirror_t * T<obj>)
+                mkEventN "beforeSelectionChange" (CodeMirror_t * SelectionArgs)
+                mkEventN "viewportChange" (CodeMirror_t * T<int> * T<int>)
+                mkEventN "gutterClick" (CodeMirror_t * T<int> * T<string> * T<Event>)
+                mkEvent1 "focus" CodeMirror_t
+                mkEvent1 "blur" CodeMirror_t
+                mkEvent1 "scroll" CodeMirror_t
+                mkEvent1 "update" CodeMirror_t
+                mkEventN"renderLine" (CodeMirror_t * LineHandle)
+                mkEventN "mousedown" (CodeMirror_t * T<Event>)
+                mkEventN "dblclick" (CodeMirror_t * T<Event>)
+                mkEventN "contextmenu" (CodeMirror_t * T<Event>)
+                mkEventN "keydown" (CodeMirror_t * T<Event>)
+                mkEventN "keypress" (CodeMirror_t * T<Event>)
+                mkEventN "keyup" (CodeMirror_t * T<Event>)
+                mkEventN "dragstart" (CodeMirror_t * T<Event>)
+                mkEventN "dragenter" (CodeMirror_t * T<Event>)
+                mkEventN "dragover" (CodeMirror_t * T<Event>)
+                mkEventN "drop" (CodeMirror_t * T<Event>)
 
                 //// Add-ons
 
