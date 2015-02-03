@@ -10,7 +10,7 @@ open System.IO
 let ( +/ ) a b = Path.Combine(a, b)
 
 open System.Text.RegularExpressions
-                                                
+
 let getResources() =
     let ( @- ) a b = Seq.append a b
 
