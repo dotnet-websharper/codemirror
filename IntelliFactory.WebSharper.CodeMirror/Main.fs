@@ -101,15 +101,10 @@ module Definition =
                 , "Resources by file name"
             )
 
-    let mkEvent1 name (arg: Type.Type) =
+    let event name (args: Type.IParameters) =
         let capName = name |> String.mapi (fun i c -> if i = 0 then System.Char.ToUpper c else c)
-        ("on" + capName) => (arg ^-> T<unit>) ^-> T<unit>
-        |> WithInline (sprintf "$0.on('%s', $1)" name)
-
-    let mkEventN name (args: Type.Type) =
-        let capName = name |> String.mapi (fun i c -> if i = 0 then System.Char.ToUpper c else c)
-        ("on" + capName) => (args.Parameter ^-> T<unit>) ^-> T<unit>
-        |> WithInline (sprintf "$0.on('%s', $wsruntime.CreateFuncWithArgs($1))" name)
+        ("on" + capName) => (args ^-> T<unit>)?callback ^-> T<unit>
+        |> WithInteropInline (fun t -> sprintf "CodeMirror.on($this, '%s', %s)" name (t "callback"))
 
     let CharCoords =
         Pattern.Config "CharCoords" {
@@ -419,10 +414,10 @@ module Definition =
             "clear" => T<unit> ^-> T<unit>
             "find" => T<unit> ^-> t
             "changed" => T<unit> ^-> T<unit>
-            mkEvent1 "beforeCursorEnter" T<unit>
-            mkEvent1 "clear" T<unit>
-            mkEvent1 "hide" T<unit>
-            mkEvent1 "unhide" T<unit>
+            event "beforeCursorEnter" T<unit>
+            event "clear" T<unit>
+            event "hide" T<unit>
+            event "unhide" T<unit>
         ]
 
     let TextMarkerOptions =
@@ -464,8 +459,8 @@ module Definition =
         Class "LineHandle"
         |=> LineHandle_t
         |+> Instance [
-            mkEvent1 "delete" T<unit>
-            mkEventN "change" (LineHandle_t * T<obj>)
+            event "delete" T<unit>
+            event "change" (LineHandle_t * T<obj>)
         ]
 
     let line = T<int> + LineHandle
@@ -475,6 +470,7 @@ module Definition =
         |+> Instance [
             "clear" => T<unit> ^-> T<unit>
             "changed" => T<unit> ^-> T<unit>
+            event "redraw" T<unit>
         ]
 
     let LineInfo =
@@ -519,9 +515,31 @@ module Definition =
                 Constructor (T<string>)?template
                 |> WithInline "$template"
                 Constructor (T<Element>)?template
-                |> WithInline "$template.outerHTML"
+                |> WithInline "$template"
             ]
         |> Requires [Res.Gen .- "dialog.js"]
+
+    let DialogOptions =
+        Pattern.Config "DialogOptions" {
+            Required = []
+            Optional =
+                [
+                    "closeOnEnter", T<bool>
+                    "onKeyDown", T<Event> * T<string> * (T<unit> ^-> T<unit>) ^-> T<unit>
+                    "onKeyUp", T<Event> * T<string> * (T<unit> ^-> T<unit>) ^-> T<unit>
+                    "onInput", T<Event> * T<string> * (T<unit> ^-> T<unit>) ^-> T<unit>
+                    "onClose", T<obj> ^-> T<unit>
+                ]
+        }
+
+    let NotificationOptions =
+        Pattern.Config "NotificationOptions" {
+            Required = []
+            Optional =
+                [
+                    "duration", T<int>
+                ]
+        }
 
     let SearchCursor =
         Class "SearchCursor"
@@ -679,6 +697,12 @@ module Definition =
                 Optional = []
             }
             |=> Hint_t
+            |+> Instance [
+                event "shown" T<unit>
+                event "select" (Item * T<Element>)
+                event "pick" Item
+                event "close" T<unit>
+            ]
             |> Requires [Res.ShowHint]
 
         let HintHandle =
@@ -830,7 +854,6 @@ module Definition =
                 "registerHelper" => T<string>?``type`` * T<string>?name * T<obj>?helper ^-> T<unit>
                 "Pos" => T<int>?line * !?T<int>?ch ^-> CharCoords
                 "changeEnd" => Change ^-> CharCoords
-                Generic - fun t -> "on" => T<obj>?target * T<string>?event * (t ^-> T<unit>)?handler ^-> T<unit>
 
                 Generic - fun t -> "defineMode" => T<string> * (CodeMirror_Options * T<obj> ^-> Mode.[t]) ^-> T<unit>
                 "defineMIME" => T<string> * T<obj> ^-> T<unit>
@@ -957,29 +980,32 @@ module Definition =
                 Generic - fun t -> "compoundChange" => (T<unit> ^-> t) ^-> t
 
                 // Events
-                mkEventN "change" (CodeMirror_t * ChangeArgs)
-                mkEventN "beforeChange" (CodeMirror_t * BeforeChangeArgs)
-                mkEvent1 "cursorActivity" CodeMirror_t
-                mkEventN "keyHandled" (CodeMirror_t * T<string> * T<Event>)
-                mkEventN "inputRead" (CodeMirror_t * T<obj>)
-                mkEventN "beforeSelectionChange" (CodeMirror_t * SelectionArgs)
-                mkEventN "viewportChange" (CodeMirror_t * T<int> * T<int>)
-                mkEventN "gutterClick" (CodeMirror_t * T<int> * T<string> * T<Event>)
-                mkEvent1 "focus" CodeMirror_t
-                mkEvent1 "blur" CodeMirror_t
-                mkEvent1 "scroll" CodeMirror_t
-                mkEvent1 "update" CodeMirror_t
-                mkEventN"renderLine" (CodeMirror_t * LineHandle)
-                mkEventN "mousedown" (CodeMirror_t * T<Event>)
-                mkEventN "dblclick" (CodeMirror_t * T<Event>)
-                mkEventN "contextmenu" (CodeMirror_t * T<Event>)
-                mkEventN "keydown" (CodeMirror_t * T<Event>)
-                mkEventN "keypress" (CodeMirror_t * T<Event>)
-                mkEventN "keyup" (CodeMirror_t * T<Event>)
-                mkEventN "dragstart" (CodeMirror_t * T<Event>)
-                mkEventN "dragenter" (CodeMirror_t * T<Event>)
-                mkEventN "dragover" (CodeMirror_t * T<Event>)
-                mkEventN "drop" (CodeMirror_t * T<Event>)
+                event "change" (CodeMirror_t * ChangeArgs)
+                event "changes" (CodeMirror_t * Type.ArrayOf ChangeArgs)
+                event "beforeChange" (CodeMirror_t * BeforeChangeArgs)
+                event "cursorActivity" CodeMirror_t
+                event "keyHandled" (CodeMirror_t * T<string> * T<Event>)
+                event "inputRead" (CodeMirror_t * T<obj>)
+                event "beforeSelectionChange" (CodeMirror_t * SelectionArgs)
+                event "viewportChange" (CodeMirror_t * T<int> * T<int>)
+                event "gutterClick" (CodeMirror_t * T<int> * T<string> * T<Event>)
+                event "gutterContextMenu" (CodeMirror_t * T<int> * T<string> * T<Event>)
+                event "focus" CodeMirror_t
+                event "blur" CodeMirror_t
+                event "scroll" CodeMirror_t
+                event "scrollCursorIntoView" (CodeMirror_t * T<Event>)
+                event "update" CodeMirror_t
+                event "renderLine" (CodeMirror_t * LineHandle)
+                event "mousedown" (CodeMirror_t * T<Event>)
+                event "dblclick" (CodeMirror_t * T<Event>)
+                event "contextmenu" (CodeMirror_t * T<Event>)
+                event "keydown" (CodeMirror_t * T<Event>)
+                event "keypress" (CodeMirror_t * T<Event>)
+                event "keyup" (CodeMirror_t * T<Event>)
+                event "dragstart" (CodeMirror_t * T<Event>)
+                event "dragenter" (CodeMirror_t * T<Event>)
+                event "dragover" (CodeMirror_t * T<Event>)
+                event "drop" (CodeMirror_t * T<Event>)
 
                 //// Add-ons
 
@@ -987,10 +1013,8 @@ module Definition =
                 "foldCode" => (T<int> + CharCoords) * Fold.Options ^-> T<unit>
 
                 // dialog.js
-                "openDialog" => Dialog * T<string -> unit>?callback ^-> (T<unit -> unit>)
-                "openConfirm" => T<string>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> Dialog
-                "openConfirm" => T<Element>?template * (Type.ArrayOf (CodeMirror_t ^-> T<unit>))?callbacks ^-> Dialog
-                |> WithInline "$this.openConfirm($template.outerHTML, $callbacks)"
+                "openDialog" => Dialog * T<string -> unit>?callback * !?DialogOptions ^-> (T<unit -> unit>)
+                "openNotification" => Dialog * !?NotificationOptions ^-> (T<unit> ^-> T<unit>)
 
                 // edit/matchbrackets.js
                 "matchBrackets" => T<unit> ^-> T<unit>
@@ -1026,6 +1050,7 @@ module Definition =
                 Coords
                 CoordsMode
                 Dialog
+                DialogOptions
                 FindPosCoords
                 FindPosHUnit
                 FindPosVUnit
@@ -1041,6 +1066,7 @@ module Definition =
                 MultiplexMode
                 MIME
                 Mode
+                NotificationOptions
                 Range
                 Rectangle
                 RunModeOutput
