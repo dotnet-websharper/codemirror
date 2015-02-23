@@ -1,11 +1,11 @@
-﻿namespace IntelliFactory.WebSharper.CodeMirror.Definition
+﻿namespace WebSharper.CodeMirror.Definition
 
 module Definition =
     open System.IO
     open System.Collections.Generic
-    open IntelliFactory.WebSharper.InterfaceGenerator
-    open IntelliFactory.WebSharper.JavaScript.Dom
-    type RegExp = IntelliFactory.WebSharper.JavaScript.RegExp
+    open WebSharper.InterfaceGenerator
+    open WebSharper.JavaScript.Dom
+    type RegExp = WebSharper.JavaScript.RegExp
 
     let ( +/ ) a b = Path.Combine(a, b)
     
@@ -1038,7 +1038,7 @@ module Definition =
 
     let Assembly =
         Assembly [
-            Namespace "IntelliFactory.WebSharper.CodeMirror" [
+            Namespace "WebSharper.CodeMirror" [
                 BookmarkOptions
                 Change
                 ChangeArgs
@@ -1079,13 +1079,13 @@ module Definition =
                 TextMarkerOptions
                 Token
             ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Lint" [
+            Namespace "WebSharper.CodeMirror.Lint" [
                 Lint.Annotation
                 Lint.Options
                 Lint.Severity
                 Lint.Updater
             ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Hint" [
+            Namespace "WebSharper.CodeMirror.Hint" [
                 Hint.Hint
                 Hint.HintHandle
                 Hint.Item
@@ -1103,26 +1103,26 @@ module Definition =
                 Hint.AnywordHint
                 Hint.SqlHint
             ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Fold" [
+            Namespace "WebSharper.CodeMirror.Fold" [
                 Fold.Options
                 Fold.BraceOptions
                 Fold.IndentOptions
                 Fold.XmlOptions
                 Fold.GutterOptions
             ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources" [
+            Namespace "WebSharper.CodeMirror.Resources" [
                 Res.Css
                 Res.ModeMeta
                 Res.Js
             ]
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Addons"  (upcast Res.ShowHint :: upcast Res.ShowHintCss :: Res.GroupedGen .- "addon")
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Modes"   (Res.GroupedGen .- "mode") 
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Keymaps" (Res.GroupedGen .- "keymap") 
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Themes"  (Res.GroupedGen .- "theme") 
-            Namespace "IntelliFactory.WebSharper.CodeMirror.Resources.Css"     (Res.GroupedGen .- "css") 
+            Namespace "WebSharper.CodeMirror.Resources.Addons"  (upcast Res.ShowHint :: upcast Res.ShowHintCss :: Res.GroupedGen .- "addon")
+            Namespace "WebSharper.CodeMirror.Resources.Modes"   (Res.GroupedGen .- "mode") 
+            Namespace "WebSharper.CodeMirror.Resources.Keymaps" (Res.GroupedGen .- "keymap") 
+            Namespace "WebSharper.CodeMirror.Resources.Themes"  (Res.GroupedGen .- "theme") 
+            Namespace "WebSharper.CodeMirror.Resources.Css"     (Res.GroupedGen .- "css") 
         ]
 
-open IntelliFactory.WebSharper.InterfaceGenerator
+open WebSharper.InterfaceGenerator
 
 [<Sealed>]
 type CodeMirrorExtension() =
