@@ -1,14 +1,14 @@
 ﻿namespace Website
 
-open IntelliFactory.WebSharper
+open WebSharper
 
 type Action = Index
 
 module Client =
 
-    open IntelliFactory.WebSharper.JavaScript
-    open IntelliFactory.WebSharper.Html.Client
-    open IntelliFactory.WebSharper.CodeMirror
+    open WebSharper.JavaScript
+    open WebSharper.Html.Client
+    open WebSharper.CodeMirror
 
     [<Require(typeof<CodeMirror.Resources.Modes.Javascript>)>]
     [<Require(typeof<CodeMirror.Resources.Modes.Xml>)>]
@@ -61,11 +61,11 @@ module Client =
                 resultContainer
             ] :> _
 
-open IntelliFactory.WebSharper.Sitelets
+open WebSharper.Sitelets
 
 module Site =
 
-    open IntelliFactory.WebSharper.Html.Server
+    open WebSharper.Html.Server
 
     type Page =
         {

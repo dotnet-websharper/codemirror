@@ -55,7 +55,7 @@ let getResources() =
     res
 
 let main =
-    bt.WebSharper.Extension("IntelliFactory.WebSharper.CodeMirror")
+    bt.WebSharper.Extension("WebSharper.CodeMirror")
         .SourcesFromProject()
         .Embed(getResources())
 

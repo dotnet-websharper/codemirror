@@ -42,9 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IntelliFactory.WebSharper.CodeMirror\IntelliFactory.WebSharper.CodeMirror.fsproj">
+    <ProjectReference Include="..\WebSharper.CodeMirror\WebSharper.CodeMirror.fsproj">
       <Project>{64ca108d-fc9f-46d6-aa9c-d19dfdbd2032}</Project>
-      <Name>IntelliFactory.WebSharper.CodeMirror</Name>
+      <Name>WebSharper.CodeMirror</Name>
     </ProjectReference>
     <ProjectReference Include="..\Website\Website.fsproj">
       <Project>{ce0c6dd7-9439-430e-bde1-fca4d76c7756}</Project>

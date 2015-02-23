@@ -1,7 +1,7 @@
 ^packages/
 ^tools/packages/
-^Web/bin/
-^Web/obj/
+bin/
+obj/
 ^Web/Scripts/
 ^build/
 \.suo$
