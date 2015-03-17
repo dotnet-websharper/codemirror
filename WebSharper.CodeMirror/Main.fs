@@ -1039,6 +1039,7 @@ module Definition =
     let Assembly =
         Assembly [
             Namespace "WebSharper.CodeMirror" [
+                BeforeChangeArgs
                 BookmarkOptions
                 Change
                 ChangeArgs
@@ -1067,6 +1068,7 @@ module Definition =
                 MIME
                 Mode
                 NotificationOptions
+                OverlayOptions
                 Range
                 Rectangle
                 RunModeOutput
