@@ -1,0 +1,10 @@
+^packages/
+^tools/packages/
+bin/
+obj/
+^Web/Scripts/
+^build/
+\.suo$
+\.user$
+^Web/Content/WebSharper
+.temp/
