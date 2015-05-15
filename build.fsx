@@ -3,8 +3,9 @@
 open IntelliFactory.Build
 
 let bt =
-    let bt = BuildTool().PackageId("WebSharper.CodeMirror", "3.0")
-    bt.WithFramework(bt.Framework.Net40)
+    BuildTool().PackageId("WebSharper.CodeMirror")
+        .VersionFrom("WebSharper")
+        .WithFramework(fun fw -> fw.Net40)
 
 open System.IO
 let ( +/ ) a b = Path.Combine(a, b)
