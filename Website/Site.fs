@@ -78,12 +78,12 @@ module Site =
             .With("title", fun p -> p.Title)
             .With("body", fun p -> p.Body)
 
-    let Index =
-        Content.WithTemplate Template (fun ctx ->
+    let Index ctx =
+        Content.WithTemplate Template
             {
                 Title = "CodeMirror sample"
                 Body = [Div [new Client.Control()]]
-            })
+            }
 
 /// The class that contains the website
 type Website() =
