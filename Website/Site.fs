@@ -70,7 +70,7 @@ module Site =
     type Page =
         {
             Title : string
-            Body : list<Content.HtmlElement>
+            Body : list<Element>
         }
 
     let Template =
