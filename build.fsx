@@ -67,7 +67,7 @@ let website =
         .References(fun r ->
             [
                 r.Assembly("System.Web")
-                r.NuGet("WebSharper.Html").Reference()
+                r.NuGet("WebSharper.Html").ForceFoundVersion().Reference()
                 r.Project main
             ])
 
@@ -78,7 +78,7 @@ let web =
                 r.Project main
                 r.Project website
                 r.NuGet("WebSharper").At(["/tools/net45/IntelliFactory.Xml.dll"]).Reference()
-                r.NuGet("WebSharper.Html").Reference()
+                r.NuGet("WebSharper.Html").ForceFoundVersion().Reference()
             ])
 
 bt.Solution [
