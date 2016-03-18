@@ -858,6 +858,8 @@ module Definition =
                 Generic - fun t -> "defineMode" => T<string> * (CodeMirror_Options * T<obj> ^-> Mode.[t]) ^-> T<unit>
                 "defineMIME" => T<string> * T<obj> ^-> T<unit>
                 Generic - fun t -> "getMode" => CodeMirror_Options * T<obj> ^-> Mode.[t]
+                "modes" =? T<WebSharper.JavaScript.Object<_>>.[CodeMirror_Options * T<obj> ^-> Mode.[T<obj>]]
+                "mimeModes" =? T<WebSharper.JavaScript.Object<_>>.[T<obj>]
                 Generic - fun t -> "copyState" => Mode.[t] * t ^-> t
                 "Pass" => T<unit -> unit>
                 |> WithInline "CodeMirror.Pass"
