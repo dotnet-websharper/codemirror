@@ -3,8 +3,8 @@
 open IntelliFactory.Build
 
 let bt =
-    BuildTool().PackageId("Zafir.CodeMirror")
-        .VersionFrom("Zafir")
+    BuildTool().PackageId("WebSharper.CodeMirror")
+        .VersionFrom("WebSharper")
         .WithFSharpVersion(FSharpVersion.FSharp30)
         .WithFramework(fun fw -> fw.Net40)
 
@@ -57,28 +57,28 @@ let getResources() =
     res
 
 let main =
-    bt.Zafir.Extension("WebSharper.CodeMirror")
+    bt.WebSharper4.Extension("WebSharper.CodeMirror")
         .SourcesFromProject()
         .Embed(getResources())
 
 let website =
-    bt.WithFSharpVersion(FSharpVersion.FSharp31).WithFramework(fun fw -> fw.Net45).Zafir.Library("Website")
+    bt.WithFSharpVersion(FSharpVersion.FSharp31).WithFramework(fun fw -> fw.Net45).WebSharper4.Library("Website")
         .SourcesFromProject()
         .References(fun r ->
             [
                 r.Assembly("System.Web")
-                r.NuGet("Zafir.Html").Latest(allowPreRelease=true).ForceFoundVersion().Reference()
+                r.NuGet("WebSharper.Html").Latest(allowPreRelease=true).ForceFoundVersion().Reference()
                 r.Project main
             ])
 
 let web =
-    bt.Zafir.HostWebsite("Web")
+    bt.WebSharper4.HostWebsite("Web")
         .References(fun r ->
             [
                 r.Project main
                 r.Project website
-                // r.NuGet("Zafir").At(["/tools/net45/IntelliFactory.Xml.dll"]).Reference()
-                r.NuGet("Zafir.Html").Latest(allowPreRelease=true).ForceFoundVersion().Reference()
+                // r.NuGet("WebSharper").At(["/tools/net45/IntelliFactory.Xml.dll"]).Reference()
+                r.NuGet("WebSharper.Html").Latest(allowPreRelease=true).ForceFoundVersion().Reference()
             ])
 
 bt.Solution [
@@ -89,7 +89,7 @@ bt.Solution [
 
     bt.NuGet.CreatePackage()
         .Add(main)
-        .Description("CodeMirror bindings for Zafir")
+        .Description("CodeMirror bindings for WebSharper")
 
 ]
 |> bt.Dispatch
