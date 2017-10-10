@@ -8,3 +8,7 @@ obj/
 \.user$
 ^Web/Content/WebSharper
 .temp/
+.fake/
+paket-files/
+.vscode/
+.vs/
