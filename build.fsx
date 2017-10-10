@@ -1,14 +1,9 @@
-#load "tools/includes.fsx"
+#load "paket-files/build/intellifactory/websharper/tools/WebSharper.Fake.fsx"
 #r "System.IO.Compression.FileSystem"
-open IntelliFactory.Build
-
-let bt =
-    BuildTool().PackageId("WebSharper.CodeMirror")
-        .VersionFrom("WebSharper", versionSpec = "(,4.0)")
-        .WithFSharpVersion(FSharpVersion.FSharp30)
-        .WithFramework(fun fw -> fw.Net40)
-
+open Fake
+open WebSharper.Fake
 open System.IO
+
 let ( +/ ) a b = Path.Combine(a, b)
 
 open System.Text.RegularExpressions
@@ -53,43 +48,23 @@ let getResources() =
         |]
 
     File.WriteAllLines(tempdir +/ "res.txt", res |> Seq.map (fun r -> r.[inner.Length + 1 ..]))
+    File.WriteAllLines(tempdir +/ "res-full.txt", res)
 
-    res
+let targets =
+    GetSemVerOf "WebSharper"
+    |> ComputeVersion
+    |> WSTargets.Default
+    |> MakeTargets
 
-let main =
-    bt.WebSharper.Extension("WebSharper.CodeMirror")
-        .SourcesFromProject()
-        .Embed(getResources())
+Target "Prepare" <| fun () ->
+    getResources()
 
-let website =
-    bt.WebSharper.Library("Website")
-        .SourcesFromProject()
-        .References(fun r ->
-            [
-                r.Assembly("System.Web")
-                r.NuGet("WebSharper.Html").Version("(,4.0)").ForceFoundVersion().Reference()
-                r.Project main
-            ])
+targets.AddPrebuild "Prepare"
 
-let web =
-    bt.WebSharper.HostWebsite("Web")
-        .References(fun r ->
-            [
-                r.Project main
-                r.Project website
-                r.NuGet("WebSharper").Version("(,4.0)").At(["/tools/net45/IntelliFactory.Xml.dll"]).Reference()
-                r.NuGet("WebSharper.Html").Version("(,4.0)").ForceFoundVersion().Reference()
-            ])
+Target "Build" DoNothing
+targets.BuildDebug ==> "Build"
 
-bt.Solution [
+Target "CI-Release" DoNothing
+targets.CommitPublish ==> "CI-Release"
 
-    main
-    website
-    web
-
-    bt.NuGet.CreatePackage()
-        .Add(main)
-        .Description("CodeMirror bindings for WebSharper")
-
-]
-|> bt.Dispatch
+RunTargetOrDefault "Build"
