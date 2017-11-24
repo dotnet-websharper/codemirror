@@ -4,7 +4,7 @@ open IntelliFactory.Build
 
 let bt =
     BuildTool().PackageId("WebSharper.CodeMirror")
-        .VersionFrom("WebSharper", versionSpec = "(,4.0)")
+        .VersionFrom("WebSharper")
         .WithFSharpVersion(FSharpVersion.FSharp30)
         .WithFramework(fun fw -> fw.Net40)
 
@@ -57,28 +57,28 @@ let getResources() =
     res
 
 let main =
-    bt.WebSharper.Extension("WebSharper.CodeMirror")
+    bt.WebSharper4.Extension("WebSharper.CodeMirror")
         .SourcesFromProject()
         .Embed(getResources())
 
 let website =
-    bt.WebSharper.Library("Website")
+    bt.WithFSharpVersion(FSharpVersion.FSharp31).WithFramework(fun fw -> fw.Net45).WebSharper4.Library("Website")
         .SourcesFromProject()
         .References(fun r ->
             [
                 r.Assembly("System.Web")
-                r.NuGet("WebSharper.Html").Version("(,4.0)").ForceFoundVersion().Reference()
+                r.NuGet("WebSharper.Html").Latest(allowPreRelease=true).ForceFoundVersion().Reference()
                 r.Project main
             ])
 
 let web =
-    bt.WebSharper.HostWebsite("Web")
+    bt.WebSharper4.HostWebsite("Web")
         .References(fun r ->
             [
                 r.Project main
                 r.Project website
-                r.NuGet("WebSharper").Version("(,4.0)").At(["/tools/net45/IntelliFactory.Xml.dll"]).Reference()
-                r.NuGet("WebSharper.Html").Version("(,4.0)").ForceFoundVersion().Reference()
+                // r.NuGet("WebSharper").At(["/tools/net45/IntelliFactory.Xml.dll"]).Reference()
+                r.NuGet("WebSharper.Html").Latest(allowPreRelease=true).ForceFoundVersion().Reference()
             ])
 
 bt.Solution [
