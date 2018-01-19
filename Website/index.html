@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>${title}</title>
+    <title>CodeMirror sample</title>
     <meta name="generator" content="websharper" data-replace="scripts" />
     <style>
         .match-highlight
@@ -9,13 +9,13 @@
             background-color: #f0f0f0;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="Content/Website.css" />
+    <script type="text/javascript" src="Content/Website.head.js"></script>
   </head>
   <body>
-    <h1>${title}</h1>
-    <div data-hole="body">
-      BODY
-    </div>
-    <textarea id="editor"><![CDATA[
+    <h1>CodeMirror sample</h1>
+    <div ws-hole="body"></div>
+    <textarea id="editor">
 // Demo code (the actual new parser character stream implementation)
 
 function StringStream(string) {
@@ -63,6 +63,7 @@ StringStream.prototype = {
     }
   }
 };
-]]></textarea>
+</textarea>
+    <script type="text/javascript" src="Content/Website.js"></script>
   </body>
 </html>

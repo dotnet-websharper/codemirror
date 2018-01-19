@@ -2,9 +2,11 @@
 ^tools/packages/
 bin/
 obj/
-^Web/Scripts/
+^Website/Content/
 ^build/
 \.suo$
 \.user$
-^Web/Content/WebSharper
 .temp/
+.fake/
+.vscode/
+paket-files/

@@ -1,36 +1,263 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{64ca108d-fc9f-46d6-aa9c-d19dfdbd2032}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <Name>WebSharper.CodeMirror</Name>
-    <RootNamespace>$(Name)</RootNamespace>
-    <AssemblyName>$(Name)</AssemblyName>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <WebSharperProject>Extension</WebSharperProject>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <WarningLevel>3</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <Tailcalls>false</Tailcalls>
-    <OutputPath>../build/net40</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <Tailcalls>true</Tailcalls>
-    <OutputPath>../build/net40</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <WebSharperSourceMap>false</WebSharperSourceMap>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.fs" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\comment\comment.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\comment\continuecomment.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\dialog\dialog.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\display\autorefresh.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\display\fullscreen.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\display\panel.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\display\placeholder.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\display\rulers.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\edit\closebrackets.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\edit\closetag.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\edit\continuelist.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\edit\matchbrackets.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\edit\matchtags.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\edit\trailingspace.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\fold\brace-fold.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\fold\comment-fold.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\fold\foldcode.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\fold\foldgutter.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\fold\indent-fold.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\fold\markdown-fold.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\fold\xml-fold.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\hint\anyword-hint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\hint\css-hint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\hint\html-hint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\hint\javascript-hint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\hint\show-hint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\hint\sql-hint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\hint\xml-hint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\lint\coffeescript-lint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\lint\css-lint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\lint\html-lint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\lint\javascript-lint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\lint\json-lint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\lint\lint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\lint\yaml-lint.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\merge\merge.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\mode\loadmode.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\mode\multiplex.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\mode\multiplex_test.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\mode\overlay.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\mode\simple.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\runmode\colorize.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\runmode\runmode-standalone.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\runmode\runmode.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\runmode\runmode.node.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\scroll\annotatescrollbar.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\scroll\scrollpastend.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\scroll\simplescrollbars.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\search\jump-to-line.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\search\match-highlighter.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\search\matchesonscrollbar.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\search\search.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\search\searchcursor.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\selection\active-line.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\selection\mark-selection.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\selection\selection-pointer.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\tern\tern.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\tern\worker.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\wrap\hardwrap.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\dialog\dialog.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\display\fullscreen.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\fold\foldgutter.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\hint\show-hint.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\lint\lint.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\merge\merge.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\scroll\simplescrollbars.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\search\matchesonscrollbar.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\addon\tern\tern.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\keymap\emacs.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\keymap\sublime.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\keymap\vim.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\lib\codemirror.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\lib\codemirror.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\meta.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\apl\apl.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\asciiarmor\asciiarmor.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\asn.1\asn.1.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\asterisk\asterisk.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\brainfuck\brainfuck.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\clike\clike.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\clojure\clojure.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\cmake\cmake.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\cobol\cobol.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\coffeescript\coffeescript.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\commonlisp\commonlisp.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\crystal\crystal.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\css\css.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\css\gss_test.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\css\less_test.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\css\scss_test.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\cypher\cypher.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\d\d.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\dart\dart.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\diff\diff.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\django\django.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\dockerfile\dockerfile.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\dtd\dtd.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\dylan\dylan.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\ebnf\ebnf.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\ecl\ecl.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\eiffel\eiffel.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\elm\elm.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\erlang\erlang.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\factor\factor.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\fcl\fcl.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\forth\forth.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\fortran\fortran.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\gas\gas.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\gfm\gfm.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\gherkin\gherkin.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\go\go.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\groovy\groovy.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\haml\haml.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\handlebars\handlebars.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\haskell\haskell.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\haskell-literate\haskell-literate.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\haxe\haxe.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\htmlembedded\htmlembedded.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\htmlmixed\htmlmixed.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\http\http.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\idl\idl.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\javascript\javascript.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\jinja2\jinja2.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\jsx\jsx.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\julia\julia.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\livescript\livescript.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\lua\lua.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\markdown\markdown.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mathematica\mathematica.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mbox\mbox.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mirc\mirc.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mllike\mllike.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\modelica\modelica.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mscgen\mscgen.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mscgen\mscgen_test.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mscgen\msgenny_test.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mscgen\xu_test.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\mumps\mumps.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\nginx\nginx.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\nsis\nsis.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\ntriples\ntriples.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\octave\octave.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\oz\oz.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\pascal\pascal.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\pegjs\pegjs.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\perl\perl.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\php\php.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\pig\pig.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\powershell\powershell.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\properties\properties.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\protobuf\protobuf.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\pug\pug.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\puppet\puppet.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\python\python.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\q\q.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\r\r.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\rpm\rpm.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\rst\rst.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\ruby\ruby.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\rust\rust.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\sas\sas.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\sass\sass.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\scheme\scheme.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\shell\shell.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\sieve\sieve.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\slim\slim.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\smalltalk\smalltalk.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\smarty\smarty.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\solr\solr.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\soy\soy.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\sparql\sparql.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\spreadsheet\spreadsheet.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\sql\sql.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\stex\stex.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\stylus\stylus.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\swift\swift.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\tcl\tcl.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\textile\textile.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\tiddlywiki\tiddlywiki.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\tiki\tiki.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\toml\toml.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\tornado\tornado.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\troff\troff.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\ttcn\ttcn.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\ttcn-cfg\ttcn-cfg.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\turtle\turtle.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\twig\twig.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\vb\vb.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\vbscript\vbscript.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\velocity\velocity.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\verilog\verilog.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\vhdl\vhdl.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\vue\vue.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\webidl\webidl.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\xml\xml.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\xquery\xquery.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\yacas\yacas.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\yaml\yaml.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\yaml-frontmatter\yaml-frontmatter.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\z80\z80.js" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\tiddlywiki\tiddlywiki.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\mode\tiki\tiki.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\3024-day.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\3024-night.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\abcdef.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\ambiance-mobile.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\ambiance.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\base16-dark.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\base16-light.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\bespin.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\blackboard.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\cobalt.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\colorforth.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\dracula.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\duotone-dark.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\duotone-light.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\eclipse.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\elegant.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\erlang-dark.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\hopscotch.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\icecoder.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\isotope.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\lesser-dark.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\liquibyte.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\material.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\mbo.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\mdn-like.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\midnight.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\monokai.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\neat.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\neo.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\night.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\panda-syntax.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\paraiso-dark.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\paraiso-light.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\pastel-on-dark.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\railscasts.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\rubyblue.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\seti.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\solarized.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\the-matrix.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\tomorrow-night-bright.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\tomorrow-night-eighties.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\ttcn.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\twilight.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\vibrant-ink.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\xq-dark.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\xq-light.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\yeti.css" />
+    <EmbeddedResource Include="C:\Users\tarmil\if\websharper.codemirror\.temp\codemirror-5.33.1\codemirror-5.33.0\theme\zenburn.css" />
   </ItemGroup>
-  <Import Project="../msbuild/FSharp.targets" />
-  <Import Project="../build/net40/$(Name).proj" />
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
