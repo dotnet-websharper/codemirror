@@ -10,3 +10,4 @@ obj/
 .fake/
 .vscode/
 paket-files/
+nuget/*.paket.template
