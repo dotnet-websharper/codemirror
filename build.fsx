@@ -1,4 +1,4 @@
-#load "paket-files/wsbuild/intellifactory/websharper/tools/WebSharper.Fake.fsx"
+#load "paket-files/wsbuild/github.com/dotnet-websharper/build-script/WebSharper.Fake.fsx"
 #r "System.IO.Compression.FileSystem"
 open Fake
 open WebSharper.Fake
