@@ -1,4 +1,4 @@
-#load "paket-files/build/intellifactory/websharper/tools/WebSharper.Fake.fsx"
+#load "paket-files/wsbuild/intellifactory/websharper/tools/WebSharper.Fake.fsx"
 #r "System.IO.Compression.FileSystem"
 open Fake
 open WebSharper.Fake
@@ -8,9 +8,7 @@ open System.Text.RegularExpressions
 let ( +/ ) a b = Path.Combine(a, b)
 
 let targets =
-    GetSemVerOf "WebSharper"
-    |> ComputeVersion
-    |> WSTargets.Default
+    WSTargets.Default (fun () -> GetSemVerOf "WebSharper" |> ComputeVersion)
     |> MakeTargets
 
 Target "Get-Resources" <| fun () ->
