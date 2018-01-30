@@ -259,5 +259,6 @@
     <EmbeddedResource Include="..\.temp\codemirror-5.34.1\codemirror-5.34.0\theme\yeti.css" />
     <EmbeddedResource Include="..\.temp\codemirror-5.34.1\codemirror-5.34.0\theme\zenburn.css" />
   </ItemGroup>
+  <Import Project="..\paket-files\wsbuild\github.com\dotnet-websharper\build-script\WebSharper.Fake.targets" Condition="Exists('..\paket-files\wsbuild\github.com\dotnet-websharper\build-script\WebSharper.Fake.targets')" />
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
