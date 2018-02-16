@@ -11,8 +11,8 @@ description
 tags
     Web JavaScript F# C#
 files
-    ../WebSharper.CodeMirror/bin/Release/netstandard2.0/WebSharper.CodeMirror.dll ==> lib/net461
-    ../WebSharper.CodeMirror/bin/Release/netstandard2.0/WebSharper.CodeMirror.xml ==> lib/net461
+    ../WebSharper.CodeMirror/bin/Release/net461/WebSharper.CodeMirror.dll ==> lib/net461
+    ../WebSharper.CodeMirror/bin/Release/net461/WebSharper.CodeMirror.xml ==> lib/net461
     ../WebSharper.CodeMirror/bin/Release/netstandard2.0/WebSharper.CodeMirror.dll ==> lib/netstandard2.0
     ../WebSharper.CodeMirror/bin/Release/netstandard2.0/WebSharper.CodeMirror.xml ==> lib/netstandard2.0
 dependencies
