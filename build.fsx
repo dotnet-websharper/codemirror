@@ -36,6 +36,14 @@ Target "Get-Resources" <| fun () ->
 
     let inner = Directory.GetDirectories(unzipped).[0]
 
+    Directory.CreateDirectory("msbuild")
+    File.WriteAllText("msbuild/CodeMirrorDir.targets",
+        sprintf """<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <CodeMirrorDir>%s</CodeMirrorDir>
+  </PropertyGroup>
+</Project>""" inner)
+
     let res =
         [|
             for d in [| "addon"; "keymap"; "lib"; "mode"; "theme" |] do
