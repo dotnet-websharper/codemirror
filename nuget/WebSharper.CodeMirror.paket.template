@@ -16,4 +16,4 @@ files
     ../WebSharper.CodeMirror/bin/Release/netstandard2.0/WebSharper.CodeMirror.dll ==> lib/netstandard2.0
     ../WebSharper.CodeMirror/bin/Release/netstandard2.0/WebSharper.CodeMirror.xml ==> lib/netstandard2.0
 dependencies
-        WebSharper ~> 4.2.4
+        WebSharper ~> 4.3.0
