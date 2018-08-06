@@ -1,11 +1,11 @@
-^packages/
-^tools/packages/
+packages/
+tools/packages/
 bin/
 obj/
-^Website/Content/
-^build/
-\.suo$
-\.user$
+Website/Content/
+build/
+*.suo
+*.user
 .temp/
 .fake/
 .vscode/
