@@ -34,7 +34,7 @@ module Client =
         //cm.OnGutterClick(CodeMirror.NewFoldFunction(RangeFinder(CodeMirror.IndentRangeFinder)))
         Console.Log (cm.CharCoords(CharCoords(1, 1), CoordsMode.Page))
         let dial = cm.OpenDialog(Dialog("bar:<input/>"), fun x -> Console.Log(x))
-        let resultContainer = pre [Attr.Class "cm-s-default"] []
+        let resultContainer = Elt.pre [Attr.Class "cm-s-default"] []
 
 //            let cmXml =
 //                let options =
