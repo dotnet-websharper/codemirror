@@ -631,11 +631,11 @@ NUGET
       System.Xml.XmlDocument (>= 4.3) - restriction: || (&& (< monoandroid) (< monotouch) (>= netstandard1.3) (< xamarinios) (< xamarinmac) (< xamarintvos) (< xamarinwatchos)) (>= net46)
       System.Xml.XPath (>= 4.3) - restriction: || (&& (< monoandroid) (< monotouch) (>= netstandard1.3) (< xamarinios) (< xamarinmac) (< xamarintvos) (< xamarinwatchos)) (>= net46)
   remote: https://daily.websharper.com/nuget
-    WebSharper (4.7.0.417)
+    WebSharper (4.7.0.423)
       FSharp.Core (>= 4.2.3)
-    WebSharper.FSharp (4.7.0.417)
-      WebSharper (4.7.0.417)
-    WebSharper.UI (4.7.0.225)
+    WebSharper.FSharp (4.7.0.423)
+      WebSharper (4.7.0.423)
+    WebSharper.UI (4.7.0.230)
       HtmlAgilityPack (>= 1.7.1)
       WebSharper (>= 4.7 < 4.8)
 
