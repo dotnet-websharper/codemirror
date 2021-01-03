@@ -11,5 +11,4 @@ build/
 .vscode/
 .vs/
 paket-files/
-nuget/*.paket.template
 msbuild/CodeMirrorDir.targets

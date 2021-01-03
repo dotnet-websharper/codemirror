@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\WebSharper.CodeMirror"
   ],
+  "SelectedNode": "\\paket.dependencies",
   "PreviewInSolutionExplorer": false
 }
