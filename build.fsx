@@ -1,4 +1,4 @@
-﻿#if INTERACTIVE
+#if INTERACTIVE
 #r "nuget: FAKE.Core"
 #r "nuget: Fake.Core.Target"
 #r "nuget: Fake.IO.FileSystem"
@@ -86,7 +86,5 @@ Target.create "Get-Resources" <| fun _ ->
     File.WriteAllLines(tempdir +/ "res.txt", res |> Seq.map (fun r -> r.[inner.Length + 1 ..]))
 
 targets.AddPrebuild "Get-Resources"
-
-targets.Publish ==> "CI-Release"
 
 Target.runOrDefault "Build"
