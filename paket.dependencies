@@ -8,6 +8,9 @@ storage: none
 nuget WebSharper prerelease
 nuget WebSharper.FSharp prerelease
 nuget WebSharper.UI prerelease
+nuget HtmlAgilityPack 1.11.0
+nuget System.Net.Http 4.3.2
+nuget Microsoft.NETCore.Platforms 1.1.0
 nuget FSharp.Core 4.2.3
 
 group wsbuild
