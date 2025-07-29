@@ -1476,10 +1476,6 @@ module Definition =
                 View.Rect
                 WidgetType
                 Direction
-                MarkDecorationSpec
-                WidgetDecorationSpec
-                ReplaceDecorationSpec
-                LineDecorationSpec
                 MeasureRequest
                 Decoration
                 PluginValue
@@ -1521,7 +1517,6 @@ module Definition =
                 LRLanguage
                 LanguageSupport
                 HighlightStyleOptions
-                TagStyle
                 HighlightStyle
                 RangeConfig
                 FoldConfig

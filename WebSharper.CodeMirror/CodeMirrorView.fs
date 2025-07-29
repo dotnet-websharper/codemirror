@@ -146,52 +146,13 @@ module View =
         ]
         |> ImportFromView
 
-    let MarkDecorationSpec =
-        Pattern.Config "MarkDecorationSpec" {
-            Required = []
-            Optional = [
-                "inclusive", T<bool>
-                "inclusiveStart", T<bool>
-                "inclusiveEnd", T<bool>
-                "attributes", T<obj>
-                "class", T<string>
-                "tagName", T<string>
-                "bidiIsolate", Direction.Type
-            ]
-        } 
+    let MarkDecorationSpec = T<obj>
 
-    let WidgetDecorationSpec =
-        Pattern.Config "WidgetDecorationSpec" {
-            Required = [
-                "widget", WidgetType.Type
-            ]
-            Optional = [
-                "side", T<int>
-                "inlineOrder", T<bool>
-                "block", T<bool>
-            ]
-        }
+    let WidgetDecorationSpec = T<obj>
 
-    let ReplaceDecorationSpec =
-        Pattern.Config "ReplaceDecorationSpec" {
-            Required = []
-            Optional = [
-                "widget", WidgetType.Type
-                "inclusive", T<bool>
-                "inclusiveStart", T<bool>
-                "inclusiveEnd", T<bool>
-                "block", T<bool>
-            ]
-        }
+    let ReplaceDecorationSpec = T<obj>
 
-    let LineDecorationSpec =
-        Pattern.Config "LineDecorationSpec" {
-            Required = []
-            Optional = [
-                "attributes", T<obj>
-                "class", T<string>
-            ]
-        }
+    let LineDecorationSpec = T<obj>
 
     let Decoration =
         Class "Decoration"

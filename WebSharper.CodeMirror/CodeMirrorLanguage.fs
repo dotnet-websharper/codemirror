@@ -86,15 +86,7 @@ module Language =
             ]
         }
 
-    let TagStyle =
-        Pattern.Config "TagStyle" {
-            Required = [
-                "tag", T<obj> + !| T<obj>
-            ]
-            Optional = [
-                "class", T<string>
-            ]
-        }
+    let TagStyle = T<obj>
 
     let HighlightStyle =
         Class "HighlightStyle"
