@@ -315,6 +315,8 @@ module State =
 
     let Slot = FacetReader.[T<obj>] + StateField.[T<obj>] + T<string>
 
+    let FacetDeclare = Class "Facet"
+
     let FacetConfig =
         Generic -- fun input output ->
             Pattern.Config "FacetConfig" {
@@ -324,14 +326,14 @@ module State =
                     "compare", output * output ^-> T<bool>
                     "compareInput", input * input ^-> T<bool>
                     "static", T<bool>
-                    "enables", Extension + T<Function>
+                    "enables", Extension + (FacetDeclare.[input, output] ^-> Extension)
                 ]
             }
             |> ImportFromState
 
     let Facet =
         Generic -- fun input output ->
-            Class "Facet"
+            FacetDeclare
             |> ImportFromState
             |+> Instance [
                 "reader" =? FacetReader.[output]
@@ -577,6 +579,11 @@ module State =
         ]
         |> ignore
 
+    let languageDataFunc = (EditorState * T<int> * T<int> ^-> !| T<obj>)
+    let changeFilterFunc = (Transaction ^-> T<bool> + !| T<int>)
+    let transactionFilter = (Transaction ^-> TransactionSpec + !| TransactionSpec)
+    let transactionExtender = (Transaction ^-> T<string>)
+
     EditorState
         |> ImportFromState
         |+> Instance [
@@ -616,9 +623,9 @@ module State =
             "lineSeparator" =? Facet.[T<string>, T<string>]
             "readOnlyStatic" =? Facet.[T<bool>, T<bool>]
             "phrases" =? Facet.[T<obj>, T<obj[]>]
-            "languageData" =? Facet.[T<Function>, T<Function[]>]
-            "changeFilter" =? Facet.[T<Function>, T<Function[]>]
-            "transactionFilter" =? Facet.[T<Function>, T<Function[]>]
-            "transactionExtender" =? Facet.[T<Function>, T<Function[]>]
+            "languageData" =? Facet.[languageDataFunc, !| languageDataFunc]
+            "changeFilter" =? Facet.[changeFilterFunc, !| changeFilterFunc]
+            "transactionFilter" =? Facet.[transactionFilter, !| transactionFilter]
+            "transactionExtender" =? Facet.[transactionExtender, !| transactionExtender]
         ]
         |> ignore

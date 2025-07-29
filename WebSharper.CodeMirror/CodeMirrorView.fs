@@ -338,7 +338,7 @@ module View =
             ]
         }
 
-    let AttrSource = T<obj> + T<Function>
+    let AttrSource = T<obj> + (EditorView ^-> T<obj>)
 
     let MatchDecoratorConfig = 
         Pattern.Config "MatchDecoratorConfig" {
@@ -556,7 +556,7 @@ module View =
                 "initialSpacer", T<unit> + (EditorView ^-> GutterMarker)
                 "updateSpacer", T<unit> + (GutterMarker * ViewUpdate ^-> GutterMarker)
 
-                "domEventHandlers", T<Function>
+                "domEventHandlers", T<obj>
 
                 "side", T<string> //"before" | "after"
             ]
@@ -568,7 +568,7 @@ module View =
             Required = []
             Optional = [
                 "formatNumber", T<int> * EditorState ^-> T<string>
-                "domEventHandlers", T<Function>
+                "domEventHandlers", T<obj>
             ]
         }
         |> ImportFromView
@@ -617,6 +617,19 @@ module View =
             Optional = []
         }
         |> ImportFromView
+
+    let clipboardFilterFunc = (T<string> * EditorState ^-> T<string>)
+    let scrollHandlerFunc = (EditorView * SelectionRange * T<obj> ^-> T<unit>)
+    let focusChangeEffectFunc = (EditorState * T<bool> ^-> StateEffect.[T<obj>])
+    let exceptionSinkFunc = (T<obj> ^-> T<unit>)
+    let updateListenerFunc = (ViewUpdate ^-> T<unit>)
+    let mouseSelectionStyleFunc = (EditorView * T<Dom.MouseEvent> ^-> MouseSelectionStyle)
+    let dragMovesSelectionFunc = (T<Dom.MouseEvent> ^-> T<bool>)
+    let clickAddsSelectionRangeFunc = dragMovesSelectionFunc
+    let decorationsFunc = (DecorationSet + (EditorView ^-> DecorationSet))
+    let atomicRangesFunc = (EditorView ^-> RangeSet.[T<obj>])
+    let bidiIsolatedRangesFunc = decorationsFunc
+    let scrollMarginsFunc = (EditorView ^-> Rect)
 
     EditorView
         |> ImportFromView
@@ -695,23 +708,23 @@ module View =
             "styleModule" =? Facet.[T<obj>, !| T<obj>]
             "domEventHandlers" => DOMEventHandlers ^-> Extension
             "domEventObservers" => DOMEventHandlers ^-> Extension
-            "inputHandler" =? Facet.[T<Function>, !| T<Function>]
-            "clipboardInputFilter" =? Facet.[T<Function>, !| T<Function>]
-            "clipboardOutputFilter" =? Facet.[T<Function>, !| T<Function>]
-            "scrollHandler" =? Facet.[T<Function>, !| T<Function>]
-            "focusChangeEffect" =? Facet.[T<Function>, !| T<Function>]
+            "inputHandler" =? Facet.[(EditorView * T<int> * T<int> * T<string> * (T<unit> ^-> Transaction) ^-> T<bool>), !| (EditorView * T<int> * T<int> * T<string> * (T<unit> ^-> Transaction) ^-> T<bool>)]
+            "clipboardInputFilter" =? Facet.[clipboardFilterFunc, !| clipboardFilterFunc]
+            "clipboardOutputFilter" =? Facet.[clipboardFilterFunc, !| clipboardFilterFunc]
+            "scrollHandler" =? Facet.[scrollHandlerFunc, !| scrollHandlerFunc]
+            "focusChangeEffect" =? Facet.[focusChangeEffectFunc, !| focusChangeEffectFunc]
             "perLineTextDirection" =? Facet.[T<bool>, T<bool>]
-            "exceptionSink" =? Facet.[T<Function>, !| T<Function>]
-            "updateListener" =? Facet.[T<Function>, !| T<Function>]
+            "exceptionSink" =? Facet.[exceptionSinkFunc, !| exceptionSinkFunc]
+            "updateListener" =? Facet.[updateListenerFunc, !| updateListenerFunc]
             "editable" =? Facet.[T<bool>, T<bool>]
-            "mouseSelectionStyle" =? Facet.[T<Function>, !| T<Function>]
-            "dragMovesSelection" =? Facet.[T<Function>, !| T<Function>]
-            "clickAddsSelectionRange" =? Facet.[T<Function>, !| T<Function>]
-            "decorations" =? Facet.[T<Function>, !| T<Function>]
-            "outerDecorations" =? Facet.[T<Function>, !| T<Function>]
-            "atomicRanges" =? Facet.[T<Function>, !| T<Function>]
-            "bidiIsolatedRanges" =? Facet.[T<Function>, !| T<Function>]
-            "scrollMargins" =? Facet.[T<Function>, !| T<Function>]
+            "mouseSelectionStyle" =? Facet.[mouseSelectionStyleFunc, !| mouseSelectionStyleFunc]
+            "dragMovesSelection" =? Facet.[dragMovesSelectionFunc, !| dragMovesSelectionFunc]
+            "clickAddsSelectionRange" =? Facet.[clickAddsSelectionRangeFunc, !| clickAddsSelectionRangeFunc]
+            "decorationsFunc" =? Facet.[decorationsFunc, !| decorationsFunc]
+            "outerDecorations" =? Facet.[decorationsFunc, !| decorationsFunc]
+            "atomicRanges" =? Facet.[atomicRangesFunc, !| atomicRangesFunc]
+            "bidiIsolatedRanges" =? Facet.[bidiIsolatedRangesFunc, !| bidiIsolatedRangesFunc]
+            "scrollMargins" =? Facet.[scrollMarginsFunc, !| scrollMarginsFunc]
             "theme" => T<obj> * !? ThemeOptions ^-> Extension
             "darkTheme" =? Facet[T<bool>, T<bool>]
             "baseTheme" => T<obj> ^-> Extension

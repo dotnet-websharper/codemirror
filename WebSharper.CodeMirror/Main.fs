@@ -1,7 +1,7 @@
 ﻿namespace WebSharper.CodeMirror.Definition
 
 open WebSharper.JavaScript
-    open WebSharper.InterfaceGenerator   
+open WebSharper.InterfaceGenerator   
 open State
 open View
 open Language
@@ -1472,6 +1472,7 @@ module Definition =
                 ScrollStrategy
                 ScrollIntoViewOptions
                 ViewUpdate
+                MouseSelectionStyle
                 View.Rect
                 WidgetType
                 Direction
