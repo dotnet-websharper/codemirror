@@ -237,34 +237,6 @@ module State =
         ])
         |> ignore
 
-    Transaction
-        |> ImportFromState
-        |+> Instance [
-            "startState" =? EditorState
-            "changes" =? ChangeSet
-            "selection" =? EditorSelection
-            "effects" =? !| StateField.[T<obj>]
-            "scrollIntoView" =? T<bool>
-
-            "newDoc" =? Text
-            "newSelection" =? EditorSelection
-            "state" =? EditorState
-
-            Generic - fun t ->
-                "annotation" => AnnotationType.[t] ^-> t
-
-            "docChanged" =? T<bool>
-            "reconfigured" =? T<bool>
-            "isUserEvent" => T<string> ^-> T<bool>
-        ]
-        |+> Static [
-            "time" =? AnnotationType.[T<int>]
-            "userEvent" =? AnnotationType.[T<string>]
-            "addToHistory" =? AnnotationType.[T<bool>]
-            "remote" =? AnnotationType.[T<bool>]
-        ]
-        |> ignore
-
     let ChangeByRangeResult =
         Pattern.Config "ChangeByRangeResult" {
             Required = [
@@ -343,8 +315,6 @@ module State =
 
     let Slot = FacetReader.[T<obj>] + StateField.[T<obj>] + T<string>
 
-    let FacetDeclare = Class "Facet"
-
     let FacetConfig =
         Generic -- fun input output ->
             Pattern.Config "FacetConfig" {
@@ -361,7 +331,7 @@ module State =
 
     let Facet =
         Generic -- fun input output ->
-            FacetDeclare
+            Class "Facet"
             |> ImportFromState
             |+> Instance [
                 "reader" =? FacetReader.[output]
@@ -577,6 +547,35 @@ module State =
             ]
             Optional = []
         }
+        |> ImportFromState
+
+    Transaction
+        |> ImportFromState
+        |+> Instance [
+            "startState" =? EditorState
+            "changes" =? ChangeSet
+            "selection" =? EditorSelection
+            "effects" =? !| StateField.[T<obj>]
+            "scrollIntoView" =? T<bool>
+
+            "newDoc" =? Text
+            "newSelection" =? EditorSelection
+            "state" =? EditorState
+
+            Generic - fun t ->
+                "annotation" => AnnotationType.[t] ^-> t
+
+            "docChanged" =? T<bool>
+            "reconfigured" =? T<bool>
+            "isUserEvent" => T<string> ^-> T<bool>
+        ]
+        |+> Static [
+            "time" =? AnnotationType.[T<int>]
+            "userEvent" =? AnnotationType.[T<string>]
+            "addToHistory" =? AnnotationType.[T<bool>]
+            "remote" =? AnnotationType.[T<bool>]
+        ]
+        |> ignore
 
     EditorState
         |> ImportFromState

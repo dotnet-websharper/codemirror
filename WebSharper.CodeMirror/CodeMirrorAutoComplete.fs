@@ -10,6 +10,26 @@ module AutoComplete =
     let ImportFromAutoComplete (c: CodeModel.Class) = 
         Import c.Name "@codemirror/autocomplete" c
 
+    let SnippetContext =
+        Pattern.Config "SnippetContext" {
+            Required = [
+                "state", EditorState.Type
+                "dispatch", Transaction ^-> T<unit>
+            ]
+            Optional = []
+        }
+
+    let CloseBracketConfig =
+        Pattern.Config "CloseBracketConfig" {
+            Required = []
+            Optional = [
+                "brackets", !| T<string>
+                "before", T<string>
+                "stringPrefixes", !| T<string>
+            ]
+        }
+        |> ImportFromAutoComplete
+
     let AbortListenerOptions =
         Pattern.Config "AbortListenerOptions" {
             Required = []
@@ -48,6 +68,7 @@ module AutoComplete =
                 "destroy", T<unit> ^-> T<unit>
             ]
         }
+        |> Import "CompletionInfo" "@codemirror/autocomplete"
 
     let CompletionInfo = T<Dom.Node> + CompletionInfoObject
 
@@ -128,7 +149,7 @@ module AutoComplete =
                 "activateOnCompletion", Completion ^-> T<bool>
                 "activateOnTypingDelay", T<int>
                 "selectOnOpen", T<bool>
-                "override", !| CompletionSource
+                "override", !| CompletionSource 
                 "closeOnBlur", T<bool>
                 "maxRenderedOptions", T<int>
                 "defaultKeymap", T<bool>

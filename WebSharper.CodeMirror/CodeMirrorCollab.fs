@@ -4,7 +4,6 @@ open WebSharper.InterfaceGenerator
 open State
 
 module Collab =
-
     let Update =
         Pattern.Config "Update" {
             Required = [
@@ -15,6 +14,7 @@ module Collab =
                 "effects", !| StateEffect.[T<obj>]
             ]
         }
+        |> Import "Update" "@codemirror/collab"
 
     let CollabConfig =
         Pattern.Config "CollabConfig" {
@@ -24,4 +24,13 @@ module Collab =
                 "clientID", T<string>
                 "sharedEffects", (Transaction ^-> !| StateEffect.[T<obj>])
             ]
+        }
+
+    let UpdateOver =
+        Pattern.Config "UpdateOver" {
+            Required = [
+                "changes", ChangeDesc.Type
+                "clientID", T<string>
+            ]
+            Optional = []
         }

@@ -1,6 +1,5 @@
 ﻿namespace WebSharper.CodeMirror.Definition
 
-open WebSharper.JavaScript
 open WebSharper.InterfaceGenerator
 
 module LangSQL = 
@@ -31,6 +30,7 @@ module LangSQL =
                 "treatBitsAsBytes", T<bool>
             ]
         }
+        |> ImportFromLangSQL
     
     let SQLDialect =
         Class "SQLDialect"
@@ -71,4 +71,5 @@ module LangSQL =
                 "upperCaseKeywords", T<bool>
                 "keywordCompletion", (T<string> * T<string> ^-> AutoComplete.Completion.Type)
             ]
-        }    
+        }
+        |> ImportFromLangSQL

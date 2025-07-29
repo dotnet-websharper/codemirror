@@ -9,12 +9,24 @@ module View =
     let ImportFromView (c: CodeModel.Class) = 
         Import c.Name "@codemirror/view" c
 
-    let DOMEventHandlers = T<Function>
+    let DOMEventHandlers = T<obj>
 
     let EditorView =
         Class "EditorView"
 
-    let ViewportType =
+    let Command = EditorView ^-> T<bool>
+
+    let TooltipsOptions =
+        Pattern.Config "TooltipsOptions" {
+            Required = []
+            Optional = [
+                "position", T<string> 
+                "parent", T<HTMLElement>
+                "tooltipSpace", EditorView ^-> T<Dom.Rect>
+            ]
+        }
+
+    let Viewport =
         Pattern.Config "Viewport" {
             Required = [
                 "from", T<int>
@@ -239,8 +251,11 @@ module View =
             "of" => arg ^-> Extension
         ]
         |+> Static [
-            "define" => (EditorView * arg ^-> v) * !? PluginSpec.[v] ^-> TSelf.[v, arg]
-            "fromClass" => T<obj> * !? PluginSpec.[v] ^-> TSelf.[v, arg]
+            Generic -- fun v arg ->
+                "define" => (EditorView * arg ^-> v) * !? PluginSpec.[v] ^-> TSelf.[v, arg]
+
+            Generic -- fun v arg ->
+                "fromClass" => T<obj> * !? PluginSpec.[v] ^-> TSelf.[v, arg]
         ])
         |> ignore
 
@@ -373,8 +388,6 @@ module View =
                 "drawRangeCursor", T<bool>
             ]
         }
-
-    let Command = EditorView ^-> T<bool>
 
     let GutterMarker =
         Class "GutterMarker"
@@ -560,12 +573,57 @@ module View =
         }
         |> ImportFromView
 
+    let ShowDialogResult = 
+        Pattern.Config "ShowDialogResult" {
+            Required = [
+                "close", StateEffect.[T<obj>]
+                "result", T<Promise<_>>[T<HTMLFormElement>]
+            ]
+            Optional = []
+        }
+
+    let GuttersConfig = 
+        Pattern.Config "GuttersConfig" {
+            Required = []
+            Optional = [
+                "fixed", T<bool>
+            ]
+        }       
+
+    let KeyBinding =
+        Pattern.Config "KeyBinding" {
+            Required = []
+            Optional = [
+                "key", T<string>
+                "mac", T<string>
+                "win", T<string>
+                "linux", T<string>
+                "run", Command
+                "shift", Command
+                "any", EditorView * T<Dom.KeyboardEvent> ^-> T<bool>
+                "scope", T<string>
+                "preventDefault", T<bool>
+                "stopPropagation", T<bool>
+            ]
+        }
+        |> ImportFromView
+
+    let MouseSelectionStyle =
+        Pattern.Config "MouseSelectionStyle" {
+            Required = [
+                "get", T<Dom.MouseEvent> * T<bool> * T<bool> ^-> EditorSelection
+                "update", ViewUpdate ^-> T<bool> + T<unit>
+            ]
+            Optional = []
+        }
+        |> ImportFromView
+
     EditorView
         |> ImportFromView
         |+> Instance [
             "state" =? EditorState
-            "viewport" =? ViewportType
-            "visibleRanges" =? !| ViewportType
+            "viewport" =? Viewport
+            "visibleRanges" =? !| Viewport
             "inView" =? T<bool>
             "composing" =? T<bool>
             "compositionStarted" =? T<bool>

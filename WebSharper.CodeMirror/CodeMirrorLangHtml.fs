@@ -3,7 +3,7 @@
 open WebSharper.JavaScript
 open WebSharper.InterfaceGenerator
 
-module LangHtml = 
+module LangHtml =
     let TagSpec =
         Pattern.Config "TagSpec" {
             Required = []
@@ -13,6 +13,7 @@ module LangHtml =
                 "children", !| T<string>
             ]
         }
+        |> Import "TagSpec" "@codemirror/lang-html"
 
     let NestedLang =
         Pattern.Config "NestedLang" {

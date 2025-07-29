@@ -140,25 +140,6 @@ module Language =
             ]
         }
 
-    let Command = View.EditorView ^-> T<bool>
-
-    let KeyBinding =
-        Pattern.Config "KeyBinding" {
-            Required = []
-            Optional = [
-                "key", T<string>
-                "mac", T<string>
-                "win", T<string>
-                "linux", T<string>
-                "run", Command
-                "shift", Command
-                "any", View.EditorView * T<Dom.KeyboardEvent> ^-> T<bool>
-                "scope", T<string>
-                "preventDefault", T<bool>
-                "stopPropagation", T<bool>
-            ]
-        }
-
     let IndentContextOptions =
         Pattern.Config "IndentContextOptions" {
             Required = []
@@ -180,7 +161,7 @@ module Language =
 
     let IndentContext =
         Class "IndentContext"
-        |> Import "IndentContext" "@codemirror/language"
+        |> ImportFromLanguage
         |+> Instance [
             "state" =? EditorState
             "unit" =@ T<int>
@@ -246,6 +227,7 @@ module Language =
                 "end", RangeSpan.Type
             ]
         }
+        |> ImportFromLanguage
 
     let Config =
         Pattern.Config "Config" {
@@ -257,6 +239,7 @@ module Language =
                 "renderMatch", MatchResult * EditorState ^-> !| Range.[View.Decoration]
             ]
         }
+        |> ImportFromLanguage
 
     let LanguageDescriptionSpec =
         Pattern.Config "LanguageDescriptionSpec" {
@@ -287,3 +270,142 @@ module Language =
             "matchFilename" => !| TSelf * T<string> ^-> TSelf
             "matchLanguageName" => !| TSelf * T<string> * !? T<bool> ^-> TSelf
         ]
+
+    let DocInputClass =
+        Class "DocInput"
+        |> ImportFromLanguage
+        |+> Instance [
+            "doc" =? Text
+            "length" =? T<int>            
+
+            "chunk" => T<int> ^-> T<string>
+            "lineChunks" =? T<bool>
+            "read" => T<int> * T<int> ^-> T<string>
+        ]
+        |+> Static [
+            Constructor Text
+        ]
+
+    let DocRange =
+        Pattern.Config "DocRange" {
+            Required = [
+                "from", T<int>
+                "to", T<int>
+            ]
+            Optional = []
+        }
+
+    let ParseContextClass =
+        Class "ParseContext"
+        |> ImportFromLanguage
+        |+> Instance [
+            "state" =? EditorState
+            "fragments" =? !| T<obj>
+            "viewport" =? View.Viewport
+            "skipUntilInView" => T<int> * T<int> ^-> T<unit>
+        ]
+        |+> Static [
+            "getSkippingParser" => !? T<Promise<obj>> ^-> Parser
+            "get" => T<unit> ^-> TSelf
+        ]
+
+
+    let DelimitedIndentOptions =
+        Pattern.Config "DelimitedIndentOptions" {
+            Required = [
+                "closing", T<string>
+            ]
+            Optional = [
+                "align", T<bool>
+                "units", T<int>
+            ]
+        }
+
+    let ContinuedIndentOptions =
+        Pattern.Config "ContinuedIndentOptions" {
+            Required = []
+            Optional = [
+                "except", T<RegExp>
+                "units", T<int>
+            ]
+        }
+
+    let BidiIsolatesOptions =
+        Pattern.Config "BidiIsolatesOptions" {
+            Required = []
+            Optional = [
+                "alwaysIsolate", T<bool>
+            ]
+        }
+
+    let StringStream =
+        Class "StringStream"
+        |> ImportFromLanguage
+        |+> Instance [
+            "string" =? T<string>
+            "indentUnit" =? T<int>
+            "pos" =? T<int>
+            "start" =? T<int>
+
+            "eol" => T<unit> ^-> T<bool>
+            "sol" => T<unit> ^-> T<bool>
+            "peek" => T<unit> ^-> T<string>
+            "next" => T<unit> ^-> T<string>
+            "eat" => T<string> + T<RegExp> + (T<string> ^-> T<bool>) ^-> T<string>
+            "eatWhile" => T<string> + T<RegExp> + (T<string> ^-> T<bool>) ^-> T<bool>
+            "eatSpace" => T<unit> ^-> T<bool>
+            "skipToEnd" => T<unit> ^-> T<unit>
+            "skipTo" => T<string> ^-> T<bool>
+            "backUp" => T<int> ^-> T<unit>
+            "column" => T<unit> ^-> T<int>
+            "indentation" => T<unit> ^-> T<int>
+            "match" => (T<string> + T<RegExp>) * !? T<bool> * !? T<bool> ^-> T<bool> + T<RegExp>
+            "current" => T<unit> ^-> T<string>
+        ]
+        |+> Static [
+            Constructor (
+                T<string> * T<int> * T<int> * !?(T<int>)
+            )
+        ]
+
+    let StreamParser =
+        Generic - fun state ->
+        Pattern.Config "StreamParser" {
+            Required = []
+            Optional = [
+                "name", T<string>
+                "startState", T<int> ^-> state
+                "token", StringStream * state ^-> T<string>
+                "blankLine", state * T<int> ^-> T<unit>
+                "copyState", state ^-> state
+                "indent", state * T<string> * IndentContext ^-> T<int>
+                "languageData", T<obj>
+                "tokenTable", T<obj>
+                "mergeTokens", T<bool>
+            ]
+        }
+        |> ImportFromLanguage
+
+    let StreamLanguage =
+        Generic - fun state ->
+        Class "StreamLanguage"
+        |+> Static [
+            Generic - fun state ->
+                "define" => StreamParser.[state] ^-> TSelf.[state]
+        ]
+        |+> Instance [
+            "allowsNesting" =? T<bool>
+        ]
+        |> ImportFromLanguage
+
+    let Sublanguage =
+        Pattern.Config "Sublanguage" {
+            Required = [
+                "test", T<obj> * EditorState ^-> T<bool>
+                "facet", Facet.[T<obj>, T<obj>]
+            ]
+            Optional = [
+                "type", T<string>
+            ]
+        }
+        |> ImportFromLanguage

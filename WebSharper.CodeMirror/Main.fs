@@ -10,25 +10,6 @@ module Definition =
     open WebSharper.JavaScript.Dom
     type RegExp = WebSharper.JavaScript.RegExp
 
-    let SnippetContext =
-        Pattern.Config "SnippetContext" {
-            Required = [
-                "state", EditorState.Type
-                "dispatch", Transaction ^-> T<unit>
-            ]
-            Optional = []
-        }
-
-    let TooltipsOptions =
-        Pattern.Config "TooltipsOptions" {
-            Required = []
-            Optional = [
-                "position", T<string> 
-                "parent", T<HTMLElement>
-                "tooltipSpace", EditorView ^-> T<Rect>
-            ]
-        }
-
     let HoverTooltipOptions =
         Pattern.Config "HoverTooltipOptions" {
             Required = []
@@ -36,60 +17,6 @@ module Definition =
                 "hideOn", Transaction * Tooltip ^-> T<bool>
                 "hideOnChange", T<bool> + T<string>
                 "hoverTime", T<int>
-            ]
-        }
-
-    let ShowDialogResult = 
-        Pattern.Config "ShowDialogResult" {
-            Required = [
-                "close", StateEffect.[T<obj>]
-                "result", T<Promise<_>>[T<HTMLFormElement>]
-            ]
-            Optional = []
-        }
-
-    let GuttersConfig = 
-        Pattern.Config "GuttersConfig" {
-            Required = []
-            Optional = [
-                "fixed", T<bool>
-            ]
-        }
-
-    let DocRange =
-        Pattern.Config "DocRange" {
-            Required = [
-                "from", T<int>
-                "to", T<int>
-            ]
-            Optional = []
-        }
-
-    let DelimitedIndentOptions =
-        Pattern.Config "DelimitedIndentOptions" {
-            Required = [
-                "closing", T<string>
-            ]
-            Optional = [
-                "align", T<bool>
-                "units", T<int>
-            ]
-        }
-
-    let ContinuedIndentOptions =
-        Pattern.Config "ContinuedIndentOptions" {
-            Required = []
-            Optional = [
-                "except", T<RegExp>
-                "units", T<int>
-            ]
-        }
-
-    let BidiIsolatesOptions =
-        Pattern.Config "BidiIsolatesOptions" {
-            Required = []
-            Optional = [
-                "alwaysIsolate", T<bool>
             ]
         }
 
@@ -161,6 +88,7 @@ module Definition =
                 "base", LanguageSupport.Type
             ]
         }
+        |> Import "JinjaCompletionConfig" "@codemirror/lang-liquid"
 
     let JinjaCompletionConfig =
         Pattern.Config "JinjaCompletionConfig" {
@@ -171,6 +99,7 @@ module Definition =
                 "properties", T<string[]> * EditorState * AutoComplete.CompletionContext ^-> !| AutoComplete.Completion
             ]
         }
+        |> Import "JinjaCompletionConfig" "@codemirror/lang-jinja"
 
     let AngularConfig =
         Pattern.Config "AngularConfig" {
@@ -186,16 +115,7 @@ module Definition =
             Optional = [
                 "base", LanguageSupport.Type
             ]
-        }
-
-    let UpdateOver =
-        Pattern.Config "UpdateOver" {
-                Required = [
-                    "changes", ChangeDesc.Type
-                    "clientID", T<string>
-                ]
-                Optional = []
-            }
+        }   
 
     let ThemeColor =
         Pattern.Config "ThemeColor" {
@@ -316,7 +236,7 @@ module Definition =
             "layer" => LayerConfig ^-> Extension
             |> Import "layer" "@codemirror/view"
 
-            "tooltips" => !? TooltipsOptions ^-> Extension
+            "tooltips" => !? View.TooltipsOptions ^-> Extension
             |> Import "tooltips" "@codemirror/view"
 
             "hoverTooltip" => HoverTooltipSource * !? HoverTooltipOptions ^-> (Extension + StateField.[!| Tooltip])
@@ -505,7 +425,7 @@ module Definition =
             "autocompletion" => !? AutoComplete.CompletionConfig ^-> Extension
             |> Import "autocompletion" "@codemirror/autocomplete"
 
-            "snippet" => T<string> ^-> (SnippetContext * AutoComplete.Completion * T<int> * T<int> ^-> T<unit>)
+            "snippet" => T<string> ^-> (AutoComplete.SnippetContext * AutoComplete.Completion * T<int> * T<int> ^-> T<unit>)
             |> Import "snippet" "@codemirror/autocomplete"
 
             "clearSnippet" =? StateCommand
@@ -607,7 +527,7 @@ module Definition =
             "getClientID" => EditorState ^-> T<string>
             |> Import "getClientID" "@codemirror/collab"
 
-            "rebaseUpdates" => !| Collab.Update * !| UpdateOver ^-> !| Collab.Update
+            "rebaseUpdates" => !| Collab.Update * !| Collab.UpdateOver ^-> !| Collab.Update
             |> Import "rebaseUpdates" "@codemirror/collab"
 
             //
@@ -1036,7 +956,6 @@ module Definition =
             //
             // @codemirror/lang-javascript
             //
-
             "javascriptLanguage" =? LRLanguage
             |> Import "javascriptLanguage" "@codemirror/lang-javascript"
 
@@ -1376,14 +1295,118 @@ module Definition =
             "oneDark" =? Extension
             |> Import "oneDark" "@codemirror/theme-one-dark"
 
+            //
+            // @codemirror/lsp-client
+            //
+            "serverCompletion" => LSPClient.ServerCompletionConfig?config ^-> Extension
+            |> Import "serverCompletion" "@codemirror/lsp-client"
+
+            "serverCompletionSource" =? AutoComplete.CompletionSource
+            |> Import "serverCompletionSource" "@codemirror/lsp-client"
+
+            "hoverTooltips" => HoverTooltipOptions?config ^-> Extension
+            |> Import "hoverTooltips" "@codemirror/lsp-client"
+
+            "formatDocument" =? Command
+            |> Import "formatDocument" "@codemirror/lsp-client"
+
+            "formatKeymap" =? !| KeyBinding
+            |> Import "formatKeymap" "@codemirror/lsp-client"
+
+            "renameSymbol" =? Command
+            |> Import "renameSymbol" "@codemirror/lsp-client"
+
+            "renameKeymap" =? !| KeyBinding
+            |> Import "renameKeymap" "@codemirror/lsp-client"
+
+            "showSignatureHelp" =? Command
+            |> Import "showSignatureHelp" "@codemirror/lsp-client"
+
+            "nextSignature" =? Command
+            |> Import "nextSignature" "@codemirror/lsp-client"
+
+            "prevSignature" =? Command
+            |> Import "prevSignature" "@codemirror/lsp-client"
+
+            "signatureKeymap" =? !| KeyBinding
+            |> Import "signatureKeymap" "@codemirror/lsp-client"
+
+            "signatureHelp" => LSPClient.SignatureHelpConfig?config ^-> Extension
+            |> Import "signatureHelp" "@codemirror/lsp-client"
+
+            "jumpToDefinition" =? Command
+            |> Import "jumpToDefinition" "@codemirror/lsp-client"
+
+            "jumpToDeclaration" =? Command
+            |> Import "jumpToDeclaration" "@codemirror/lsp-client"
+
+            "jumpToTypeDefinition" =? Command
+            |> Import "jumpToTypeDefinition" "@codemirror/lsp-client"
+
+            "jumpToImplementation" =? Command
+            |> Import "jumpToImplementation" "@codemirror/lsp-client"
+
+            "jumpToDefinitionKeymap" =? !| KeyBinding
+            |> Import "jumpToDefinitionKeymap" "@codemirror/lsp-client"
+
+            "findReferences" =? Command
+            |> Import "findReferences" "@codemirror/lsp-client"
+
+            "closeReferencePanel" =? Command
+            |> Import "closeReferencePanel" "@codemirror/lsp-client"
+
+            "findReferencesKeymap" =? !| KeyBinding
+            |> Import "findReferencesKeymap" "@codemirror/lsp-client"
+
+            "languageServerSupport" => LSPClient.LSPClientClass * T<string> * !? T<string> ^-> Extension
+            |> Import "languageServerSupport" "@codemirror/lsp-client"
+
+            //
+            // @codemirror/merge
+            //
+            "diff" => T<string> * T<string> * !? Merge.DiffConfig ^-> !| Merge.Change
+            |> Import "diff" "@codemirror/merge"
+
+            "presentableDiff" => T<string> * T<string> * !? Merge.DiffConfig ^-> !| Merge.Change
+            |> Import "presentableDiff" "@codemirror/merge"
+
+            "getChunks" => EditorState ^-> Merge.ChunksResult
+            |> Import "getChunks" "@codemirror/merge"
+
+            "goToNextChunk" =? StateCommand
+            |> Import "goToNextChunk" "@codemirror/merge"
+
+            "goToPreviousChunk" =? StateCommand
+            |> Import "goToPreviousChunk" "@codemirror/merge"
+
+            "unifiedMergeView" => Merge.UnifiedMergeConfig ^-> !| (Extension + StateField.[DecorationSet])
+            |> Import "unifiedMergeView" "@codemirror/merge"
+
+            "updateOriginalDoc" =? StateEffectType.[Merge.UpdateOriginalDoc]
+            |> Import "updateOriginalDoc" "@codemirror/merge"
+
+            "originalDocChangeEffect" => EditorState * ChangeSet ^-> StateEffect.[Merge.UpdateOriginalDoc]
+            |> Import "originalDocChangeEffect" "@codemirror/merge"
+
+            "getOriginalDoc" => EditorState ^-> State.Text
+            |> Import "getOriginalDoc" "@codemirror/merge"
+
+            "acceptChunk" => EditorView * !? T<int> ^-> T<bool>
+            |> Import "acceptChunk" "@codemirror/merge"
+
+            "rejectChunk" => EditorView * !? T<int> ^-> T<bool>
+            |> Import "rejectChunk" "@codemirror/merge"
+
+            "uncollapseUnchanged" =? StateEffectType.[T<int>]
+            |> Import "uncollapseUnchanged" "@codemirror/merge"
         ]
 
     let Assembly =
         Assembly [
             Namespace "WebSharper.CodeMirror" [
                 CodeMirror
+                HoverTooltipOptions
                 ThemeColor
-                UpdateOver
                 VueConfig
                 AngularConfig
                 JinjaCompletionConfig
@@ -1392,16 +1415,7 @@ module Definition =
                 PhpConfig
                 YamlFrontmatterConfig
                 CompletionPathResult
-                JavaScriptConfig
-                BidiIsolatesOptions
-                ContinuedIndentOptions
-                DelimitedIndentOptions
-                DocRange
-                GuttersConfig
-                ShowDialogResult
-                HoverTooltipOptions
-                TooltipsOptions
-                SnippetContext
+                JavaScriptConfig   
                 MarkdownConfig
 
                 //
@@ -1450,7 +1464,8 @@ module Definition =
                 // CodeMirror View
                 //
                 EditorView
-                ViewportType
+                TooltipsOptions
+                Viewport
                 DocumentPaddingType
                 DOMPos
                 Coords
@@ -1493,6 +1508,8 @@ module Definition =
                 DialogConfig
                 GutterConfig
                 LineNumberConfig
+                ShowDialogResult
+                GuttersConfig
 
                 //
                 // CodeMirror Language
@@ -1519,6 +1536,16 @@ module Definition =
                 Config
                 LanguageDescriptionSpec
                 LanguageDescription
+                DocRange
+                DelimitedIndentOptions
+                ContinuedIndentOptions
+                BidiIsolatesOptions
+                DocInputClass
+                ParseContextClass
+                Sublanguage
+                StreamLanguage
+                StreamParser
+                StringStream
 
                 //
                 // CodeMirror Lint
@@ -1562,12 +1589,14 @@ module Definition =
                 AutoComplete.AddToOptions  
                 AutoComplete.PositionInfoResult  
                 AutoComplete.CompletionConfig  
+                AutoComplete.SnippetContext
 
                 //
                 // CodeMirror Collab
                 //
                 Collab.CollabConfig
                 Collab.Update
+                Collab.UpdateOver
 
                 //
                 // CodeMirror lang SQL
@@ -1593,6 +1622,33 @@ module Definition =
                 LangXml.ElementSpec  
                 LangXml.XMLConfig  
 
+                //
+                // CodeMirror LSP Client
+                //
+                LSPClient.LSPClientClass  
+                LSPClient.WorkspaceMapping  
+                LSPClient.WorkspaceFile  
+                LSPClient.WorkspaceFileUpdate  
+                LSPClient.Workspace  
+                LSPClient.LSPClientConfig  
+                LSPClient.Transport  
+                LSPClient.LSPPlugin  
+                LSPClient.SignatureHelpConfig
+                LSPClient.ServerCompletionConfig
+
+                //
+                // CodeMirror Merge
+                //
+                Merge.Chunk  
+                Merge.Change  
+                Merge.DiffConfig  
+                Merge.CollapseUnchangedConfig  
+                Merge.MergeConfig  
+                Merge.DirectMergeConfig  
+                Merge.UnifiedMergeConfig  
+                Merge.MergeView  
+                Merge.UpdateOriginalDoc  
+                Merge.ChunksResult  
             ]
         ]
 

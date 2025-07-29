@@ -1,6 +1,5 @@
 ﻿namespace WebSharper.CodeMirror.Definition
 
-open WebSharper.JavaScript
 open WebSharper.InterfaceGenerator
 
 module LangXml = 
@@ -15,6 +14,7 @@ module LangXml =
                 "completion", AutoComplete.Completion.Type
             ]
         }
+        |> Import "AttrSpec" "@codemirror/lang-xml"
 
     let ElementSpec =
         Pattern.Config "ElementSpec" {
@@ -28,7 +28,8 @@ module LangXml =
                 "attributes", !| (T<string> + AttrSpec) 
                 "completion", AutoComplete.Completion.Type
             ]
-        }    
+        }
+        |> Import "ElementSpec" "@codemirror/lang-xml"
 
     let XMLConfig =
         Pattern.Config "XMLConfig" {
