@@ -18,6 +18,9 @@ This project provides bindings for the following CodeMirror 6 modules:
 - `@codemirror/autocomplete`
 - `@codemirror/lint`
 - `@codemirror/collab`
+- `@codemirror/language-data`
+- `@codemirror/merge`
+- `@codemirror/lsp-client`
 
 ### Language Modes
 - `@codemirror/lang-angular`
