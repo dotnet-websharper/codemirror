@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>WebSharper.CodeMirror.Sample</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="Scripts/WebSharper.CodeMirror.Sample.css" />
+    <style>
+        /* Don't show the not-yet-loaded templates */
+        [ws-template], [ws-children-template] { display: none; }
+        body {
+            font-family: sans-serif;
+            padding: 1rem;
+        }
+
+        .editor {
+            border: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            margin-bottom: 0.2rem;
+        }
+    </style>
+    <script type="text/javascript" src="Scripts/WebSharper.CodeMirror.Sample.head.js"></script>
+</head>
+<body>
+    <h1>CodeMirror - Language Examples</h1>
+    <div id="editor-container"></div>
+    <script type="module" src="Scripts/WebSharper.CodeMirror.Sample.min.js"></script>
+</body>
+</html>

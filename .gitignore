@@ -2,7 +2,8 @@ packages/
 tools/packages/
 bin/
 obj/
-Website/Content/
+/*.Sample/wwwroot/Scripts
+/*.Sample/node_modules
 build/
 *.suo
 *.user
@@ -13,3 +14,4 @@ paket-files/
 nuget/*.paket.template
 msbuild/CodeMirrorDir.targets
 .vs
+*/websharper.log
