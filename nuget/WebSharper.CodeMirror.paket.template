@@ -1,19 +1,21 @@
 type file
 id WebSharper.CodeMirror
-authors
-    IntelliFactory
-owners
-    IntelliFactory
+authors IntelliFactory
+owners IntelliFactory
+projectUrl https://websharper.com/
+repositoryType git
+repositoryUrl https://github.com/dotnet-websharper/codemirror/
+licenseUrl https://github.com/dotnet-websharper/codemirror/blob/master/LICENSE.md
+iconUrl https://github.com/dotnet-websharper/core/raw/websharper50/tools/WebSharper.png
 
 
 description
-    CodeMirror bindings for WebSharper
+    CodeMirror v6+ bindings for WebSharper 
 tags
     Web JavaScript F# C#
 files
-    ../WebSharper.CodeMirror/bin/Release/net461/WebSharper.CodeMirror.dll ==> lib/net461
-    ../WebSharper.CodeMirror/bin/Release/net461/WebSharper.CodeMirror.xml ==> lib/net461
     ../WebSharper.CodeMirror/bin/Release/netstandard2.0/WebSharper.CodeMirror.dll ==> lib/netstandard2.0
     ../WebSharper.CodeMirror/bin/Release/netstandard2.0/WebSharper.CodeMirror.xml ==> lib/netstandard2.0
 dependencies
         WebSharper ~> LOCKEDVERSION:[3]
+
