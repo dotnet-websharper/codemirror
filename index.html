@@ -1,32 +1,175 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>WebSharper.CodeMirror.Sample</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="Scripts/WebSharper.CodeMirror.Sample.css" />
-    <style>
-        /* Don't show the not-yet-loaded templates */
-        [ws-template], [ws-children-template] { display: none; }
-        body {
-            font-family: sans-serif;
-            padding: 1rem;
-        }
-
-        .editor {
-            border: 1px solid #ddd;
-            margin-bottom: 1.5rem;
-        }
-
-        h3 {
-            margin-bottom: 0.2rem;
-        }
-    </style>
-    <script type="text/javascript" src="Scripts/WebSharper.CodeMirror.Sample.head.js"></script>
+    <title>WebSharper.CodeMirror — sample</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%234f46e5'/%3E%3Cpath d='M5 4 2 8l3 4M11 4l3 4-3 4' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <script>
+        // Apply a previously chosen theme before first paint. Light is the
+        // default; the key is shared with Client.fs (themeStorageKey).
+        try {
+            var t = localStorage.getItem('websharper-codemirror-theme');
+            if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { }
+    </script>
+    <link rel="stylesheet" href="site.css" />
+    <!-- CodeMirror is bundled from the npm packages; the WebSharper head is folded in here. -->
+    
 </head>
 <body>
-    <h1>CodeMirror - Language Examples</h1>
-    <div id="editor-container"></div>
-    <script type="module" src="Scripts/WebSharper.CodeMirror.Sample.min.js"></script>
+    <header class="app-header">
+        <div class="app-titles">
+            <h1>WebSharper.CodeMirror</h1>
+            <p>CodeMirror 6 bindings for F# — with <a href="https://websharper.com">WebSharper</a></p>
+        </div>
+        <div class="app-actions">
+            <button class="btn theme-toggle" ws-onclick="ToggleTheme" title="Switch between the light and dark theme">
+                <span>${themeLabel}</span>
+            </button>
+            <a class="app-source" href="https://github.com/dotnet-websharper/codemirror">Source</a>
+        </div>
+    </header>
+
+    <main class="page">
+        <p class="notice">${notice}</p>
+
+        <section class="card">
+            <header class="card-header">
+                <h2>Languages</h2>
+                <p>
+                    One editor wired to every bound language module. Picking a
+                    language rebuilds the extensions with that module's
+                    <code>LanguageSupport</code>.
+                </p>
+            </header>
+            <div class="toolbar">
+                <label class="field">
+                    Language
+                    <select ws-var="Language">
+                        <option value="Angular">Angular</option>
+                        <option value="C++">C++</option>
+                        <option value="CSS">CSS</option>
+                        <option value="Go">Go</option>
+                        <option value="HTML">HTML</option>
+                        <option value="Java">Java</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="Jinja">Jinja</option>
+                        <option value="JSON">JSON</option>
+                        <option value="Less">Less</option>
+                        <option value="Lezer">Lezer</option>
+                        <option value="Liquid">Liquid</option>
+                        <option value="Markdown">Markdown</option>
+                        <option value="PHP">PHP</option>
+                        <option value="Python">Python</option>
+                        <option value="Rust">Rust</option>
+                        <option value="Sass">Sass</option>
+                        <option value="SQL">SQL</option>
+                        <option value="Vue">Vue</option>
+                        <option value="WAST">WAST</option>
+                        <option value="XML">XML</option>
+                        <option value="YAML">YAML</option>
+                    </select>
+                </label>
+                <span class="spacer"></span>
+                <button class="btn" ws-onclick="Reset">Reload sample</button>
+                <span class="pill">${docInfo}</span>
+            </div>
+            <div id="editor-host" class="editor-host"></div>
+            <p class="readout">${cursorInfo}</p>
+        </section>
+
+        <section class="card">
+            <header class="card-header">
+                <h2>Commands &amp; panels</h2>
+                <p>
+                    The command bindings from <code>@codemirror/commands</code>,
+                    <code>@codemirror/search</code>, <code>@codemirror/language</code> and
+                    <code>@codemirror/lint</code> acting on the editor above.
+                </p>
+            </header>
+            <div class="toolbar">
+                <button class="btn" ws-onclick="Undo">Undo</button>
+                <button class="btn" ws-onclick="Redo">Redo</button>
+                <button class="btn" ws-onclick="ToggleComment">Toggle comment</button>
+                <button class="btn" ws-onclick="MoveLineUp">Move line up</button>
+                <button class="btn" ws-onclick="MoveLineDown">Move line down</button>
+                <button class="btn" ws-onclick="IndentMore">Indent more</button>
+                <button class="btn" ws-onclick="IndentLess">Indent less</button>
+                <button class="btn" ws-onclick="CopyLineDown">Duplicate line</button>
+                <button class="btn" ws-onclick="DeleteLine">Delete line</button>
+                <button class="btn" ws-onclick="InsertTab">Insert tab</button>
+                <button class="btn" ws-onclick="SelectAll">Select all</button>
+                <button class="btn" ws-onclick="FoldAll">Fold all</button>
+                <button class="btn" ws-onclick="UnfoldAll">Unfold all</button>
+                <button class="btn" ws-onclick="GotoLine">Go to line…</button>
+                <button class="btn" ws-onclick="OpenSearch">Open search</button>
+                <button class="btn" ws-onclick="FindNext">Find next</button>
+                <button class="btn" ws-onclick="FindPrevious">Find previous</button>
+                <button class="btn" ws-onclick="ReplaceAll">Replace all</button>
+                <button class="btn" ws-onclick="CloseSearch">Close search</button>
+                <button class="btn" ws-onclick="OpenLint">Open lint panel</button>
+                <button class="btn" ws-onclick="NextDiagnostic">Next diagnostic</button>
+                <button class="btn" ws-onclick="PreviousDiagnostic">Previous diagnostic</button>
+                <button class="btn" ws-onclick="ForceLint">Re-lint</button>
+                <button class="btn" ws-onclick="CloseLint">Close lint panel</button>
+            </div>
+            <p class="readout">${diagInfo} · ${searchInfo}</p>
+        </section>
+
+        <section class="card">
+            <header class="card-header">
+                <h2>Completion</h2>
+                <p>
+                    <code>@codemirror/autocomplete</code>: a language snippet source
+                    plus a small word list, driven through the completion commands.
+                </p>
+            </header>
+            <div class="toolbar">
+                <button class="btn btn-primary" ws-onclick="StartCompletion">Start completion</button>
+                <button class="btn" ws-onclick="AcceptCompletion">Accept completion</button>
+                <button class="btn" ws-onclick="CloseCompletion">Close completion</button>
+                <span class="spacer"></span>
+                <span class="pill">${completionInfo}</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <header class="card-header">
+                <h2>Merge view</h2>
+                <p>
+                    <code>@codemirror/merge</code>'s <code>unifiedMergeView</code> showing
+                    the differences between an original and a modified document, with
+                    accept/reject acting on the first differing chunk.
+                </p>
+            </header>
+            <div id="merge-host" class="merge-host"></div>
+            <div class="toolbar">
+                <button class="btn btn-primary" ws-onclick="MergeAccept">Accept chunk</button>
+                <button class="btn" ws-onclick="MergeReject">Reject chunk</button>
+                <button class="btn" ws-onclick="MergeRefresh">Refresh readout</button>
+                <span class="spacer"></span>
+                <span class="pill">${mergeInfo}</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <header class="card-header">
+                <h2>Helpers &amp; API tour</h2>
+                <p>
+                    Pure helpers and state readers from <code>@codemirror/state</code>,
+                    <code>@codemirror/language</code> and <code>@codemirror/merge</code>.
+                </p>
+            </header>
+            <p class="readout mono">${helperInfo}</p>
+            <div class="toolbar">
+                <button class="btn btn-primary" ws-onclick="RunHelpers">Run helpers</button>
+                <span class="spacer"></span>
+                <span class="pill status">${status}</span>
+            </div>
+        </section>
+    </main>
+
+    <script type="text/javascript" src="Scripts/WebSharper.CodeMirror.Sample.min.js"></script>
 </body>
 </html>
