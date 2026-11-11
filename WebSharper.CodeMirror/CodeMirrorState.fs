@@ -237,6 +237,49 @@ module State =
         ])
         |> ignore
 
+    let StateEffectSpec =
+        Generic - fun value ->
+            Pattern.Config "StateEffectSpec" {
+                Required = []
+                Optional = [
+                    "map", value * ChangeDesc ^-> value
+                ]
+            }
+
+    let StateEffect = Class "StateEffect"
+
+    let StateEffectType =
+        Generic - fun value ->
+            Class "StateEffectType"
+            |> ImportFromState
+            |+> Instance [
+                "map" =? (T<obj> * ChangeDesc ^-> T<obj>)
+                "of" => value ^-> StateEffect.[value]
+            ]
+
+    do
+        (Generic - fun value ->
+        StateEffect
+        |> ImportFromState
+        |+> Instance [
+            "value" =? value
+
+            "map" => ChangeDesc ^-> (TSelf.[value])
+
+            Generic - fun t ->
+                "is" => StateEffectType.[t] ^-> T<bool>
+        ]
+        |+> Static [
+            Generic - fun v ->
+                "define" => !? StateEffectSpec.[v] ^-> StateEffectType.[v]
+
+            "mapEffects" => (!| TSelf.[T<obj>]) * ChangeDesc ^-> !| TSelf.[T<obj>]
+
+            "reconfigure" =? StateEffectType.[Extension]
+            "appendConfig" =? StateEffectType.[Extension]
+        ])
+        |> ignore
+
     let ChangeByRangeResult =
         Pattern.Config "ChangeByRangeResult" {
             Required = [
@@ -244,7 +287,7 @@ module State =
             ]
             Optional = [
                 "changes", ChangeSpecType
-                "effects", StateField.[T<obj>] + !| StateField.[T<obj>]
+                "effects", StateEffect.[T<obj>] + !| StateEffect.[T<obj>]
             ]
         }
 
@@ -253,7 +296,7 @@ module State =
             Required = [
                 "changes", ChangeSet.Type
                 "selection", EditorSelection.Type
-                "effects", !| StateField.[T<obj>]
+                "effects", !| StateEffect.[T<obj>]
             ]
             Optional = []
         }
@@ -274,7 +317,7 @@ module State =
             Optional = [
                 "changes", ChangeSpecType
                 "selection", EditorSelection + AnchorHeadConfig
-                "effects", StateField.[T<obj>] + !| StateField.[T<obj>]
+                "effects", StateEffect.[T<obj>] + !| StateEffect.[T<obj>]
                 "annotations", Annotation.[T<obj>] + !| Annotation.[T<obj>]
                 "userEvent", T<string>
                 "scrollIntoView", T<bool>
@@ -463,49 +506,6 @@ module State =
             "range" => T<int> * !? T<int> ^-> Range.[TSelf]
         ]
 
-    let StateEffectSpec =
-        Generic - fun value ->
-            Pattern.Config "StateEffectSpec" {
-                Required = []
-                Optional = [
-                    "map", value * ChangeDesc ^-> value
-                ]
-            }
-
-    let StateEffect = Class "StateEffect"
-
-    let StateEffectType =
-        Generic - fun value ->
-            Class "StateEffectType"
-            |> ImportFromState
-            |+> Instance [
-                "map" =? (T<obj> * ChangeDesc ^-> T<obj>)
-                "of" => value ^-> StateEffect.[value]
-            ]
-
-    do
-        (Generic - fun value ->
-        StateEffect
-        |> ImportFromState
-        |+> Instance [
-            "value" =? value
-
-            "map" => ChangeDesc ^-> (TSelf.[value])
-
-            Generic - fun t ->
-                "is" => StateEffectType.[t] ^-> T<bool>
-        ]
-        |+> Static [
-            Generic - fun v ->
-                "define" => !? StateEffectSpec.[v] ^-> StateEffectType.[v]
-
-            "mapEffects" => (!| TSelf.[T<obj>]) * ChangeDesc ^-> !| TSelf.[T<obj>]
-
-            "reconfigure" =? StateEffectType.[Extension]
-            "appendConfig" =? StateEffectType.[Extension]
-        ])
-        |> ignore
-
     let Compartment =
         Class "Compartment"
         |> ImportFromState
@@ -513,6 +513,9 @@ module State =
             "of" => Extension ^-> Extension
             "reconfigure" => Extension ^-> StateEffect.[T<obj>]
             "get" => EditorState ^-> Extension
+        ]
+        |+> Static [
+            Constructor (T<unit>)
         ]
 
     let RangeSetBuilder =
@@ -557,7 +560,7 @@ module State =
             "startState" =? EditorState
             "changes" =? ChangeSet
             "selection" =? EditorSelection
-            "effects" =? !| StateField.[T<obj>]
+            "effects" =? !| StateEffect.[T<obj>]
             "scrollIntoView" =? T<bool>
 
             "newDoc" =? Text

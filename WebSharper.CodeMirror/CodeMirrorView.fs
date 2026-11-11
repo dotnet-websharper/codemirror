@@ -692,7 +692,8 @@ module View =
             "cspNonce" =? Facet.[T<string>, T<string>]
             "contentAttributes" =? Facet.[AttrSource, !| AttrSource]
             "editorAttributes" =? Facet.[AttrSource, !| AttrSource]
-            "lineWrappingStatic" =? Extension
+            "lineWrapping" =? Extension
+            |> WithSourceName "LineWrappingStatic"
             "announce" =? StateEffectType.[T<string>]
             "findFromDOM" => T<HTMLElement> ^-> TSelf
         ]
