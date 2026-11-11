@@ -4,37 +4,47 @@
     <WebSharperProject>binding</WebSharperProject>
     <WebSharperSourceMap>false</WebSharperSourceMap>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);FS3886</NoWarn>
   </PropertyGroup>
-	<PropertyGroup>
-		<NpmDependencies>
-			<NpmPackage Name="@codemirror/collab" Version="gt= 6.1.0 lt 6.1.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-angular" Version="gt= 0.1.0 lt 0.1.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-cpp" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-css" Version="gt= 6.3.0 lt 6.3.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-go" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-html" Version="gt= 6.4.5 lt 6.5.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-java" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-javascript" Version="gt= 6.2.0 lt 6.3.0" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-jinja" Version="gt= 5.9.5 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-json" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-less" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-lezer" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-liquid" Version="gt= 6.2.0 lt 6.2.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-markdown" Version="gt= 6.3.0 lt 6.3.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-php" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-python" Version="gt= 6.2.0 lt 6.2.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-rust" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-sass" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-sql" Version="gt= 6.9.0 lt 6.9.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-vue" Version="gt= 0.1.0 lt 0.1.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-wast" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-xml" Version="gt= 6.0.5 lt 6.1.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/lang-yaml" Version="gt= 6.1.0 lt 6.1.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/language-data" Version="gt= 6.5.0 lt 6.5.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="@codemirror/theme-one-dark" Version="gt= 6.1.0 lt 6.1.5" ResolutionStrategy="Max" />
-			<NpmPackage Name="codemirror" Version="gt= 6.0.0 lt 6.0.5" ResolutionStrategy="Max" />
-		</NpmDependencies>
-	</PropertyGroup>
+  <PropertyGroup>
+    <NpmDependencies>
+      <NpmPackage Name="@codemirror/autocomplete" Version="&gt;= 6.20.4 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/collab" Version="&gt;= 6.1.1 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/commands" Version="&gt;= 6.11.1 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-angular" Version="&gt;= 0.1.4 &lt; 0.2.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-cpp" Version="&gt;= 6.0.3 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-css" Version="&gt;= 6.3.1 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-go" Version="&gt;= 6.0.1 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-html" Version="&gt;= 6.4.12 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-java" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-javascript" Version="&gt;= 6.2.5 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-jinja" Version="&gt;= 6.0.1 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-json" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-less" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-lezer" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-liquid" Version="&gt;= 6.3.3 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-markdown" Version="&gt;= 6.5.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-php" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-python" Version="&gt;= 6.2.1 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-rust" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-sass" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-sql" Version="&gt;= 6.10.0 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-vue" Version="&gt;= 0.1.3 &lt; 0.2.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-wast" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-xml" Version="&gt;= 6.1.0 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lang-yaml" Version="&gt;= 6.1.3 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/language" Version="&gt;= 6.13.1 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/language-data" Version="&gt;= 6.5.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lint" Version="&gt;= 6.9.7 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/lsp-client" Version="&gt;= 6.3.0 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/merge" Version="&gt;= 6.12.3 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/search" Version="&gt;= 6.7.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/state" Version="&gt;= 6.7.6 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/theme-one-dark" Version="&gt;= 6.1.3 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="@codemirror/view" Version="&gt;= 6.43.15 &lt; 7.0.0" ResolutionStrategy="Max" />
+      <NpmPackage Name="codemirror" Version="&gt;= 6.0.2 &lt; 7.0.0" ResolutionStrategy="Max" />
+    </NpmDependencies>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="CodeMirrorState.fs" />
     <Compile Include="CodeMirrorView.fs" />

@@ -200,10 +200,10 @@ module Definition =
             "lineNumberWidgetMarker" =? Facet.[(EditorView * WidgetType * BlockInfo ^-> GutterMarker), !| (EditorView * WidgetType * BlockInfo ^-> GutterMarker)]
             |> Import "lineNumberWidgetMarker" "@codemirror/view"
 
-            "rectangularSelection" => RectangularSelectionOptions ^-> Extension
+            "rectangularSelection" => !? RectangularSelectionOptions ^-> Extension
             |> Import "rectangularSelection" "@codemirror/view"
 
-            "crosshairCursor" => CrosshairCursorOptions ^-> Extension
+            "crosshairCursor" => !? CrosshairCursorOptions ^-> Extension
             |> Import "crosshairCursor" "@codemirror/view"
 
             "drawSelection" => !? SelectionConfig ^-> Extension

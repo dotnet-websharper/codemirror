@@ -1,21 +1,24 @@
-﻿import { existsSync, cpSync, readdirSync } from 'fs'
-import { build } from 'esbuild'
+﻿import { build } from 'esbuild'
+import { readFileSync, writeFileSync, copyFileSync } from 'fs'
 
-const files = readdirSync('./build/');
+const name = 'WebSharper.CodeMirror.Sample'
 
-files.forEach(file => {
-  if (file.endsWith('.js')) {
-    var options =
-    {
-      entryPoints: ['./build/' + file],
-      bundle: true,
-      minify: true,
-      format: 'iife',
-      outfile: 'wwwroot/Scripts/' + file,
-      globalName: 'wsbundle'
-    };
+// The WebSharper-generated module imports the CodeMirror npm packages (and the
+// WebSharper runtime); bundle them all into a single IIFE for the static page.
+await build({
+  entryPoints: [`./build/${name}.js`],
+  bundle: true,
+  minify: true,
+  format: 'iife',
+  outfile: `../dist/Scripts/${name}.min.js`,
+  globalName: 'wsbundle'
+})
 
-    console.log("Bundling:", file);
-    build(options);
-  }
-});
+copyFileSync('./site.css', '../dist/site.css')
+
+// Fold the WebSharper head (linked resources) into the page.
+const head = readFileSync(`./build/${name}.head.html`, 'utf8')
+const html = readFileSync('./index.html', 'utf8').replace('<!-- ws-head -->', head)
+writeFileSync('../dist/index.html', html)
+
+console.log('Bundled:', name)
